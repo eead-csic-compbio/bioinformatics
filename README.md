@@ -11,9 +11,9 @@ We will also review software benchmarks and reproducible analysis practices.
 
 Standalone and Web-based tools
 
-Sequence annotation (dna, proteins, domains, modelling, 4h) 
+Coding sequence annotation (dna, proteins, domains, modelling, 4h) 
 
-Promoter analysis (4h)
+non—coding annotation: promoter analysis (4h)
 
 software and parameter benchmarks (2h)
 
