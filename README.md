@@ -4,21 +4,16 @@ This material is maintained by Najla Ksouri and Bruno Contreras Moreira
 
 ##  Summary
 
-Here we review some bioinformatics resources and databases used in plant breeding and genomics.
-We will also review software benchmarks and reproducible analysis practices.
+Here we review some bioinformatics resources and databases used in plant breeding and genomics. We will use both standalone and Web-based tools.
+We will also review reproducible analysis practices and software benchmarks.
 
 ## Contents
 
-Standalone and Web-based tools
+|session|title|required time|URL|
+|-------|-----|-------------|---|
+|1|Annotation of coding sequences|4h|[session 1](./session1.md)|
+|2|Analysis of non-coding sequences|4h|[session 2](./session2.md)|
+|3|Reproducible analysis practices|2h|[session 3](./session3.md)|
+|4|Software and parameter benchmarks|2h|[session 4](./session4.md)|
 
-Sequence annotation (dna, proteins, domains, modelling, 4h) 
-
-Promoter analysis (4h)
-
-software and parameter benchmarks (2h)
-
-reproducible analysis practices (2h)
-versions, Docker, version-control, github, zenodo, dryad, 
-makefile, snakemake, nextflow
-
-
+We post regularly about these and related bioinformatics topics at the [#!/perl/bioinfo](https://bioinfoperl.blogspot.com) blog, mostly in Spanish.
