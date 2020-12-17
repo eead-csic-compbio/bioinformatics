@@ -35,8 +35,7 @@ Sequence identity is a simple way of measuring conservation. However, it lacks r
 ![](./pics/align_substitution.png)
 
 These preferences are captured by computing log-odds ratios of frequencies of observed mutations (a,b) with respect to estimates assuming no preference:
-
-$$ s(a,b) = \lambda \ log(\frac{f_{ab}}{f_{a} f_{b}}) \approx  log\frac{f_{homologues}}{f_{bychance}} $$
+![equation](https://latex.codecogs.com/gif.latex?s(a,b)&space;=&space;\lambda&space;\&space;log(\frac{f_{ab}}{f_{a}&space;f_{b}})&space;\approx&space;log\frac{f_{homologues}}{f_{bychance}})
 
 These log-odds are additive. 
 
