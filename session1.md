@@ -112,7 +112,7 @@ Local pairwise alignment is not end-to-end. Instead it assumes that the sequence
 
 ### Affine gap penalties
 
-The algorithms presented so far have linear gap costs. Affine gap costs, with different cost for openning (*d*) and extending (*e*) an insertion, are believed to be more accurate for protein sequences. They also introduce extra complexity in the algorithm, as they require creating two extra matrices to store indels in sequences *x* and *y* [(Durbin1998)](http://eddylab.org/cupbook.html).
+The algorithms presented so far have linear gap costs. Affine gap costs, with different cost for openning (*a*) and extending (*b*) an insertion, are believed to be more accurate for protein sequences. They also introduce extra complexity in the algorithm, as they require creating two extra matrices to store indels in sequences *x* and *y* [(Durbin1998)](http://eddylab.org/cupbook.html).
 
 ### Heuristic pairwise alignments
 
