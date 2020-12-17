@@ -53,7 +53,7 @@ BLOSUM matrices are scaled to 1/2-bit units [(Pearson2013)](https://www.ncbi.nlm
 
 ![equation](https://latex.codecogs.com/gif.latex?s(E,E)&space;=&space;6&space;=&space;2.0&space;\&space;log_{2}(\frac{f_{EE}}{f_{E}&space;f_{E}}))
 
-![equation](https://latex.codecogs.com/gif.latex?\frac{f_{EE}}{f_{E} f_{E}}&space;=&space;2^3)
+![equation](https://latex.codecogs.com/gif.latex?\frac{f_{EE}}{f_{E}&space;f_{E}}&space;=&space;2^3)
 
 S(E,E) is thus 8 times more likely to occur because of homology than by chance.
 
