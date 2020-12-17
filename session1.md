@@ -51,7 +51,7 @@ These log-odds have been scaled so that they can be accurately represented by in
 
 BLOSUM matrices are scaled to 1/2-bit units [(Pearson2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3848038); a substitution score such as s(E,E) can be broken down to: 
 
-![equation](https://latex.codecogs.com/gif.latex?s(E,E) = 6 = 2.0 \ log_{2}(\frac{f_{EE}}{f_{E} f_{E}}))
+![equation](https://latex.codecogs.com/gif.latex?s(E,E)&space;=&space;6&space;=&space;2.0&space;\&space;log_{2}(\frac{f_{EE}}{f_{E}&space;f_{E}}))
 
 ![equation](https://latex.codecogs.com/gif.latex?\frac{f_{EE}}{f_{E} f_{E}} = 2^3)
 
