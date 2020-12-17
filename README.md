@@ -17,3 +17,5 @@ We will also review reproducible analysis practices and software benchmarks.
 |4|Software and parameter benchmarks|2h|[session 4](./session4.md)|
 
 We post regularly about these and related bioinformatics topics at the [#!/perl/bioinfo](https://bioinfoperl.blogspot.com) blog, mostly in Spanish.
+
+Check also this course to learn how to [script in Linux](https://github.com/eead-csic-compbio/scripting_linux_shell).
