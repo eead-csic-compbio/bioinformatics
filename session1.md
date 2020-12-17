@@ -96,7 +96,7 @@ The NW and related algorithms break the initial problem in subalignments which a
 
 + The top and left margins of DP are filled with gaps of increasing length, and the origin set to zero
 
-+ The alignment DP matrix can now be computed from top left to bottom right according to the following recursive function, where *s(x,y)* is a scoring function/substitution matrix and *d* a linear gap cost
++ The alignment DP matrix can now be computed from top left to bottom right according to a recursive function that considers a scoring function/substitution matrix, a linear gap cost and the previously computed scores
 
 During the computation of the DP matrix, another matrix is used to record the previous cell which was visited before the current cell under consideration. This second matrix is used to perform the traceback step, in which the alignment is reconstructed backwards from the bottom right cell, as illustrated in this figure from [(Durbin1998)](http://eddylab.org/cupbook.html):
 
@@ -112,7 +112,7 @@ Local pairwise alignment is not end-to-end. Instead it assumes that the sequence
 
 ### Affine gap penalties
 
-The algorithms presented so far have linear gap costs. Affine gap costs, with different cost for openning (*a*) and extending (*b*) an insertion, are believed to be more accurate for protein sequences. They also introduce extra complexity in the algorithm, as they require creating two extra matrices to store indels in sequences *x* and *y* [(Durbin1998)](http://eddylab.org/cupbook.html).
+The algorithms presented so far have linear gap costs. Affine gap costs, with different cost for openning (*a*) and extending (*b*) an insertion, are believed to be more accurate for protein sequences. They also introduce extra complexity in the algorithm, as they require creating two extra matrices to store indels [(Durbin1998)](http://eddylab.org/cupbook.html).
 
 ### Heuristic pairwise alignments
 
@@ -150,7 +150,7 @@ They achieve those goals by using a data structure called **suffix array** (SA) 
 
 **Burrows-Wheeler indexes** are space-efficient SA that can be queried and aligned by dynamic programming [(Makinen2015)](http://www.genome-scale.info). See [here](https://bioinfoperl.blogspot.com.es/2011/07/transformada-de-burrows-wheeler-para.html) an example of how the Burrows-Wheeler transform works (in Spanish).
 
-The next diagram summarizes these and other algorithmic choices in the context of approximate protein sequence matching [@Koskinen2012]:
+The next diagram summarizes these and other algorithmic choices in the context of approximate protein sequence matching [(Koskinen2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3436844):
 
 ![](./pics/m_bts417f1.jpeg)
 
