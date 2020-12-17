@@ -160,7 +160,7 @@ The next diagram summarizes these and other algorithmic choices in the context o
 In theory, the DP algorithms described earlier can be generalized to sets of more than two sequences. 
 However, the recursive functions grow in complexity with every new sequence added,
 as well as the computational resources required. 
-For this reason, multiple alignments are usually computed using a progressive approach, in which first all sequences are first aligned by pairs, and then these are progressively merged [(Hogeweg1984)](https://www.ncbi.nlm.nih.gov/pubmed/6433036) [(Makinen2015)](http://www.genome-scale.info). This is illustrated in the following diagram [@IntroAppliedWeb]:
+For this reason, multiple alignments are usually computed using a progressive approach, in which first all sequences are first aligned by pairs, and then these are progressively merged [(Hogeweg1984)](https://www.ncbi.nlm.nih.gov/pubmed/6433036) [(Makinen2015)](http://www.genome-scale.info). This is illustrated in the following diagram [(Caporaso2018)](https://github.com/caporaso-lab/An-Introduction-To-Applied-Bioinformatics):
 
 ![](./pics/msa-tree-final.png)
 
