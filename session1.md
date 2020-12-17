@@ -105,7 +105,7 @@ During the computation of the DP matrix, another matrix is used to record the pr
 
 ### Local alignment of two subsequences
 
-Local pairwise alignment is not end-to-end. Instead it assumes that the sequences to be compared might have different domain structure and perhaps share only part of the sequence by homology. The Smith-Waterman (SW) algorithm was designed for this purpose [@Smith1981]. It is a modification of NW. In this case the traceback step now starts in the cell of DP with the highest score, instead of the bottom right corner [(Durbin1998)](http://eddylab.org/cupbook.html):
+Local pairwise alignment is not end-to-end. Instead it assumes that the sequences to be compared might have different domain structure and perhaps share only part of the sequence by homology. The Smith-Waterman (SW) algorithm was designed for this purpose [(Smith1981)](https://www.ncbi.nlm.nih.gov/pubmed/7265238) as a modification of NW. In this case the traceback step now starts in the cell of DP with the highest score, instead of the bottom right corner [(Durbin1998)](http://eddylab.org/cupbook.html):
 
 ![](./pics/localDP.jpg)
 
