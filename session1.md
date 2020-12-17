@@ -53,7 +53,7 @@ BLOSUM matrices are scaled to 1/2-bit units [(Pearson2013)](https://www.ncbi.nlm
 
 ![equation](https://latex.codecogs.com/gif.latex?s(E,E)&space;=&space;6&space;=&space;2.0&space;\&space;log_{2}(\frac{f_{EE}}{f_{E}&space;f_{E}}))
 
-![equation](https://latex.codecogs.com/gif.latex?\frac{f_{EE}}{f_{E} f_{E}} = 2^3)
+![equation](https://latex.codecogs.com/gif.latex?\frac{f_{EE}}{f_{E} f_{E}}&space;=&space;2^3)
 
 S(E,E) is thus 8 times more likely to occur because of homology than by chance.
 
@@ -96,11 +96,9 @@ The NW and related algorithms break the initial problem in subalignments which a
 
 + The top and left margins of DP are filled with gaps of increasing length, and the origin set to zero:
 
-![equation](https://latex.codecogs.com/gif.latex?
-DP(0,0) = 0 \\
-DP(i,0) = -id , \text{ for } 1\leq i \leq m \\
-DP(0,j) = -jd , \text{ for } 1\leq j \leq n \\
-)
+![equation](https://latex.codecogs.com/gif.latex?DP(0,0)&space;=&space;0)
+![equation](https://latex.codecogs.com/gif.latex?DP(i,0)&space;=&space;-id&space;,&space;\text{&space;for&space;}&space;1\leq&space;i&space;\leq&space;m)
+![equation](https://latex.codecogs.com/gif.latex?DP(0,j)&space;=&space;-jd&space;,&space;\text{&space;for&space;}&space;1\leq&space;j&space;\leq&space;n)
 
 + The alignment DP matrix can now be computed from top left to bottom right according to the following recursive function, where $s(x,y)$ is a scoring function/substitution matrix and $d$ a linear gap cost:
 
