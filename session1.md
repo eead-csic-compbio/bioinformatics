@@ -1,6 +1,6 @@
 # Session 1: Annotation of coding sequences
 
-<!-- Sequence annotation (alignments, dna, proteins, domains, modelling) --> 
+<!-- Sequence annotation (alignments, dna, proteins, GO, domains, modelling) --> 
 
 In Genomics and Computational Biology, annotating a sequence means decorating it with quantums of biological information, usually about is *molecular function*, the *biological process(es)* in which it participates and the *cellular compartment* where that happens (see the [Gene Ontology](http://geneontology.org)). Other relevant annotations include the evolutionary conservation of a sequence or the biological sample where it was found.
 
