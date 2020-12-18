@@ -2,8 +2,15 @@
 
 <!-- Sequence annotation (alignments, dna, proteins, domains, modelling) --> 
 
-Analysis of sequences is one of the foundations of Genomics and Computational Biology. 
-Genomic sequences are most often either nucleotide sequences and peptide sequences. 
+In Genomics and Computational Biology, annotating a sequence means decorating it with quantums of biological information, usually about is *molecular function*, the *biological process(es)* in which it participates and the *cellular compartment* where that happens (see the [Gene Ontology](http://geneontology.org)). Other relevant annotations include the evolutionary conservation of a sequence or the biological sample where it was found.
+
+The annotation process requires at least two data sources:
+
+* A collection of previously annotated sequences.
+
+* Indexed literature in repositories such as [PubMed](https://pubmed.ncbi.nlm.nih.gov) or [EuroPMC](https://europepmc.org), where publications are uniquely identified with accession codes such as the [DOI](https://www.doi.org).
+
+Genomic sequences are most often nucleotide and peptide sequences. 
 The first can be large genome fragments such as contigs or smaller genes, transcripts, 
 coding sequences or non-coding RNAs; peptides are usually proteins translated from open 
 reading frames encoded in coding sequences.
@@ -17,19 +24,19 @@ This is due to the general expectation that sequence drives folding and to the f
 
 ![](./pics/align2.png)
 
-## Pairwise alignment: edit distance
+### Pairwise alignment: edit distance
 
 When two sequences are aligned residues from one sequence are matched one-by-one to residues in the other. Matches are obvious when the sequences are nearly identical, but less so when mutations accumulate. A simple way to compute how similar two sequences are is to compute their edit distance.
 
 ![](./pics/align2edit.png)
 
-## Pairwise alignment: sequence identity
+### Pairwise alignment: sequence identity
 
 Another way to compute how similar two sequences are is to compute their % sequence identity.
 
 ![](./pics/seqidcalc.png)
 
-## Substitution matrices
+### Substitution matrices
 
 Sequence identity is a simple way of measuring conservation. However, it lacks resolution and handles all residue substitutions the same way. This is not ideal as we know that purine (A,G) and pyrimidine (C,T) nucleotides, or aromatic amino acid resides if we talk about proteins, are often not interchanged with equal probability in real genes or proteins:
 
@@ -41,7 +48,7 @@ These preferences are captured by computing log-odds ratios of frequencies of ob
 
 These log-odds are additive. 
 
-## BLOSUM substitution matrices
+### BLOSUM substitution matrices
 
 The most frequent substitution matrices used to score protein alignments are the  [BLOSUM](https://en.wikipedia.org/wiki/BLOSUM) matrices. These matrices are described by a number X, as in BLOSUM50, derived from the analysis of alignments of protein blocks/domains with identities < X percent.  Below you can see BLOSUM50:
 
@@ -57,30 +64,30 @@ BLOSUM matrices are scaled to 1/2-bit units [(Pearson2013)](https://www.ncbi.nlm
 
 S(E,E) is thus 8 times more likely to occur because of homology than by chance.
 
-## Pairwise alignment: similarity
+### Pairwise alignment: similarity
 
 By using matrices such as BLOSUM it is possible to compute the similarity between two aligned sequences, which is added up along the alignment:
 
 ![](./pics/align2blosum50.png)
 
-## Pairwise alignment: handling insertions and deletion (indels)
+### Pairwise alignment: handling insertions and deletion (indels)
 
 In addition to residue substitutions, insertions and deletions are usually considered while computing similarity. This can be done in many ways. The simplest is to assume a **linear cost** for insertions, proportional to their length. However, it is more accurate to compute **affine gap costs**, which charge a fix cost to openning a gap (a) and then a linear cost proportional to the gap length (bk). In this way, a gap of k residues receives a total score of -(a+bk)
 
 ![](./pics/align_affine.png)
 
-## Multiple alignment
+### Multiple alignment
 
 When more than two sequences are to be aligned we talk about multiple alignments, which can be computed in many ways. The most intuitive way, comparing them all, requires quadratically more resources as more sequences are added.
 
 ![](./pics/align3.png)
 
-# Algorithms for sequence alignment
+## Algorithms for sequence alignment
 
 In this section we will visit some of the most frequent algorithms used to align sequences. 
 The goal is to learn what you can and cannot do with each of them so that you can apply them correctly.
 
-## Pairwise alignments
+### Pairwise alignments
 
 These are the simplest alignments as they involve only two sequences (of length *m* and *n*). There are several flavours, but the most important are global and local alignments, depicted in this figure taken from [(Makinen2015)](http://www.genome-scale.info):
 
@@ -155,7 +162,7 @@ The next diagram summarizes these and other algorithmic choices in the context o
 ![](./pics/m_bts417f1.jpeg)
 
 
-## Multiple alignments and sequence profiles
+### Multiple alignments and sequence profiles
 
 In theory, the DP algorithms described earlier can be generalized to sets of more than two sequences. 
 However, the recursive functions grow in complexity with every new sequence added,
@@ -174,4 +181,5 @@ The next figure illustrates how a MSA can be used to build a HMM [(Lindly2018)](
 Another standard tool used to build and scan sequence profiles, both protein and DNA, is [MEME](http://meme-suite.org).
 
 Profiles can be aligned to single sequences and also to other profiles [(Soding2005)](http://www.ncbi.nlm.nih.gov/pubmed/15531603).
+
 
