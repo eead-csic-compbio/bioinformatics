@@ -212,9 +212,6 @@ These vocabulary terms (GO terms) annotate the gene products at three different 
 
 They are organized as an hierarchy and connected to each other through a parent-child relationships (see Figure).  
 
-![](./pics/go.png)
-
-
-
+<img src="./pics/go.png" width="80%" height="75%">
 
 
