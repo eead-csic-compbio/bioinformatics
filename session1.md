@@ -211,4 +211,6 @@ These vocabulary terms (GO terms) annotate the gene products at three different 
 - Cellular component: where the gene products are active
 
 There are organized as an hierarchy and are connected to each other through a parent-child relationships.
-![](./Imágenes/go.png)
+![go_hierarchy](./Imágenes/go.png)
+
+
