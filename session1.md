@@ -210,7 +210,11 @@ These vocabulary terms (GO terms) annotate the gene products at three different 
 - Molecular function: the molecular activities of individual gene products
 - Cellular component: where the gene products are active
 
-There are organized as an hierarchy and are connected to each other through a parent-child relationships.
-![](./Imágenes/go.png)
+They are organized as an hierarchy and connected to each other through a parent-child relationships (see Figure).  
+
+![](./Escritorio/IAMZ/go.png)
+
+
+
 
 
