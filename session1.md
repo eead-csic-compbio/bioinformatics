@@ -185,4 +185,20 @@ Another standard tool used to build and scan sequence profiles, both protein and
 
 Profiles can be aligned to single sequences and also to other profiles [(Soding2005)](http://www.ncbi.nlm.nih.gov/pubmed/15531603).
 
+## Annotation of protein sequences
+
+### CDS and exons
+
+### Peptide sequences
+
+<!-- https://www.eead.csic.es/compbio/material/alineafilog/ -->
+
+#### Secondary structure 
+
+#### Domains
+
+#### Tertiary structure
+
+<!-- https://www.eead.csic.es/compbio/material/regulatory_proteins/node4.html -->
+
 
