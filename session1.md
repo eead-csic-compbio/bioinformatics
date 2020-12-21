@@ -202,3 +202,13 @@ Profiles can be aligned to single sequences and also to other profiles [(Soding2
 <!-- https://www.eead.csic.es/compbio/material/regulatory_proteins/node4.html -->
 
 
+## Gene Ontology Annotation (GO)
+The gene ontology is a standard language that describes the functions of gene products (protein, RNA) using a controlled and unified vocabularies across all species.
+
+These vocabulary terms (GO terms) annotate the gene products at three different levels:
+- Biological process: to which process or pathway is the gen contributuing
+- Molecular function: the molecular activities of individual gene products
+- Cellular component: where the gene products are active
+
+There are organized as an hierarchy and are connected to each other through a parent-child relationships.
+![](./Imágenes/go.png)
