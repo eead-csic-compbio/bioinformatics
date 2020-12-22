@@ -203,6 +203,8 @@ Profiles can be aligned to single sequences and also to other profiles [(Soding2
 
 
 ## Gene Ontology Annotation (GO)
+
+### Description
 The gene ontology is a standard language that describes the functions of gene products (protein, RNA) using a controlled and unified vocabularies across all species.
 
 These vocabulary terms (GO terms) annotate the gene products at three different levels:
@@ -210,8 +212,30 @@ These vocabulary terms (GO terms) annotate the gene products at three different 
 - Molecular function: the molecular activities of individual gene products
 - Cellular component: where the gene products are active
 
-They are organized as an hierarchy and connected to each other through a parent-child relationships (see Figure).  
+They are organized as an hierarchy and connected to each other through a parent-child relationships (see Figure below).   
 
-<img src="./pics/go.png" width="80%" height="75%">
+
+<img src="./pics/go.png" width="80%" height="70%">  
+
+### Exercise
+
+Let´s practice:
+Using [QuickGo](https://www.ebi.ac.uk/QuickGO/) web browser, try to answer the following questions:
+
+1. What are the names and the classes of the following GO terms: GO:0009414, GO:0035618, GO:0016491
+
+2. What is the GO term corresponding to the photosynthesis
+
+3. What are the immediate parent(s) and children of the photosynthesis GO term
+
+4. How many gene products are involved in photosynthesis.
+
+5. How many proteins of *Arabidopsis thaliana* and *Prunus perisca* have the annotation  GO:0009414. 
+List 2 genes from each species associated with this GO term 
+
+6. How many GO terms in *Arabidopsis thaliana* and *Prunus perisca* were supported by the experimental evidence codes.
+What are the category of the first ranked terms.
+
+7. Find all possible GO annotations of the following *Arabidopsis thaliana* genes:  *At2g28350*, *At5g17640* and *At3g06760*
 
 
