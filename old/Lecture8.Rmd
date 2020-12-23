@@ -1,0 +1,252 @@
+---
+title: "Lecture 8: Sequence alignments"
+author:
+- affiliation: EMBL-EBI, Fundación ARAID & Estación Experimental de Aula Dei-CSIC, Zaragoza
+    España <http://www.eead.csic.es/compbio>
+  name: Bruno Contreras Moreira
+date: '`r format(Sys.Date(),"%d/%b/%Y")`'
+output:
+  html_document:
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+  ioslides_presentation:
+    css: ./comm/bkgr.css
+    fig_caption: yes
+    incremental: yes
+    logo: ./comm/quantBiotech.png
+    smaller: yes
+    toc: yes
+    toc_depth: 3
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+  slidy_presentation:
+    incremental: yes
+  word_document: default
+  html_notebook: 
+    toc: yes
+geometry: margin=1cm
+fontsize: 11pt
+bibliography: bib_myarticles_md.bib
+---
+
+<!-- ~/docencia$ perl -lne 'next if(/^%/); s/\\htmladdnormallink\{\S+?\}\{(\S+)?\}/$1/; print' bib_myarticles.bib > bib_myarticles_md.bib -->
+
+
+```{r knitr setup, include=FALSE,  eval=TRUE, echo=FALSE, warning=FALSE}
+library(knitr)
+knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE, 
+                      comment = "", results="markup")
+```
+
+# Introduction
+
+Analysis of sequences is one of the foundations of Genomics and Computational Biology. Genomic sequences are most often either nucleotide sequences and peptide sequences. The first can be large genome fragments such as contigs or smaller genes, transcripts, coding sequences or non-coding RNAs; peptides are usually proteins translated from open reading frames encoded in coding sequences.
+
+## Sequence comparison
+
+A natural way of comparing protein or nucleic acid molecules is to align their (primary) sequences. This is due to the general expectation that sequence drives folding and to the fact that sequences are easy to work with in a computer or even your notebook. At least easier than structure.
+
+![](./pics/align2.png)
+
+## Pairwise alignment: edit distance
+
+When two sequences are aligned residues from one sequence are matched one-by-one to residues in the other. Matches are obvious when the sequences are nearly identical, but less so when mutations accumulate. A simple way to compute how similar two sequences are is to compute their edit distance.
+
+![](./pics/align2edit.png)
+
+## Pairwise alignment: sequence identity
+
+Another way to compute how similar two sequences are is to compute their % sequence identity.
+
+![](./pics/seqidcalc.png)
+
+## Substitution matrices
+
+Sequence identity is a simple way of measuring conservation. However, it lacks resolution and handles all residue substitutions the same way. This is not ideal as we know that purine (A,G) and pyrimidine (C,T) nucleotides, or aromatic amino acid resides if we talk about proteins, are often not interchanged with equal probability in real genes or proteins:
+
+![](./pics/align_substitution.png)
+
+These preferences are captured by computing log-odds ratios of frequencies of observed mutations (a,b) with respect to estimates assuming no preference:
+
+$$ s(a,b) = \lambda \ log(\frac{f_{ab}}{f_{a} f_{b}}) \approx  log\frac{f_{homologues}}{f_{bychance}} $$
+These log-odds are additive.  <!--and have been scaled so that they can be accurately represented by integers.-->
+
+
+## BLOSUM substitution matrices
+
+The most frequent substitution matrices used to score protein alignments are the  [BLOSUM](https://en.wikipedia.org/wiki/BLOSUM) matrices. These matrices are described by a number X, as in BLOSUM50, derived from the analysis of alignments of protein blocks/domains with identities < X percent.  Below you can see BLOSUM50:
+
+![](./pics/blosum50.png)
+
+These log-odds have been scaled so that they can be accurately represented by integers.
+
+BLOSUM matrices are scaled to 1/2-bit units [@Pearson2013]; a substitution score such as s(E,E) can be broken down to: 
+
+$$ s(E,E) = 6 = 2.0 \ log_{2}(\frac{f_{EE}}{f_{E} f_{E}})$$
+$$ \frac{f_{EE}}{f_{E} f_{E}} = 2^3 $$
+
+S(E,E) is thus 8 times more likely to occur because of homology than by chance.
+
+## Pairwise alignment: similarity
+
+By using matrices such as BLOSUM it is possible to compute the similarity between two aligned sequences, which is added up along the alignment: 
+
+![](./pics/align2blosum50.png)
+
+## Pairwise alignment: handling insertions and deletion (indels)
+
+In addition to residue substitutions, insertions and deletions are usually considered while computing similarity. This can be done in many ways. The simplest is to assume a **linear cost** for insertions, proportional to their length. However, it is more accurate to compute **affine gap costs**, which charge a fix cost to openning a gap (a) and then a linear cost proportional to the gap length (bk). In this way, a gap of k residues receives a total score of -(a+bk)
+
+![](./pics/align_affine.png)
+
+## Multiple alignment
+
+When more than two sequences are to be aligned we talk about multiple alignments, which can be computed in many ways. The most instuitive way, comparing them all, requires quadratically more resources as more sequences are added.
+
+![](./pics/align3.png)
+
+
+# Algorithms for sequence alignment
+
+In this section we will visit some of the most frequent algorithms used to align sequences. The goal is to learn what you can and cannot do with each of them so that you can apply them correctly.
+
+## Pairwise alignments
+
+These are the simplest alignments as they involve only two sequences (of length $m$ and $n$). There are several flavours, but the most important are global and local alignments, depicted in this figure taken from [@Makinen2015]:
+
+![](./pics/global_local.jpg)
+
+### Global alignment 
+
+The Needleman-Wunsch (NW) algorithm is the original deterministic approach for the alignment of pairs of protein sequences end-to-end [@Needleman1970]. It was subsequently optimized with more ellaborated algorithms [@Gotoh1982]. These algorithms belong to the family of [dynamic programming (DP) algorithms](https://en.wikipedia.org/wiki/Dynamic_programming). 
+The NW and related algorithms break the initial problem in subalignments which are recursively solved. In order to reach the final solution, an alignment matrix DP must be filled iteratively:
+
++ The top and left margins of DP are filled with gaps of increasing length, and the origin set to zero:
+
+$$
+DP(0,0) = 0 \\
+DP(i,0) = -id , \text{ for } 1\leq i \leq m \\
+DP(0,j) = -jd , \text{ for } 1\leq j \leq n \\
+$$
+
++ The alignment DP matrix can now be computed from top left to bottom right according to the following recursive function, where $s(x,y)$ is a scoring function/substitution matrix and $d$ a linear gap cost:
+
+$$DP(i,j) = max \begin{cases}
+    DP(i-1,j-1) + s(x_{i},y_{j})\\
+    DP(i-1,j)-d\\
+    DP(i,j-1)-d
+  \end{cases}
+$$
+
+During the computation of the DP matrix, another matrix is used to record the previous cell which was visited before the current cell under consideration. This second matrix is used to perform the traceback step, in which the alignment is reconstructed backwards from the bottom right cell, as illustrated in this figure from [@Durbin1998]:
+
+![](./pics/globalDP.gif)
+
+
+### Local alignment of two subsequences
+
+Local pairwise alignment is not end-to-end. Instead it assumes that the sequences to be compared might have different domain structure and perhaps share only part of the sequence by homology. The Smith-Waterman (SW) algorithm was designed for this purpose [@Smith1981]. It is a modification of NW with two differences:
+
+$$DP(i,j) = max \begin{cases}
+    0\\
+    DP(i-1,j-1) + s(x_{i},y_{j})\\
+    DP(i-1,j)-d\\
+    DP(i,j-1)-d
+  \end{cases}
+$$
+
+In addition, the traceback step now starts in the cell of DP with the highest score, instead of the bottom right corner [@Durbin1998]:
+
+![](./pics/localDP.jpg)
+
+
+### Affine gap penalties
+
+The algorithms presented so far have linear gap costs. Affine gap costs, with different cost for openning ($d$) and extending ($e$) an insertion, are believed to be more accurate for protein sequences. They also introduce extra complexity in the algorithm, as they require creating two extra matrices to store indels in sequences $x$ and $y$ [@Durbin1998]:
+
+$$DP(i,j) = max \begin{cases}
+    DP(i-1,j-1) + s(x_{i},y_{j})\\
+    I_{x}(i-1,j-1) + s(x_{i},y_{j})\\
+    I_{y}(i-1,j-1) + s(x_{i},y_{j})
+  \end{cases}$$
+  
+$$I_{x}(i,j) = max \begin{cases}
+    DP(i-1,j) -d\\
+    I_{x}(i-1,j) -e
+  \end{cases}$$
+  
+$$I_{y}(i,j) = max \begin{cases}
+    DP(i,j-1) -d\\
+    I_{y}(i,j-1) -e
+  \end{cases}$$
+
+### Heuristic pairwise alignments
+
+The DP algorithms just described (NW, SW) are expensive if one wants to compare a **query** sequence to a large collection of sequences (**database**). For each pair of sequences the computation time and memory used is proportional to the product of the sequence lengths. Thus, for a large collection of millions of sequences this is unfeasible.
+
+For this reason other approaches have been developed, aiming at running times proportional to the sum of the lengths of the query and database sequences. These approaches are heuristic, meaning that they work fine in most cases, but cannot guarantee to produce always optimal alignments. The most standard of these methods is probably BLAST [@Altschul1997]. 
+
+BLAST saves computing time by pre-processing the sequences producing indexed tables of **words** of size 3 and 11 for BLASTP and BLAST, respectively. For each word, all similar words with high scores (by default BLOSUM62 in BLASTP) are short-listed. BLAST relies on two fundamental assumptions [@Dwyer2003]:
+
++ Most high-scoring local alignments contain several high-scoring pairs of words. These can be used as “seeds” from which high-scoring alignments can be extended.
+
++ Homologous proteins contain segments that can be aligned without indels. This simplifies the process of extending seed alignments. 
+
+The natural data structure for indexing words of length $k$, or $k$-mers, is the **$k$-mer index**. The figure below depicts the index for string 'AGAGCGAGAGCGCGC' and $k=2$ [@Makinen2015]:
+
+![](./pics/kmeridx.jpg)
+
+
+### Read alignment or mapping
+
+High throughput sequencing has found many applications in all fields of Science in recent years. The primary product of this array of technologies are sequence reads, usually in FASTQ format, of either Single-End (SE) or Paired-End (PE) sequences. PE reads usually have the following arrangement [@PEread]:
+
+![](./pics/PE.jpg)
+
+Once produced, reads are usually aligned, or mapped, to the closest reference genome [@Makinen2015]:
+
+![](./pics/MakinenFigure1.2.jpg)
+
+
+Since a single sequencing experiment produces millions of reads, and the reference genomes can be very large (see for instance some plant genomes at [RSAT::Plants](http://rsat.eead.csic.es/plants/data/stats)), algorithms for read mapping need to be very efficient in terms of speed and disk space. As sequencers are not error-free, read aligners must also be flexible and tolerate mismatches [@Marco2012]. In addition, these approaches must compute **mapping quality**, as repeated genomic segments imply that some reads could be placed in several locations with equal probability [@Li2008].
+
+They achieve those goals by using a data structure called **suffix array** (SA) which is more flexible than the $k$-mer index, as it supports queries of variable length [@Makinen2015] (see [here](https://bioinfoperl.blogspot.com.es/2011/02/vectores-de-sufijos-para-buscar.html) how to build one, in Spanish):
+
+![](./pics/SA.jpg)
+
+**Burrows-Wheeler indexes** are space-efficient SA that can be queried and aligned by dynamic programming [@Makinen2015]. See [here](https://bioinfoperl.blogspot.com.es/2011/07/transformada-de-burrows-wheeler-para.html) an example of how the Burrows-Wheeler transform works (in Spanish). 
+
+The next diagram summarizes these and other algorithmic choices in the context of approximate protein sequence matching [@Koskinen2012]:
+
+![](./pics/m_bts417f1.jpeg)
+
+## Multiple alignments and sequence profiles
+
+<!-- multiple genome align https://academic.oup.com/hmg/article/15/suppl_1/R51/632717 -->
+
+In theory, the DP algorithms described earlier can be generalized to sets of more than two sequences. However, the recursive functions grow in complexity with every new sequence added,
+as well as the computational resources required. For this reason, multiple alignments are usually computed using a progressive approach, in which first all sequences are first aligned by pairs, and then these are progressively merged [@Hogeweg1984,@Makinen2015]. This is illustrated in the following diagram [@IntroAppliedWeb]:
+
+![](./pics/msa-tree-final.png)
+
+One of the many software packages available for multiple alignment, which follows this approach and produces scalable alignments of high quality, is [Clustal Omega](http://www.clustal.org/omega/) [@Sievers2011].
+
+Multiple sequence alignments (MSA) have been used to convey evolutionary information, particularly about protein families, and have been called **sequence profiles** in that context [@Gribskov1987]. Profiles are essentially **position-specific substitution matrices**. The most successful way of encoding protein profiles are Hidden Markov Models (HMM) [@Eddy2004], as those built with [HMMER](http://hmmer.org) for the [Pfam](https://pfam.xfam.org) database of protein families. 
+The next figure illustrates how a MSA can be used to build a HMM [@HMMmsa]:
+
+![](./pics/msa-hmm.jpg)
+
+
+Another standard tool used to build and scan sequence profiles, both protein and DNA, is [MEME](http://meme-suite.org).
+
+Profiles can be aligned to single sequences and also to other profiles [@Soding2005].
+
+# Bibliography
+
