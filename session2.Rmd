@@ -179,7 +179,7 @@ Here I briefly describe a structural alignment approach for the comparison of DN
 
 DNA motifs inferred from protein-complexes can be analyzed in terms of their information content:
 
-![Information content of structure-derived DNA motifs of proteins belonging to several SCOP superfamilies as of May, 2018, after @ContrerasMoreira2010](pics/superfam_specificity.png)
+![Information content of structure-derived DNA motifs of proteins belonging to several SCOP superfamilies as of Dec 2020, after @ContrerasMoreira2010](pics/superfam_specificity.png)
 
 # Discovering cis elements in genomes by counting words ($k$-mers)
 
@@ -454,7 +454,7 @@ plot.kmers(kmer.stat.table, k, volcano.ymax = 60)
 
 ## Exercises
 
-The plant-dedicated mirror of the Regulatory Sequence Analysis Tools (RSAT, <http://plants.rsat.eu>) offers specialized options for researchers dealing with plant transcriptional regulation. The web site contains whole-sequenced species regularly updated from Ensembl Plants and other sources (currently 67), and supports an array of tasks frequently required for the analysis of regulatory sequences, such as retrieving upstream sequences, motif discovery, motif comparison, pattern matching. RSAT::Plants also integrates the footprintDB collection of DNA motifs. This exercise consists on following a step-by-step protocol on how to discover DNA motifs in regulatory regions of clusters of co-expressed genes in plants. It also explains how to empirically control the significance of the result, and how to annotate any discovered motis. 
+The plant-dedicated mirror of the Regulatory Sequence Analysis Tools (RSAT, <http://plants.rsat.eu>) offers specialized options for researchers dealing with plant transcriptional regulation. The web site contains whole-sequenced species regularly updated from Ensembl Plants and other sources (85 as of Dec 2020), and supports an array of tasks frequently required for the analysis of regulatory sequences, such as retrieving upstream sequences, motif discovery, motif comparison, pattern matching. RSAT::Plants also integrates the footprintDB collection of DNA motifs. This exercise consists on following a step-by-step protocol on how to discover DNA motifs in regulatory regions of clusters of co-expressed genes in plants. It also explains how to empirically control the significance of the result, and how to annotate any discovered motis. 
 
 <!-- this protocol has been published at --> 
 
@@ -472,10 +472,10 @@ Among plants, these strategies have so far been tested on the model *Arabidopsis
    
 * Upstream regions, defined by annotated gene coordinates, are also of variable length, going from 1,151b on average in _A. thaliana_ to 2,560b in _Zea mays_ (see __Table 1__). 
 
-**Table 1.** Features of some plant genomes in RSAT::Plants, taken from <http://plants.rsat.eu/data/stats>. Each ID concatenates the organism, the assembly version and the source. Most genome IDs add to the end the Ensembl Plants release number. For instance, Arabidopsis_thaliana.TAIR10.42, corresponds to _A.thaliana_ assembly 10 from TAIR <https://www.arabidopsis.org>, annotated in release 42 of Ensembl Plants. “%Ns” are stretches of uncharacterized nucleotides which often connect assembled sequence contigs. “%repeat-masked” segments are sequences with significant similarity to plant repetitive DNA sequences, which are masked. 
+**Table 1.** Features of some plant genomes in RSAT::Plants, taken from <http://plants.rsat.eu/data/stats>. Each ID concatenates the organism, the assembly version and the source. Most genome IDs add to the end the Ensembl Plants release number. For instance, Arabidopsis_thaliana.TAIR10.46, corresponds to _A.thaliana_ assembly 10 from TAIR <https://www.arabidopsis.org>, annotated in release 46 of Ensembl Plants. “%Ns” are stretches of uncharacterized nucleotides which often connect assembled sequence contigs. “%repeat-masked” segments are sequences with significant similarity to plant repetitive DNA sequences, which are masked. 
 
 ```{r genome_stats_table}
-genome.stats <- read.delim(file="pics/summary.tab", row.names = NULL, comment.char=";")
+genome.stats <- read.delim(file="test_data/summary.tab", row.names = NULL, comment.char=";")
 genome.stats[,2] = as.numeric(genome.stats[,2])/1e6 ## Convert genome sizes to Mb
 genome.stats[,5] = as.numeric(genome.stats[,5]-genome.stats[,4]) ## raw %mask also includes %N
 names(genome.stats) <- c("Organism / assembly ID", "Genome size (Mb)", "Contigs", "%N", "% repeat-masked", "Gene models", "Mean upstream length")
