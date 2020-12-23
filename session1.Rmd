@@ -1,6 +1,5 @@
 ---
 title: "Session 1: Annotation of coding sequences"
-date: '`r format(Sys.Date(),"%d/%b/%Y")`'
 output:
   html_document:
     fig_caption: yes
