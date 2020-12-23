@@ -218,24 +218,34 @@ They are organized as an hierarchy and connected to each other through a parent-
 <img src="./pics/go.png" width="80%" height="70%">  
 
 ### Exercise
+In this exercise we will use the GO-web browser [QuickGo](https://www.ebi.ac.uk/QuickGO/) as it is an intuitive and weekly updated interface.  
 
-Let´s practice:
-Using [QuickGo](https://www.ebi.ac.uk/QuickGO/) web browser, try to answer the following questions:
+We will learn how to:
+- [ ]	Search for GO annotations using different inputs (protein IDs, gene IDs and GO terms).
+- [ ] Search for all products annotated to specific GO term or GO ID.
+- [ ] Customize the research to better fit the user preferences. 
 
-1. What are the names and the classes of the following GO terms: GO:0009414, GO:0035618, GO:0016491
+Let's practice:
 
-2. What is the GO term corresponding to the photosynthesis
+1.	Search for the GO terms and the functional categories of the following GO IDs GO:0009414, GO:0035618, GO:0016491. 
 
-3. What are the immediate parent(s) and children of the photosynthesis GO term
+    <ins>Tips:</ins> For multiple search GO IDs needs to be separated by a space.
 
-4. How many gene products are involved in photosynthesis.
+2.	What are the GO ID and the functional category corresponding to photosynthesis?
 
-5. How many proteins of *Arabidopsis thaliana* and *Prunus perisca* have the annotation  GO:0009414. 
-List 2 genes from each species associated with this GO term 
+3.	What are the immediate parent(s) and children of the photosynthesis GO term?
 
-6. How many GO terms in *Arabidopsis thaliana* and *Prunus perisca* were supported by the experimental evidence codes.
-What are the category of the first ranked terms.
+4.	Search for the GO annotation terms of the following protein A0A068LKP4,A0A097PR28, A0A059Q6N8? What do you observe?
 
-7. Find all possible GO annotations of the following *Arabidopsis thaliana* genes:  *At2g28350*, *At5g17640* and *At3g06760*
+5.	How many gene products are involved in leaf development? Give the GO ID corresponding to this term.
+
+6.	How many proteins of *Arabidopsis thaliana*, *Prunus perisca* and *Zea mays* are assigned to the leaf development GO term. 
+
+    <ins>Tips:</ins> (Zea mays. Taxonomy ID: 4577).
+
+7.	Check the total number of **biological** annotations and proteins supported by the **experimental** evidence codes in both *Arabidopsis thaliana* and *Prunus perisca*. 
+
+    <ins>Tips:</ins> Check the ‘Statistics’ box.
+
 
 
