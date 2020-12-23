@@ -1,9 +1,5 @@
 ---
-title: "Lecture 8: Sequence alignments"
-author:
-- affiliation: EMBL-EBI, Fundación ARAID & Estación Experimental de Aula Dei-CSIC, Zaragoza
-    España <http://www.eead.csic.es/compbio>
-  name: Bruno Contreras Moreira
+title: "Session 1: Annotation of coding sequences"
 date: '`r format(Sys.Date(),"%d/%b/%Y")`'
 output:
   html_document:
@@ -47,7 +43,20 @@ knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE,
 
 # Introduction
 
-Analysis of sequences is one of the foundations of Genomics and Computational Biology. Genomic sequences are most often either nucleotide sequences and peptide sequences. The first can be large genome fragments such as contigs or smaller genes, transcripts, coding sequences or non-coding RNAs; peptides are usually proteins translated from open reading frames encoded in coding sequences.
+In Genomics and Computational Biology, annotating a sequence means decorating it with quantums of biological information, usually about is *molecular function*, the *biological process(es)* in which it participates and the *cellular compartment* where that happens (see the [Gene Ontology](http://geneontology.org)). Other relevant annotations include the evolutionary conservation of a sequence or the biological sample where it was found.
+
+The annotation process requires at least two data sources:
+
+* A collection of previously annotated sequences.
+
+* Indexed literature in repositories such as [PubMed](https://pubmed.ncbi.nlm.nih.gov) or [EuroPMC](https://europepmc.org), where publications are uniquely identified with accession codes such as the [DOI](https://www.doi.org).
+
+Genomic sequences are most often nucleotide and peptide sequences. 
+The first can be large genome fragments such as contigs or smaller genes, transcripts, 
+coding sequences or non-coding RNAs; peptides are usually proteins translated from open 
+reading frames encoded in coding sequences.
+
+In this session we will focus on coding sequences, or in other words, genes that encode proteins.
 
 ## Sequence comparison
 
@@ -247,6 +256,64 @@ The next figure illustrates how a MSA can be used to build a HMM [@HMMmsa]:
 Another standard tool used to build and scan sequence profiles, both protein and DNA, is [MEME](http://meme-suite.org).
 
 Profiles can be aligned to single sequences and also to other profiles [@Soding2005].
+
+# Annotation of protein-coding sequences
+
+## CDS and exons
+
+## Peptide sequences
+
+<!-- https://www.eead.csic.es/compbio/material/alineafilog/ -->
+
+## Secondary structure 
+
+## Domains
+
+## Tertiary structure
+
+<!-- https://www.eead.csic.es/compbio/material/regulatory_proteins/node4.html -->
+
+
+## Annotating function with Gene Ontology (GO) terms
+
+The gene ontology is a standard language that describes the functions of gene products (protein, RNA) using a controlled and unified vocabularies across all species.
+
+These vocabulary terms (GO terms) annotate the gene products at three different levels:
+- Biological process: to which process or pathway is the gen contributuing
+- Molecular function: the molecular activities of individual gene products
+- Cellular component: where the gene products are active
+
+They are organized as an hierarchy and connected to each other through a parent-child relationships (see Figure below).   
+
+![](./pics/go.png)
+
+### Exercise
+
+In this exercise we will use the GO-web browser [QuickGo](https://www.ebi.ac.uk/QuickGO/) as it is an intuitive and weekly updated resource.  
+
+We will learn how to:
+- [ ]	Search for GO annotations using different inputs (protein IDs, gene IDs and GO terms).
+- [ ] Search for all products annotated to specific GO term or GO ID.
+- [ ] Customize the research to better fit the user preferences. 
+
+Let's practice:
+
+1.	Search for the GO terms and the functional categories of the following GO IDs GO:0009414, GO:0035618, GO:0016491. **Tip:** For multiple search GO IDs needs to be separated by a space.
+
+2.	What are the GO ID and the functional category corresponding to photosynthesis?
+
+3.	What are the immediate parent(s) and children of the photosynthesis GO term?
+
+4.	Search for the GO annotation terms of the following protein A0A068LKP4,A0A097PR28, A0A059Q6N8? What do you observe?
+
+5.	How many gene products are involved in leaf development? Give the GO ID corresponding to this term.
+
+6.	How many proteins of *Arabidopsis thaliana*, *Prunus perisca* and *Zea mays* are assigned to the leaf development GO term. **Tip:** Zea mays. Taxonomy ID: 4577
+
+7.	Check the total number of **biological** annotations and proteins supported by the **experimental** evidence codes in both *Arabidopsis thaliana* and *Prunus persica*. **Tip :** check the ‘Statistics’ box.
+
+
+
 
 # Bibliography
 
