@@ -10,4 +10,4 @@ We will also review reproducible analysis practices and software benchmarks.
 
 ## Website
 
-Browse this material at https://eead-csic-compbio.github.io/bioinformatics
+Browse this material at https://eead-csic-compbio.github.io/bioinformatics/docs
