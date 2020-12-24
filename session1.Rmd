@@ -197,13 +197,13 @@ $$I_{y}(i,j) = max \begin{cases}
 
 ### Heuristic pairwise alignments
 
-The DP algorithms just described (NW, SW) are expensive if one wants to compare a **query** sequence to a large collection of sequences (**database**). For each pair of sequences the computation time and memory used is proportional to the product of the sequence lengths. Thus, for a large collection of millions of sequences this is unfeasible.
+The DP algorithms just described (NW, SW) are expensive if one wants to compare a **query** sequence to a large collection of sequences (**database**). For each pair of sequences the computation time and memory used is proportional to the product of the sequence lengths. Thus, for a collection of millions of sequences this is unfeasible.
 
 For this reason other approaches have been developed, aiming at running times proportional to the sum of the lengths of the query and database sequences. These approaches are heuristic, meaning that they work fine in most cases, but cannot guarantee to produce always optimal alignments. The most standard of these methods is probably BLAST [@Altschul1997]. 
 
 BLAST saves computing time by pre-processing the sequences producing indexed tables of **words** of size 3 and 11 for BLASTP and BLAST, respectively. For each word, all similar words with high scores (by default BLOSUM62 in BLASTP) are short-listed. BLAST relies on two fundamental assumptions [@Dwyer2003]:
 
-+ Most high-scoring local alignments contain several high-scoring pairs of words. These can be used as “seeds” from which high-scoring alignments can be extended.
++ Most high-scoring local alignments contain several high-scoring pairs of words. These can be used as *seeds* from which high-scoring alignments can be extended.
 
 + Homologous proteins contain segments that can be aligned without indels. This simplifies the process of extending seed alignments. 
 
@@ -258,35 +258,57 @@ Profiles can be aligned to single sequences and also to other profiles [@Soding2
 
 # Annotation of protein-coding sequences
 
+Coding sequences are usually abbreviated as CDS. This is a definition from [UniProt](https://www.uniprot.org/help/cds_protein_definition):  
+
+*A CoDing Sequence (CDS) is a region of DNA or RNA whose sequence determines the sequence of amino acids in a protein. It should not be mixed up with an Open Reading Frame (ORF), which is a series of DNA codons that does not contain any STOP codons.*
+
 ## CDS and exons
+
+Most genes in plants contain CDS made up of several concatenated exons. This means they contain introns, that is, sequence fragments that must be spliced in order to produce a processed mRNA/transcript.
 
 ## Peptide sequences
 
-<!-- https://www.eead.csic.es/compbio/material/alineafilog/ -->
+CDS and ORF sequences are nucleotide sequences, written in the A,C,G,T alphabet. 
+By using a codon table, trinucleotides in an ORF can be translated into peptide sequences, which take a third of the original length and a use the 20 amino acid alphabet.
 
-## Secondary structure 
+Peptide sequences describe the primary structure of proteins. However, proteins are molecules that must fold in order to carry out their functions, and thus their linear sequences is often not enough to represent them. 
 
-## Domains
+## Secondary, tertiary and quaternary structure of proteins
 
-## Tertiary structure
+
+http://eead-csic-compbio.github.io/bioinformatica_estructural/
+
+## Protein domains and motifs
+
 
 <!-- https://www.eead.csic.es/compbio/material/regulatory_proteins/node4.html -->
 
 
-## Annotating function with Gene Ontology (GO) terms
+## Gene Ontology
 
 The gene ontology is a standard language that describes the functions of gene products (protein, RNA) using a controlled and unified vocabularies across all species.
 
 These vocabulary terms (GO terms) annotate the gene products at three different levels:
-- Biological process: to which process or pathway is the gen contributuing
+- Biological process: to which process or pathway is the gen contributing
 - Molecular function: the molecular activities of individual gene products
 - Cellular component: where the gene products are active
 
-They are organized as an hierarchy and connected to each other through a parent-child relationships (see Figure below).   
+They are organized as a hierarchy and connected to each other through parent-child relationships:   
 
 ![](./pics/go.png)
 
-### Exercise
+See [here](https://bioinfoperl.blogspot.com/2011/08/decodificando-la-gene-ontology.html) and [here](https://bioinfoperl.blogspot.com/2011/08/decodificando-la-gene-ontology-cc.html) examples on how to navigate the GO ontology with scripts (in Spanish).
+
+## Phylogentic analysis of sequences
+
+https://www.nature.com/articles/nrg3456
+
+
+# Exercises
+
+
+
+## Annotating function with Gene Ontology (GO) terms
 
 In this exercise we will use the GO-web browser [QuickGo](https://www.ebi.ac.uk/QuickGO/) as it is an intuitive and weekly updated resource.  
 
