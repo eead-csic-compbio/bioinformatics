@@ -377,7 +377,6 @@ Here you will learn to make a sequence profile out of similar sequences matched 
 
 Can you explain the contents of the output file *profile.out*?
 
-
 ### Making a Hidden Markov Model (HMM) with aligned sequences
 
 This task comprises four steps:
@@ -389,6 +388,14 @@ This task comprises four steps:
 + Build a HMM out of these aligned sequences with *hmmbuild*
 
 + Scan the HMM against your sequence collection with *hmmerscan* and write a short report on the results.
+
+### Annotating function by structural similarity
+
+https://toolkit.tuebingen.mpg.de/tools/hhpred
+
+### Annotating function on orthology grounds
+
+http://eggnog-mapper.embl.de/
 
 ### Annotating function with Gene Ontology (GO) terms
 
