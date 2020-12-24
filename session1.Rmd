@@ -275,11 +275,13 @@ Peptide sequences describe the primary structure of proteins. However, proteins 
 
 ## Secondary, tertiary and quaternary structure of proteins
 
+TODO
 
-http://eead-csic-compbio.github.io/bioinformatica_estructural/
+Read more [here](http://eead-csic-compbio.github.io/bioinformatica_estructural) (in Spanish).
 
 ## Protein domains and motifs
 
+TODO 
 
 <!-- https://www.eead.csic.es/compbio/material/regulatory_proteins/node4.html -->
 
@@ -306,9 +308,89 @@ https://www.nature.com/articles/nrg3456
 
 # Exercises
 
+## Annotating sequences by alignment
+
+Here the goal is to learn how to produce different kinds of sequence alignment with standard software. You will need to download the following required software: 
+
+|software|source|documentation|
+|----|----|----|
+BLAST | [ftp.ncbi.nlm.nih.gov/blast/executables/blast+](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+) | [URL](https://www.ncbi.nlm.nih.gov/books/NBK279690/)  |
+Clustal Omega | [www.clustal.org/omega](http://www.clustal.org/omega) | [URL](http://www.clustal.org/omega/#Documentation) | 
+HMMER | [hmmer.org](http://hmmer.org) | [URL](http://hmmer.org/documentation.html) |
+
+You will also need some data files, which you can download from [https://github.com/eead-csic-compbio/methods_biostats_bioinfo](https://github.com/eead-csic-compbio/methods_biostats_bioinfo/archive/master.zip) or with *git*:
 
 
-## Annotating function with Gene Ontology (GO) terms
+### Formatting a sequence collection for BLAST
+
+The first task is to format our test sequence set, which was obtained from
+[UniProt](http://www.uniprot.org/uniprot/?query=reviewed:yes):
+
+```{r, engine='bash', eval=FALSE}
+cd test_data/
+gunzip uniprot_Atha.fasta.gz
+/path/to/ncbi-blast-2.6.0+/bin/makeblastdb -dbtype prot -in uniprot_Atha.fasta
+```
+How many sequences have been formatted? 
+
+### Querying the collection with a sample coding sequence
+
+Here you will work with protein ARF6, annotated in [plntfdb.bio.uni-potsdam.de](http://plntfdb.bio.uni-potsdam.de). 
+Its protein and transcript sequence is in files *test.faa* and *test.fna*, 
+respectively.
+
+```{r exe8.3.2p, eval=FALSE}
+>AT1G30330.2 [Arabidopsis thaliana]  ARF6 (AUXIN RESPONSE FACTOR 6)
+MRLSSAGFNPQPHEVTGEKRVLNSELWHACAGPLVSLPPVGSRVVYFPQGHSEQVAASTNKEVDAHIPNYPSLHPQL...
+```
+
+The transcript is:
+
+```{r exe8.3.2n, eval=FALSE}
+>AT1G30330.2 [Arabidopsis thaliana]  ARF6 (AUXIN RESPONSE FACTOR 6)  transcript 
+ATGAGATTATCTTCAGCTGGGTTTAATCCTCAACCTCATGAAGTTACAGGAGAGAAAAGAGTTCTTAATTCTGAGCTCTG
+GCATGCTTGTGCTGGTCCTCTTGTCTCACTACCTCCTGTTGGAAGCAGAGTTGTGTATTTTCCTCAAGGTCACAGTGAAC
+AGGTTGCTGCTTCGACCAACAAAGAAGTAGATGCTCATATACCAAATTATCCGAGCTTGCATCCGCAGCTTATCTGT...
+```
+
+We shall now look for similar sequences in our collection:
+```{r, engine='bash', eval=FALSE}
+/path/to/ncbi-blast-2.6.0+/bin/blastp -db uniprot_Atha.fasta -query test.faa -outfmt 6
+
+/path/to/ncbi-blast-2.6.0+/bin/blastx -db uniprot_Atha.fasta -query test.fna -outfmt 6
+```
+
+Can you redirect the output to separate files called *test.faa.blast* and *test.fna.blast* ? 
+
+What is the default alignment format, can you show an example?
+
+Are there differences in the results retrieved in both searches?
+
+
+### Producing a sequence profile 
+
+Here you will learn to make a sequence profile out of similar sequences matched with several (3) iterations of BLASTP, using PSI-BLAST:
+
+```{r, engine='bash', eval=FALSE}
+/path/to/ncbi-blast-2.6.0+/bin/psiblast -db uniprot_Atha.fasta -query test.faa -num_iterations 3 -out_ascii_pssm profile.out
+```
+
+Can you explain the contents of the output file *profile.out*?
+
+
+### Making a Hidden Markov Model (HMM) with aligned sequences
+
+This task comprises four steps:
+
++ Create a FASTA file with the complete protein sequences of the matches of your protein search with bit score > 200. You might find one-liners useful for this.
+
++ Compute a multiple alignment of these sequences with Clustal Omega. Check the available output formats.
+
++ Build a HMM out of these aligned sequences with *hmmbuild*
+
++ Scan the HMM against your sequence collection with *hmmerscan* and write a short report on the results.
+
+### Annotating function with Gene Ontology (GO) terms
 
 In this exercise we will use the GO-web browser [QuickGo](https://www.ebi.ac.uk/QuickGO/) as it is an intuitive and weekly updated resource.  
 
