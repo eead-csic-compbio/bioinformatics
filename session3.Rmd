@@ -1,0 +1,126 @@
+---
+title: "Session 3: Reproducible analysis practices"
+output:
+  html_document:
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+  ioslides_presentation:
+    css: ./comm/bkgr.css
+    fig_caption: yes
+    incremental: yes
+    logo: ./comm/quantBiotech.png
+    smaller: yes
+    toc: yes
+    toc_depth: 3
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+  slidy_presentation:
+    incremental: yes
+  word_document: default
+  html_notebook: 
+    toc: yes
+geometry: margin=1cm
+fontsize: 11pt
+#bibliography: bib_myarticles_md.bib
+---
+
+```{r knitr setup, include=FALSE,  eval=TRUE, echo=FALSE, warning=FALSE}
+library(knitr)
+knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE, 
+                      comment = "", results="markup")
+```
+
+# Introduction
+
+If you have ever worked on a project, or collaborated with other team members, then you have already created different versions of your document to update it.  
+
+This is a primitive way of the version control because it's manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and super error-prone. 
+
+In this session, you'll be introduced to the concept of version control system (VCS) to maintain a detailed history of the created versions. By using a VCS, we can know when the changes were made and who made them.
+
+We'll be using one of the most popular version control system called [Git](https://git-scm.com/) and show you some of the ways you can use it. 
+
+We'll also learn how to set up an account with the service called [GitHub](https://github.com/), so that you can create your own remote repositories to store your code and data.
+
+
+
+# Git Overview
+
+A version control tracks the changes that happen within directories or files.
+There are two main types of version control systems:
+
+  + The centralized model:  all users connect to a central, master repository.
+
+  + The distributed model: each user has a copy of entire repository on their computer and these repositroies can easily be synchronized.
+
+Git is distributed VCS, free and open source tool.
+
+
+
+![](./pics/vcs.png)
+
+
+
+## Installation and getting start with Git
+
+Check if your computer has a Git installed by typing the following command line:
+
+```console
+osboxes@osboxes:~$ git --version
+
+```
+
+If no version information is shown, you need to install it yourself
+
+```console
+osboxes@osboxes:~$ sudo apt-get update
+osboxes@osboxes:~$ sudo apt-get install git
+
+```
+
+We have already said that by using VCS we can know which user have made the changes. For this, we need to tell git our identity using the following command lines:
+
+```console
+osboxes@osboxes:~$ git config --global user.name "my_name"
+osboxes@osboxes:~$ git config --global user.email "name@example.com"
+
+```  
+
+
+### Setting up a new Git repository
+
+A Git repository (repo) is a directory that contains your project work. It allows you to save versions of your code, which you can access when needed.
+
+To create a new repo, you'll use the `git init` command. Executing this command will create a new .git subdirectory in your current working directory
+
+```console
+osboxes@osboxes:~$ mkdir my_project 
+osboxes@osboxes:~$ cd my_project
+osboxes@osboxes:~$ get init
+osboxes@osboxes:~$ ls -la #check for the hidden directories
+osboxes@osboxes:~$ ls -l  # check the files inside the .git subdirecotry
+
+```
+
+We can see that .git directory contains all the necessary files and directories that Git will use to keep track of everything.
+This is where git records all of the commits and keeps the history of all the changes.
+
+
+
+### Clone an existing Repository
+To get an identical copy of an existing repository: for example, a project that you would like to contribute to. 
+The command you need to create a local copy on your computer is `git clone`
+
+```console
+osboxes@osboxes:~$ git clone https://github.com/eead-csic-compbio/bioinformatics.git
+
+```
+
+
