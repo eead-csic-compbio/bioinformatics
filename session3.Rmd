@@ -28,7 +28,7 @@ output:
     toc: yes
 geometry: margin=1cm
 fontsize: 11pt
-#bibliography: bib_myarticles_md.bib
+bibliography: bib_myarticles_md.bib
 ---
 
 ```{r knitr setup, include=FALSE,  eval=TRUE, echo=FALSE, warning=FALSE}
@@ -45,7 +45,7 @@ This is a primitive way of the version control because it's manual and not detai
 
 In this session, you'll be introduced to the concept of version control system (VCS) to maintain a detailed history of the created versions. By using a VCS, we can know when the changes were made and who made them.
 
-We'll be using one of the most popular version control system called [Git](https://git-scm.com/) and show you some of the ways you can use it. 
+We'll be using one of the most popular version control system called [Git](https://git-scm.com/) and we will show you howto interact with Git through the command lines.
 
 We'll also learn how to set up an account with the service called [GitHub](https://github.com/), so that you can create your own remote repositories to store your code and data.
 
@@ -53,15 +53,14 @@ We'll also learn how to set up an account with the service called [GitHub](https
 
 # Git Overview
 
-A version control tracks the changes that happen within directories or files.
+Git is a version control program that keeps track of any changes you make to your files and directories.
 There are two main types of version control systems:
 
   + The centralized model:  all users connect to a central, master repository.
 
   + The distributed model: each user has a copy of entire repository on their computer and these repositroies can easily be synchronized.
 
-Git is distributed VCS, free and open source tool.
-
+Git is a distributed VCS, free and open source.
 
 
 ![](./pics/vcs.png)
@@ -70,57 +69,93 @@ Git is distributed VCS, free and open source tool.
 
 ## Installation and getting start with Git
 
-Check if your computer has a Git installed by typing the following command line:
+The first step is to check whether you have the Git installed on your computer by running:
 
-```console
-osboxes@osboxes:~$ git --version
-
+```{bash }
+git --version
 ```
 
 If no version information is shown, you need to install it yourself
 
-```console
-osboxes@osboxes:~$ sudo apt-get update
-osboxes@osboxes:~$ sudo apt-get install git
+```{bash  eval=FALSE}
+sudo apt-get update
+sudo apt-get install git
 
 ```
 
 We have already said that by using VCS we can know which user have made the changes. For this, we need to tell git our identity using the following command lines:
 
-```console
-osboxes@osboxes:~$ git config --global user.name "my_name"
-osboxes@osboxes:~$ git config --global user.email "name@example.com"
+```{bash  eval=FALSE}
+git config --global user.name "my_name"
+git config --global user.email "name@example.com"
 
 ```  
 
+To check if the configuration was set prop
+```{bash  eval=FALSE}
+git config --list
+```
+```
+user.name=my_name
+user.email=name@example.com
+```
 
-### Setting up a new Git repository
 
-A Git repository (repo) is a directory that contains your project work. It allows you to save versions of your code, which you can access when needed.
+## Setting up a Git repository
+A Git repository ('repo', for short) is a master directory that stores the complete collection of files and folders related to the project. It also contains a detailed history of all changes and commits overtime.
 
-To create a new repo, you'll use the `git init` command. Executing this command will create a new .git subdirectory in your current working directory
+There are 2 ways to start with a git repository:
+
+1. Starting a new project
+2. Cloning an existing project from a Git host (GitHub: owned by Microsoft, GitLab: owned by GitLab and BitBucket). In this session, We’ll use GitHub as a hosting service.
+
+### How to set up a new git repository
+To create a local new repository, we will use the **`git init`** command which will initialize a new and empty repository. 
+Executing this command, a hidden subdirectory called ".git" will be created in your current working directory. This is called a Git directory.
+
+```{bash eval=F, warning=FALSE, error=FALSE}
+mkdir ~/demo_repository
+cd ~/demo_repository
+git init
+ls -la #check for the hidden directories
+ls -l #check the files inside the .git subdirecotry
+```
+
+We can see that the Git directory contains different files and directories. It is considered as the storage center of the repository and this is where git will record the commits and keeps track of everything. In other terms, if we delete the .git/ folder, then the project’s history will be deleted.  
+
+
+### Cloning an existing remote Repository from GitHub
+A remote repository is usually repository that is hosted in a data center or in the cloud.
+For example; if you would like to contribute to an existing project hosted on GitHub or a similar hosting service, the easiest way to do so is to copy (clone) the remote repo on your local machine.
+
+When we clone a repository using the **`git clone**` command, all the files are downloaded to the local computer and the remote repository remains unchanged. We can then edit the local files then push the changes to the original repository to makes it available for everyone who is watching it or contributing to it.
+
+The figure below illustrates the concept of cloning.
+
+![](./pics/clone_repo.png){ height=40% width=40% }  
+
+****
+Per default, the git clone will create a local directory with the same name as the orginal git repository. If you want a different folder name, simply specify it as the last parameter
 
 ```console
-osboxes@osboxes:~$ mkdir my_project 
-osboxes@osboxes:~$ cd my_project
-osboxes@osboxes:~$ get init
-osboxes@osboxes:~$ ls -la #check for the hidden directories
-osboxes@osboxes:~$ ls -l  # check the files inside the .git subdirecotry
+git clone https://github.com/eead-csic-compbio/bioinformatics.git
+git clone https://github.com/eead-csic-compbio/bioinformatics.git new-folder-name
 
 ```
 
-We can see that .git directory contains all the necessary files and directories that Git will use to keep track of everything.
-This is where git records all of the commits and keeps the history of all the changes.
+At this point, we have two Git repositories:
+
+  * the empty one that we created with the git init command
+  * the one we cloned with the git clone command
+
+Now we will learn how to add new files to the repo.
+
+### Add and commit changes
+
+
+### Interacting with github
 
 
 
-### Clone an existing Repository
-To get an identical copy of an existing repository: for example, a project that you would like to contribute to. 
-The command you need to create a local copy on your computer is `git clone`
-
-```console
-osboxes@osboxes:~$ git clone https://github.com/eead-csic-compbio/bioinformatics.git
-
-```
 
 
