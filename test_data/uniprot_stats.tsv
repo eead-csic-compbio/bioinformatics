@@ -1,0 +1,29 @@
+;https://docs.google.com/spreadsheets/d/1McW5NHzU6zPvYLsvQvD7ysxTxjl7iyHojLUP_WTT6Kw
+;26022020
+;taxon	reviewed	reviewed %	total	total %	URLs
+Viridiplantae	40218	100	9314329	100	https://www.uniprot.org/uniprot/?query=reviewed%3Ayes+viridiplantae&sort=score
+Eudicotyledons	27063	67.3	5399223	58	https://www.uniprot.org/uniprot/?query=eudicotyledons+AND+reviewed%3Ayes&sort=score
+Liliopsida 	8305	20.6	2815608	30.2	https://www.uniprot.org/uniprot/?query=Liliopsida+AND+reviewed%3Ayes&sort=score
+others	4850	12.1	1099498	11.8	
+					
+Arabidopsis thaliana	15922				https://www.uniprot.org/uniprot/?query=eudicotyledons&fil=organism%3A%22Arabidopsis+thaliana+%28Mouse-ear+cress%29+%5B3702%5D%22+AND+reviewed%3Ayes&sort=score
+Nicotiana tabacum	857				https://www.uniprot.org/uniprot/?query=nicotiana+tabacum+AND+reviewed%3Ayes&sort=score
+Glycine max	650				https://www.uniprot.org/uniprot/?query=glycine+max+AND+reviewed%3Ayes&sort=score
+Solanum lycopersicum	480				https://www.uniprot.org/uniprot/?query=solanum&fil=organism%3A%22Solanum+lycopersicum+%28Tomato%29+%28Lycopersicon+esculentum%29+%5B4081%5D%22+AND+reviewed%3Ayes&sort=score
+Populus trichocarpa	210				https://www.uniprot.org/uniprot/?query=populus+trichocarpa+AND+reviewed%3Ayes&sort=score
+Vitis vinifera	229				https://www.uniprot.org/uniprot/?query=vitis+vinifera+AND+reviewed%3Ayes&sort=score
+Brassica napus	158				https://www.uniprot.org/uniprot/?query=brassica&fil=organism%3A%22Brassica+napus+%28Rape%29+%5B3708%5D%22+AND+reviewed%3Ayes&sort=score
+Helianthus annuus	145				https://www.uniprot.org/uniprot/?query=Helianthus+annuus+AND+reviewed%3Ayes&sort=score
+Phaseolus vulgaris	159				https://www.uniprot.org/uniprot/?query=phaseolus%20vulgaris&fil=organism%3A%22Phaseolus+vulgaris+%28Kidney+bean%29+%28French+bean%29+%5B3885%5D%22+AND+reviewed%3Ayes&sort=score
+Medicago truncatula	116				https://www.uniprot.org/uniprot/?query=medicago+truncatula+AND+reviewed%3Ayes&sort=score
+					
+Oryza sativa subsp japonica	4070				https://www.uniprot.org/uniprot/?query=viridiplantae&fil=organism%3A%22Oryza+sativa+subsp.+japonica+%28Rice%29+%5B39947%5D%22+AND+reviewed%3Ayes&sort=score
+Zea mays	831				https://www.uniprot.org/uniprot/?query=liliopsida&fil=organism%3A%22Zea+mays+%28Maize%29+%5B4577%5D%22+AND+reviewed%3Ayes&sort=score
+Triticum aestivum	379				https://www.uniprot.org/uniprot/?query=liliopsida&fil=organism%3A%22Triticum+aestivum+%28Wheat%29+%5B4565%5D%22+AND+reviewed%3Ayes&sort=score
+Sorghum bicolor	353				https://www.uniprot.org/uniprot/?query=Sorghum+bicolor+AND+reviewed%3Ayes&sort=score
+Hordeum vulgare	351				https://www.uniprot.org/uniprot/?query=liliopsida&fil=organism%3A%22Hordeum+vulgare+%28Barley%29+%5B4513%5D%22+AND+reviewed%3Ayes&sort=score
+Brachypodium distachyon	37				https://www.uniprot.org/uniprot/?query=brachypodium+distachyon+AND+reviewed%3Ayes&sort=score
+					
+Marchantia polymorpha	158				https://www.uniprot.org/uniprot/?query=marchantia+polymorpha+AND+reviewed%3Ayes&sort=score
+Physcomitrella patens	149				https://www.uniprot.org/uniprot/?query=physcomitrella+patens+AND+reviewed%3Ayes&sort=score
+Chlamydomonas reinhardtii	356				https://www.uniprot.org/uniprot/?query=chlamydomonas+reinhardtii+AND+reviewed%3Ayes&sort=score
