@@ -42,13 +42,24 @@ knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE,
 
 # Introduction
 
-In Genomics and Computational Biology, annotating a sequence means decorating it with quantums of biological information, usually about is *molecular function*, the *biological process(es)* in which it participates and the *cellular compartment* where that happens (see the [Gene Ontology](http://geneontology.org)). Other relevant annotations include the evolutionary conservation of a sequence or the biological sample where it was found.
+In Genomics and Computational Biology, annotating a sequence means decorating it with quantums of biological information, usually about its *molecular function*, the *biological process(es)* in which it takes part and the *cellular compartment* where that happens (see the [Gene Ontology](http://geneontology.org)). Other relevant annotations include the evolutionary conservation of a sequence or the biological sample where it was found.
 
 The annotation process requires at least two data sources:
 
-* A collection of previously annotated sequences.
+* A collection of previously annotated sequences. 
 
 * Indexed literature in repositories such as [PubMed](https://pubmed.ncbi.nlm.nih.gov) or [EuroPMC](https://europepmc.org), where publications are uniquely identified with accession codes such as the [DOI](https://www.doi.org).
+
+The best source of annotated protein sequences from plants is the database [UniProt](https://www.uniprot.org), which contains both expert-review sequences (SwissProt) and automatically annotated entries (learn more [here](https://bioinfoperl.blogspot.com/2020/02/tu-conocimiento-plantas-servicio-uniprot.html) in Spanish. The next table summarizes total reviewed plant proteins as of Feb 2020:
+
+```{r annot_stats_table}
+annot.stats <- read.csv(file="test_data/uniprot_stats.tsv", sep="\t", comment.char=";", header=F)
+annot.stats = annot.stats[,1:2]
+names(annot.stats) <- c("Species", "reviewed proteins")
+
+## Print the table
+kable(annot.stats,format.args = list(big.mark=","))
+```
 
 Genomic sequences are most often nucleotide and peptide sequences. 
 The first can be large genome fragments such as contigs or smaller genes, transcripts, 
@@ -262,9 +273,15 @@ Coding sequences are usually abbreviated as CDS. This is a definition from [UniP
 
 *A CoDing Sequence (CDS) is a region of DNA or RNA whose sequence determines the sequence of amino acids in a protein. It should not be mixed up with an Open Reading Frame (ORF), which is a series of DNA codons that does not contain any STOP codons.*
 
+This is an example ORF sequence:
+
+    5' atg ttc cgc tcc gtg atc cca gtt tcc tgt tcc 3'
+
 ## CDS and exons
 
 Most genes in plants contain CDS made up of several concatenated exons. This means they contain introns, that is, sequence fragments that must be spliced in order to produce a processed mRNA/transcript.
+
+Nucleotide sequences are the physical media of coding sequences, which are ultimately translated into proteins. If mutations occur, the corresponding CDS sequencen might be altered. Mutations can be Single Nucleotide Polymorphisms (SNPs), insertions or deletions. 
 
 ## Peptide sequences
 
@@ -273,27 +290,38 @@ By using a codon table, trinucleotides in an ORF can be translated into peptide 
 
 Peptide sequences describe the primary structure of proteins. However, proteins are molecules that must fold in order to carry out their functions, and thus their linear sequences is often not enough to represent them. 
 
-## Secondary, tertiary and quaternary structure of proteins
+## Secondary and tertiary structure and protein domains
 
-TODO
+To neutralize polar charges of the peptidic backbone, proteins adopt conformations that can be generally classified as $\alpha$-helices (H), $\beta$-sheets (E), loops and disordered regions (C). These are *secondary structure states*, which can be encoded as strings of the alphabet H,E and C.
 
-Read more [here](http://eead-csic-compbio.github.io/bioinformatica_estructural) (in Spanish).
+The following example shows that kind of 3-state encoding for a sequence:
 
-## Protein domains and motifs
+    MFRSVIPVLL FLIPLLLSAQ AANSLRACGP...
+    EEEECCEEEE HHHHHHHHHH CCCCCCCCCC...
 
-TODO 
+*Tertiary structure* is the folding of secondary structure elements as globular or transmembrane units. 
 
-<!-- https://www.eead.csic.es/compbio/material/regulatory_proteins/node4.html -->
+Minimal evolutionary and folding units are called domains [@Porter2012]. As protein domains are both folding and functional units, guessing which domains are contained in a sequence provides clues on possible functions. Of course the concept of function is a bit subjective, and that's why resources such as the Gene Ontology are valuable.
 
+Two key resources for annotating proteins domains in input sequences are:
+
+  + [Pfam](http://pfam.xfam.org), which defines sequence families (domains) by calculating and refining multiple alignments which are ultimately converted to hidden Markov models. It is part of a larger collection called [InterPro](https://www.ebi.ac.uk/interpro)
+  + [HHPred](https://toolkit.tuebingen.mpg.de/tools/hhpred), which explicitely uses secondary structure, sequence profiles and tertiary structure classifications to call protein domains and annotate protein sequences. 
+
+The next figure depicts the tertiary structure of a protein with two domains, adapted from [@Wuerges2006]. Note that strands are shown as arrows and helices as cilinders:
+
+![](./pics/3sto2s.png)
+
+You can read more about these topics [here](http://eead-csic-compbio.github.io/bioinformatica_estructural) (in Spanish).
 
 ## Gene Ontology
 
 The gene ontology is a standard language that describes the functions of gene products (protein, RNA) using a controlled and unified vocabularies across all species.
 
 These vocabulary terms (GO terms) annotate the gene products at three different levels:
-- Biological process: to which process or pathway is the gen contributing
-- Molecular function: the molecular activities of individual gene products
-- Cellular component: where the gene products are active
+- Biological Process (BP): to which process or pathway is the gen contributing
+- Molecular Function (MF): the molecular activities of individual gene products
+- Cellular Component (CC): where the gene products are active
 
 They are organized as a hierarchy and connected to each other through parent-child relationships:   
 
@@ -301,25 +329,21 @@ They are organized as a hierarchy and connected to each other through parent-chi
 
 See [here](https://bioinfoperl.blogspot.com/2011/08/decodificando-la-gene-ontology.html) and [here](https://bioinfoperl.blogspot.com/2011/08/decodificando-la-gene-ontology-cc.html) examples on how to navigate the GO ontology with scripts (in Spanish).
 
-## Phylogentic analysis of sequences
+## Phylogenetic analysis of sequences
 
-https://www.nature.com/articles/nrg3456
-
+Orthologous genes are derived by speciation, in contrast to paralogues, which evolve through duplication. Comparative genomic studies from a variety of clades suggest that orthologues typically are the most similar genes in the respective species in terms of sequence, structure, domain architecture and function [@Gabaldon2013]. There are however many exceptions and thus orthology should be used as a proxy for similarity, and works better for the Molecular Function Gene Ontology [@HuertaCepas2019].
 
 # Exercises
 
-## Annotating sequences by alignment
+## Annotating coding sequences by alignment to other sequences
 
-Here the goal is to learn how to produce different kinds of sequence alignment with standard software. You will need to download the following required software: 
+The goal of this exercise is to learn how to produce different kinds of sequence alignments with standard software. You will need to download the following required software: 
 
 |software|source|documentation|
 |----|----|----|
 BLAST | [ftp.ncbi.nlm.nih.gov/blast/executables/blast+](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+) | [URL](https://www.ncbi.nlm.nih.gov/books/NBK279690/)  |
 Clustal Omega | [www.clustal.org/omega](http://www.clustal.org/omega) | [URL](http://www.clustal.org/omega/#Documentation) | 
 HMMER | [hmmer.org](http://hmmer.org) | [URL](http://hmmer.org/documentation.html) |
-
-You will also need some data files, which you can download from [https://github.com/eead-csic-compbio/methods_biostats_bioinfo](https://github.com/eead-csic-compbio/methods_biostats_bioinfo/archive/master.zip) or with *git*:
-
 
 ### Formatting a sequence collection for BLAST
 
@@ -329,9 +353,9 @@ The first task is to format our test sequence set, which was obtained from
 ```{r, engine='bash', eval=FALSE}
 cd test_data/
 gunzip uniprot_Atha.fasta.gz
-/path/to/ncbi-blast-2.6.0+/bin/makeblastdb -dbtype prot -in uniprot_Atha.fasta
+/path/to/ncbi-blast/bin/makeblastdb -dbtype prot -in uniprot_Atha.fasta
 ```
-How many sequences have been formatted? 
+**Exe1)** How many sequences have been formatted? 
 
 ### Querying the collection with a sample coding sequence
 
@@ -339,14 +363,14 @@ Here you will work with protein ARF6, annotated in [plntfdb.bio.uni-potsdam.de](
 Its protein and transcript sequence is in files *test.faa* and *test.fna*, 
 respectively.
 
-```{r exe8.3.2p, eval=FALSE}
+```{r exep, eval=FALSE}
 >AT1G30330.2 [Arabidopsis thaliana]  ARF6 (AUXIN RESPONSE FACTOR 6)
 MRLSSAGFNPQPHEVTGEKRVLNSELWHACAGPLVSLPPVGSRVVYFPQGHSEQVAASTNKEVDAHIPNYPSLHPQL...
 ```
 
 The transcript is:
 
-```{r exe8.3.2n, eval=FALSE}
+```{r exen, eval=FALSE}
 >AT1G30330.2 [Arabidopsis thaliana]  ARF6 (AUXIN RESPONSE FACTOR 6)  transcript 
 ATGAGATTATCTTCAGCTGGGTTTAATCCTCAACCTCATGAAGTTACAGGAGAGAAAAGAGTTCTTAATTCTGAGCTCTG
 GCATGCTTGTGCTGGTCCTCTTGTCTCACTACCTCCTGTTGGAAGCAGAGTTGTGTATTTTCCTCAAGGTCACAGTGAAC
@@ -355,31 +379,30 @@ AGGTTGCTGCTTCGACCAACAAAGAAGTAGATGCTCATATACCAAATTATCCGAGCTTGCATCCGCAGCTTATCTGT...
 
 We shall now look for similar sequences in our collection:
 ```{r, engine='bash', eval=FALSE}
-/path/to/ncbi-blast-2.6.0+/bin/blastp -db uniprot_Atha.fasta -query test.faa -outfmt 6
+/path/to/ncbi-blast/bin/blastp -db uniprot_Atha.fasta -query test.faa -outfmt 6
 
-/path/to/ncbi-blast-2.6.0+/bin/blastx -db uniprot_Atha.fasta -query test.fna -outfmt 6
+/path/to/ncbi-blast/bin/blastx -db uniprot_Atha.fasta -query test.fna -outfmt 6
 ```
 
-Can you redirect the output to separate files called *test.faa.blast* and *test.fna.blast* ? 
+**Exe2)** Can you redirect the output to separate files called *test.faa.blast* and *test.fna.blast*?
 
-What is the default alignment format, can you show an example?
+**Exe3)** What is the default alignment format, can you show an example?
 
-Are there differences in the results retrieved in both searches?
+**Exe4)** Are there differences in the results retrieved in both searches?
 
+### Producing a sequence profile
 
-### Producing a sequence profile 
-
-Here you will learn to make a sequence profile out of similar sequences matched with several (3) iterations of BLASTP, using PSI-BLAST:
+Here you will learn to make a sequence profile out of similar sequences matched with three iterations of BLASTP, using PSI-BLAST:
 
 ```{r, engine='bash', eval=FALSE}
-/path/to/ncbi-blast-2.6.0+/bin/psiblast -db uniprot_Atha.fasta -query test.faa -num_iterations 3 -out_ascii_pssm profile.out
+/path/to/ncbi-blast/bin/psiblast -db uniprot_Atha.fasta -query test.faa -num_iterations 3 -out_ascii_pssm profile.out
 ```
 
-Can you explain the contents of the output file *profile.out*?
+**Exe 5)** Can you explain the contents of the output file *profile.out*?
 
 ### Making a Hidden Markov Model (HMM) with aligned sequences
 
-This task comprises four steps:
+This task actually comprises four steps:
 
 + Create a FASTA file with the complete protein sequences of the matches of your protein search with bit score > 200. You might find one-liners useful for this.
 
@@ -387,24 +410,26 @@ This task comprises four steps:
 
 + Build a HMM out of these aligned sequences with *hmmbuild*
 
-+ Scan the HMM against your sequence collection with *hmmerscan* and write a short report on the results.
++ Scan the HMM against your sequence collection with *hmmerscan* and write a short report on the results. This should be deliverable **Exe6**.
 
 ### Annotating function by structural similarity
 
-https://toolkit.tuebingen.mpg.de/tools/hhpred
+Search for homologous sequences and define protein domains of AT1G30330.2 with help from [HHPred](https://toolkit.tuebingen.mpg.de/tools/hhpred).
+
+**Exe 7)** Produce a table with domains defined by the boundaries of matched entries from the Protein Data Bank and from Pfam.
 
 ### Annotating function on orthology grounds
 
-http://eggnog-mapper.embl.de/
+Search for functional annotations for AT1G30330.2 with help from [HHPred](http://eggnog-mapper.embl.de).
+
+**Exe 8)** Whats is the most likely function of this protein?
 
 ### Annotating function with Gene Ontology (GO) terms
 
-In this exercise we will use the GO-web browser [QuickGo](https://www.ebi.ac.uk/QuickGO/) as it is an intuitive and weekly updated resource.  
-
-We will learn how to:
-- [ ]	Search for GO annotations using different inputs (protein IDs, gene IDs and GO terms).
-- [ ] Search for all products annotated to specific GO term or GO ID.
-- [ ] Customize the research to better fit the user preferences. 
+In this exercise we will use the GO-web browser [QuickGo](https://www.ebi.ac.uk/QuickGO) as it is an intuitive and weekly updated resource.  The goal is for you to learn how to:
+- Search for GO annotations using different inputs (protein IDs, gene IDs and GO terms).
+- Search for all products annotated to specific GO term or GO ID.
+- Customize the research to better fit the user preferences. 
 
 Let's practice:
 
@@ -420,10 +445,13 @@ Let's practice:
 
 6.	How many proteins of *Arabidopsis thaliana*, *Prunus perisca* and *Zea mays* are assigned to the leaf development GO term. **Tip:** Zea mays. Taxonomy ID: 4577
 
-7.	Check the total number of **biological** annotations and proteins supported by the **experimental** evidence codes in both *Arabidopsis thaliana* and *Prunus persica*. **Tip :** check the ‘Statistics’ box.
+7.	Check the total number of BP annotations and proteins supported by the **experimental** evidence codes in both *Arabidopsis thaliana* and *Prunus persica*. **Tip :** check the ‘Statistics’ box.
 
+**Exe 9)** Summarize your results in a table.
 
+### Your report
 
+Your report should be a single document, preferably in PDF format, with solutions Exe1 to Exe9.
 
 # Bibliography
 
