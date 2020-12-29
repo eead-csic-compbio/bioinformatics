@@ -1,5 +1,5 @@
 ;release 48/101
-genome	size	REdat	nrTEplants	Red	REdat	nrTEplants	Red		literature
+genome	size	REdat	nrTEplants	Red	perc_REdat	perc_nrTEplants	perc_Red		perc_literature
 Arabidopsis thaliana	119667750	16998029	34493047	43943711	14.2	28.8	36.7		19
 Arabidopsis halleri	196243198	30398422	54248175	61005460	15.5	27.6	31.1		32.7
 Prunus dulcis	227498357	14847578	86267619	75942705	6.5	37.9	33.4		37.6
