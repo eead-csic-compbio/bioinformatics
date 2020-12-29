@@ -152,9 +152,65 @@ herein, we will be using the empty repository.
 **Exercice**  
 
   1. Check the status of /demo_repository by typing  **git status**.
-  2. Use touch to create a new empty file
-  3. run the **git status** once again
+  2. Use touch to create a new empty file called index.html
+  3. Run the **git status** once again.
   4. Try to compare between the Status messages.
+  5. Add the index.html to the working directory using the **git add** command.
+  
+```{bash  eval=FALSE}
+  git add index.html
+  git add --all #To add edited files at the same time
+```
+  6. Check again the status.
+  7. Commit the changes replacing the <commit message> by "adding an empty index file".
+  
+```{bash  eval=FALSE}
+  git commit -m <commit message>
+```  
+ 8. Edit the index.html file pasting these lines then type **git diff**. What does git diff do?
+ 
+```html
+<html>
+<Header> </header>
+<style>
+table, th, td {
+  border: 1px solid black; border-collapse: collapse;}
+</style>
+<body>
+<h2> Learning basic Git commands</h2>
+  <table>
+  <tr>
+      <th>Tasks</th> <th>Git commands </th> 
+  </tr>
+  <tr>
+    <td>Create a new local repository</td> <td> git init</td>
+  </tr>
+  <tr>
+    <td>Check the status of the working direcotry</td> <td>git status</td>
+  </tr>
+  <tr>
+    <td>Add files</td> <td>git add filename </td>
+  </tr>
+  <tr>
+    <td>Commit the changes</td> <td>git commit -m "message" </td>
+ </tr>  
+   <tr><td>Show the commit</td> <td>git log</td> </tr> 
+</table> 
+</body> 
+</html>
+```
+  9. Run again the git status,add and commit commands
+  10. Execute **git log**. What does this command do? Try also **git log --oneline** 
+
+## Undoing the changes with git
+
+We saw that git log displays all the commits done, assigning a unique indentifier (HEAD) to each one.
+To undo the changes, we need to use these identifiers
+
+**Exercice**
+
+ 1. Use **git chekout HEAD** to recover the empty version of index.html 
 
 
-### Interacting with github
+
+### Interacting with Github
