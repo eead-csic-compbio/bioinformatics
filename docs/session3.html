@@ -399,12 +399,63 @@ git clone https://github.com/eead-csic-compbio/bioinformatics.git new-folder-nam
 <p><strong>Exercice</strong></p>
 <ol style="list-style-type: decimal">
 <li>Check the status of /demo_repository by typing <strong>git status</strong>.</li>
-<li>Use touch to create a new empty file</li>
-<li>run the <strong>git status</strong> once again</li>
+<li>Use touch to create a new empty file called index.html</li>
+<li>Run the <strong>git status</strong> once again.</li>
 <li>Try to compare between the Status messages.</li>
+<li>Add the index.html to the working directory using the <strong>git add</strong> command.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> add index.html
+  <span class="fu">git</span> add --all <span class="co">#To add edited files at the same time</span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>Check again the status.</li>
+<li>Commit the changes replacing the <commit message> by &quot;adding an empty index file&quot;.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> commit -m <span class="op">&lt;</span>commit message<span class="op">&gt;</span></code></pre></div>
+<ol start="8" style="list-style-type: decimal">
+<li>Edit the index.html file pasting these lines then type <strong>git diff</strong>. What does git diff do?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;html&gt;</span>
+<span class="kw">&lt;Header&gt;</span> <span class="kw">&lt;/header&gt;</span>
+<span class="kw">&lt;style&gt;</span>
+table, th, td <span class="kw">{</span>
+  <span class="kw">border:</span> <span class="dt">1px</span> <span class="dt">solid</span> <span class="dt">black</span><span class="kw">;</span> <span class="kw">border-collapse:</span> <span class="dt">collapse</span><span class="kw">;}</span>
+<span class="kw">&lt;/style&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+<span class="kw">&lt;h2&gt;</span> Learning basic Git commands<span class="kw">&lt;/h2&gt;</span>
+  <span class="kw">&lt;table&gt;</span>
+  <span class="kw">&lt;tr&gt;</span>
+      <span class="kw">&lt;th&gt;</span>Tasks<span class="kw">&lt;/th&gt;</span> <span class="kw">&lt;th&gt;</span>Git commands <span class="kw">&lt;/th&gt;</span> 
+  <span class="kw">&lt;/tr&gt;</span>
+  <span class="kw">&lt;tr&gt;</span>
+    <span class="kw">&lt;td&gt;</span>Create a new local repository<span class="kw">&lt;/td&gt;</span> <span class="kw">&lt;td&gt;</span> git init<span class="kw">&lt;/td&gt;</span>
+  <span class="kw">&lt;/tr&gt;</span>
+  <span class="kw">&lt;tr&gt;</span>
+    <span class="kw">&lt;td&gt;</span>Check the status of the working direcotry<span class="kw">&lt;/td&gt;</span> <span class="kw">&lt;td&gt;</span>git status<span class="kw">&lt;/td&gt;</span>
+  <span class="kw">&lt;/tr&gt;</span>
+  <span class="kw">&lt;tr&gt;</span>
+    <span class="kw">&lt;td&gt;</span>Add files<span class="kw">&lt;/td&gt;</span> <span class="kw">&lt;td&gt;</span>git add filename <span class="kw">&lt;/td&gt;</span>
+  <span class="kw">&lt;/tr&gt;</span>
+  <span class="kw">&lt;tr&gt;</span>
+    <span class="kw">&lt;td&gt;</span>Commit the changes<span class="kw">&lt;/td&gt;</span> <span class="kw">&lt;td&gt;</span>git commit -m &quot;message&quot; <span class="kw">&lt;/td&gt;</span>
+ <span class="kw">&lt;/tr&gt;</span>  
+   <span class="kw">&lt;tr&gt;&lt;td&gt;</span>Show the commit<span class="kw">&lt;/td&gt;</span> <span class="kw">&lt;td&gt;</span>git log<span class="kw">&lt;/td&gt;</span> <span class="kw">&lt;/tr&gt;</span> 
+<span class="kw">&lt;/table&gt;</span> 
+<span class="kw">&lt;/body&gt;</span> 
+<span class="kw">&lt;/html&gt;</span></code></pre></div>
+<ol start="9" style="list-style-type: decimal">
+<li>Run again the git status,add and commit commands</li>
+<li>Execute <strong>git log</strong>. What does this command do? Try also <strong>git log --oneline</strong></li>
+</ol>
+</div>
+<div id="undoing-the-changes-with-git" class="section level2">
+<h2><span class="header-section-number">2.4</span> Undoing the changes with git</h2>
+<p>We saw that git log displays all the commits done, assigning a unique indentifier (HEAD) to each one. To undo the changes, we need to use these identifiers</p>
+<p><strong>Exercice</strong></p>
+<ol style="list-style-type: decimal">
+<li>Use <strong>git chekout HEAD</strong> to recover the empty version of index.html</li>
 </ol>
 <div id="interacting-with-github" class="section level3">
-<h3><span class="header-section-number">2.3.1</span> Interacting with github</h3>
+<h3><span class="header-section-number">2.4.1</span> Interacting with Github</h3>
 </div>
 </div>
 </div>
