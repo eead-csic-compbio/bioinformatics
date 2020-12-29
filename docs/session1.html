@@ -1899,7 +1899,7 @@ EEEECCEEEE HHHHHHHHHH CCCCCCCCCC...</code></pre>
 </div>
 <div id="phylogenetic-analysis-of-sequences" class="section level2">
 <h2><span class="header-section-number">3.5</span> Phylogenetic analysis of sequences</h2>
-<p>Orthologous genes are derived by speciation, in contrast to paralogues, which evolve through duplication. Comparative genomic studies from a variety of clades suggest that orthologues typically are the most similar genes in the respective species in terms of sequence, structure, domain architecture and function <span class="citation">(Gabaldon and Koonin 2013)</span>. There are however many exceptions and thus orthology should be used as a proxy for similarity, and works better for the Molecular Function Gene Ontology <span class="citation">(Huerta-Cepas et al. 2019)</span>.</p>
+<p>Orthologous genes are derived by speciation, in contrast to paralogues, which evolve through duplication. Comparative genomic studies on a variety of clades suggest that orthologues among species typically are the most similar genes in terms of sequence, structure, domain architecture and function <span class="citation">(Gabaldon and Koonin 2013)</span>. There are however many exceptions and thus orthology should be used as a proxy for similarity. In benchmarks with curated GO terms, it seems that orthology improves the annotation of sequences particularly on the Molecular Function side of the Gene Ontology <span class="citation">(Huerta-Cepas et al. 2017)</span>.</p>
 </div>
 </div>
 <div id="exercises" class="section level1">
@@ -1939,7 +1939,7 @@ EEEECCEEEE HHHHHHHHHH CCCCCCCCCC...</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="bu">cd</span> test_data/</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="fu">gunzip</span> uniprot_Atha.fasta.gz</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="ex">/path/to/ncbi-blast/bin/makeblastdb</span> -dbtype prot -in uniprot_Atha.fasta</a></code></pre></div>
-<p><strong>Exe1)</strong> How many sequences have been formatted?</p>
+<p><strong>Exe1)</strong> How many sequences have been formatted and how does this affect the E-value of BLAST searches?</p>
 </div>
 <div id="querying-the-collection-with-a-sample-coding-sequence" class="section level3">
 <h3><span class="header-section-number">4.1.2</span> Querying the collection with a sample coding sequence</h3>
@@ -1982,8 +1982,8 @@ EEEECCEEEE HHHHHHHHHH CCCCCCCCCC...</code></pre>
 </div>
 <div id="annotating-function-on-orthology-grounds" class="section level3">
 <h3><span class="header-section-number">4.1.6</span> Annotating function on orthology grounds</h3>
-<p>Search for functional annotations for AT1G30330.2 with help from <a href="http://eggnog-mapper.embl.de">HHPred</a>.</p>
-<p><strong>Exe 8)</strong> Whats is the most likely function of this protein?</p>
+<p>Search for functional annotations for protein AT1G30330.2 with help from <a href="http://eggnog-mapper.embl.de">HHPred</a>. Make sure you set one-to-one orthologues only.</p>
+<p><strong>Exe 8)</strong> What are the GO terms and eggNOG orthology groups of this protein?</p>
 </div>
 <div id="annotating-function-with-gene-ontology-go-terms" class="section level3">
 <h3><span class="header-section-number">4.1.7</span> Annotating function with Gene Ontology (GO) terms</h3>
@@ -1995,7 +1995,7 @@ EEEECCEEEE HHHHHHHHHH CCCCCCCCCC...</code></pre>
 <li><p>What are the immediate parent(s) and children of the photosynthesis GO term?</p></li>
 <li><p>Search for the GO annotation terms of the following protein A0A068LKP4,A0A097PR28, A0A059Q6N8? What do you observe?</p></li>
 <li><p>How many gene products are involved in leaf development? Give the GO ID corresponding to this term.</p></li>
-<li><p>How many proteins of <em>Arabidopsis thaliana</em>, <em>Prunus perisca</em> and <em>Zea mays</em> are assigned to the leaf development GO term. <strong>Tip:</strong> Zea mays. Taxonomy ID: 4577</p></li>
+<li><p>How many proteins of <em>Arabidopsis thaliana</em>, <em>Prunus perisca</em> and <em>Zea mays</em> are assigned to the leaf development GO term. <strong>Tip:</strong> Zea mays. Taxonomy ID=4577</p></li>
 <li><p>Check the total number of BP annotations and proteins supported by the <strong>experimental</strong> evidence codes in both <em>Arabidopsis thaliana</em> and <em>Prunus persica</em>. <strong>Tip :</strong> check the ‘Statistics’ box.</p></li>
 </ol>
 <p><strong>Exe 9)</strong> Summarize your results in a table.</p>
@@ -2036,8 +2036,8 @@ EEEECCEEEE HHHHHHHHHH CCCCCCCCCC...</code></pre>
 <div id="ref-Hogeweg1984">
 <p>Hogeweg, P., and B. Hesper. 1984. “The alignment of sets of sequences and the construction of phyletic trees: an integrated method.” <em>J. Mol. Evol.</em> 20 (2): 175–86. <a href="https://www.ncbi.nlm.nih.gov/pubmed/6433036">https://www.ncbi.nlm.nih.gov/pubmed/6433036</a>.</p>
 </div>
-<div id="ref-HuertaCepas2019">
-<p>Huerta-Cepas, J., D. Szklarczyk, D. Heller, A. Hern?ndez-Plaza, S. K. Forslund, H. Cook, D. R. Mende, et al. 2019. “eggNOG 5.0: a hierarchical, functionally and phylogenetically annotated orthology resource based on 5090 organisms and 2502 viruses.” <em>Nucleic Acids Res</em> 47 (D1): D309–D314.</p>
+<div id="ref-HuertaCepas2017">
+<p>Huerta-Cepas, J., K. Forslund, L. P. Coelho, D. Szklarczyk, L. J. Jensen, C. von Mering, and P. Bork. 2017. “Fast Genome-Wide Functional Annotation through Orthology Assignment by eggNOG-Mapper.” <em>Mol Biol Evol</em> 34 (8): 2115–22. <a href="10.1093/molbev/msx148">10.1093/molbev/msx148</a>.</p>
 </div>
 <div id="ref-Koskinen2012">
 <p>Koskinen, J. P., and L. Holm. 2012. <em>Bioinformatics</em> 28 (18): i438–i443. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3436844/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3436844/</a>.</p>
