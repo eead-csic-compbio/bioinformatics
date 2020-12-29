@@ -323,7 +323,7 @@ These vocabulary terms (GO terms) annotate the gene products at three different 
 - Molecular Function (MF): the molecular activities of individual gene products
 - Cellular Component (CC): where the gene products are active
 
-They are organized as a hierarchy and connected to each other through parent-child relationships:   
+They are organized as a hierarchy and connected to each other through parent-child relationships. The next example is from [QuickGO](https://www.ebi.ac.uk/QuickGO) [@Binns2009]:   
 
 ![](./pics/go.png)
 
