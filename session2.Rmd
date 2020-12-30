@@ -52,21 +52,31 @@ kable(annot.stats,format.args = list(big.mark=","))
 
 Therefore, when dealing with genome variation, polymorphisms have a greater chance to occur in non-coding regions. Among these, probably the most interesting are **regulatory sequences** and **repeated elements**.
 
-The regulation of gene expression is one of the fundamental topics in Genetics.
-In this session we will learn about transcription factors (TF), which are proteins that bind specifically to DNA sequences called cis-regulatory elements. Binding affects the expression of nearby genes. Furthermore, we will see how regulatory elements can be discovered in promoter sequences using statistical tests. By aligning the sequence of cis elements bound by the same TF is is possible to build a **DNA motif**.
+The goal of this session is to learn how regulatory sequences can be discovered in promoter sequences using statistical tests and aligned to build a **DNA motifs**.
 
 # Genomic repeated sequences
 
-The annotation of repeated elements within plant genomes can help in the interpretation of observed phenotypes and in computational tasks such as whole genome alignment or pan-genome analyses. Here we describe how the nrTEplants library was constructed by integrating previously available repositories and curated annotations from a variety of plants. This non-redundant library was obtained with the aim of obtaining percentages of repeated sequences similar to those in literature reports describing plant genomes. In addition, emphasis was put in reducing the fraction of protein-coding sequences among candidate repeats. We tested it on 20 plant genomes and compared it to the library REdat, used by default in Ensembl Plants, and to the kmer-based Repeat Detector (Red). We find that nrTEplants outperforms REdat on dicots while masking a similar fraction of gene exons. We also find that RepeatMasker produces better repeat annotations with nrTEplants than minimap2. The repeat library, code and documentation can be downloaded from 
+The annotation of Transposable Elements (TEs) within plant genomes can help in the interpretation of observed phenotypes, as sometimes TEs affect the expression of neighbor genes, and in computational tasks such as promoter whole genome alignment, promoter or pan-genome analyses.  
 
+Usually TEs are annotated by alignment to curated libraries of repeated elements such as [REdat](https://pgsb.helmholtz-muenchen.de/plant/recat) [@Nussbaumer2013], where each sequence or element is classified according to the Wicker classification [@Wicker2007]. The next figure summarizes this taxonomy of TEs, which ressembles that of protein domains:
+
+![](./pics/WickerTE.png)
+
+More recently, there are other approaches which don't require any curation; instead, these simply identify repeated elements by counting words ($K$-mers) along the genome. An example of such tools is the [Repeat Detector](https://github.com/BioinformaticsToolsmith/Red) [@Girgis2015].
+
+The next table summarizes the fraction of repeated sequences in diverse plant genomes:
 
 ```{r repeats_table}
 annot.stats <- read.csv(file="test_data/Ensembl_repeats.tsv", sep="\t", comment.char=";")
-annot.stats = annot.stats[,c(1,2,6,7,8,10)]
+annot.stats = annot.stats[,c(1,2,6,8,10)]
 kable(annot.stats,format.args = list(big.mark=","))
 ```
 
 # DNA-binding proteins and regulatory sequences
+
+The regulation of gene expression is one of the fundamental topics in Genetics.
+Here you will learn about transcription factors (TFs) and cis-regulatory elements (CREs).
+TFs are proteins that bind specifically to DNA sequences called CREs and affect the expression of nearby genes. 
 
 ## Protein-DNA recognition
 
