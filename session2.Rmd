@@ -62,15 +62,17 @@ Usually TEs are annotated by alignment to curated libraries of repeated elements
 
 ![](./pics/WickerTE.png)
 
-More recently, there are other approaches which don't require any curation; instead, these simply identify repeated elements by counting words ($K$-mers) along the genome. An example of such tools is the [Repeat Detector](https://github.com/BioinformaticsToolsmith/Red) [@Girgis2015].
+More recently, there are other approaches which don't require any curation; instead, these simply identify repeated elements by counting words ($K$-mers) along the genome. An example of such tools is the [Repeat Detector](https://github.com/BioinformaticsToolsmith/Red) (Red) [@Girgis2015].
 
-The next table summarizes the fraction of repeated sequences in diverse plant genomes:
+The next table summarizes the fraction of repeated sequences in diverse plant genomes, as annotated with REdat, Red and the original papers describing those genomes:
 
 ```{r repeats_table}
 annot.stats <- read.csv(file="test_data/Ensembl_repeats.tsv", sep="\t", comment.char=";")
 annot.stats = annot.stats[,c(1,2,6,8,10)]
 kable(annot.stats,format.args = list(big.mark=","))
 ```
+
+When the repeats themsleves are not of interest for subsequent analyses, they are said to be masked out. This means that they are marked so that they can be avoided. Hard-masking means replacing the sequences of repeats with polyN oligonucleotides. Soft-masking means leaving the repeated sequences in lower-case.
 
 # DNA-binding proteins and regulatory sequences
 
@@ -93,7 +95,7 @@ The best descriptions of protein-DNA interfaces are provided by structural biolo
 
 ### Atomic interactions between protein and DNA residues
 
-The process of recognition of DNA sequences by proteins involves readout mechanisms, and also accessory stabilizing atomic interaction that do not confer specificty.
+The process of recognition of DNA sequences by proteins involves readout mechanisms, and also stabilizing atomic interactions that do not confer specificty.
 
 **Direct readout** 
 
@@ -164,8 +166,8 @@ Lambda-repressor-like (LR) | 31
 
 ### Analysis of protein-DNA interfaces in transcription factors families
 
-The available experimental structures of protein-DNA complexes in the PDB support the annotation of interface residues, those involved directly in sequence recognition, within protein families.
-
+The available experimental structures of protein-DNA complexes in the PDB support the annotation of interface residues, those involved directly in sequence recognition, within protein families. The database [footprintDB](http://floresta.eead.csic.es/footprintdb) does exactly this.
+ 
 ![Annotation of interface residues by transference from PDB complexes in the footprintDB database](pics/intf-annot-hist.png)
 
 Several examples in the literature have demonstrated the correlation between interface patterns and the bound DNA motifs within large transcription factor families, such as the work of @Noyes2008:
@@ -195,7 +197,7 @@ Interferon regulatory factor | AAnnGAAA	| Always (homodimers, heterodimers, mult
 
 Here I briefly describe a structural alignment approach for the comparison of DNA-binding proteins and their interfaces, as discussed in @Siggers2005 and @Sebastian2013. In this context superpositions might guide the correct alignment of cis elements bound by homologous proteins, as illustrated in the figure.
 
-![Sequence and structue alignment of cis-elements bound by two homologous PDB complexes: 3A01_A1 and 1FJL_B1. Note that this optimal sequence alignment does not match equivalent interface positions, adapted from @Sebastian2013.](pics/TFcompare.png)
+![Sequence and structure alignment of cis-elements bound by two homologous PDB complexes: 3A01_A1 and 1FJL_B1. Note that this optimal sequence alignment does not match equivalent interface positions, adapted from @Sebastian2013.](pics/TFcompare.png)
 
 ### Specificity-based classification of DNA-binding proteins
 
