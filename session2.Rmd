@@ -58,7 +58,8 @@ The goal of this session is to learn how regulatory sequences can be discovered 
 
 The annotation of Transposable Elements (TEs) within plant genomes can help in the interpretation of observed phenotypes, as sometimes TEs affect the expression of neighbor genes, and in computational tasks such as promoter whole genome alignment, promoter or pan-genome analyses.  
 
-Usually TEs are annotated by alignment to curated libraries of repeated elements such as [REdat](https://pgsb.helmholtz-muenchen.de/plant/recat) [@Nussbaumer2013], where each sequence or element is classified according to the Wicker classification [@Wicker2007]. The next figure summarizes this taxonomy of TEs, which ressembles that of protein domains:
+Usually TEs are annotated by alignment to curated libraries of repeated elements such as [REdat](https://pgsb.helmholtz-muenchen.de/plant/recat) [@Nussbaumer2013], where each sequence or element is classified according to the Wicker classification [@Wicker2007]. 
+Class I elements are "copy and paste", while Class II are "cut and paste". The next figure summarizes this taxonomy of TEs, which ressembles that of protein domains:
 
 ![](./pics/WickerTE.png)
 
@@ -301,7 +302,7 @@ kmer.stats <- function(query.oligo.file,
   oligo.table$pval <- pmin(oligo.table$pval.under, oligo.table$pval.over) * 2
   oligo.table$log.pval <- pmin(oligo.table$log.pval.under, oligo.table$log.pval.over) * 2
   
-  ## Compute the E-value (multiple testing correction).`
+  ## Compute the E-value (Bonferroni multiple testing correction).`
   ##  E-value indicates the expected number of false positives 
   ## (i.e. how many oligos would be expected to be be declared positive under 
   ## the null hypothesis)
@@ -471,18 +472,15 @@ kmer.stat.table <- kmer.stats(query.oligo.file = oligo.upstream.freq.file,
 #View(kmer.stat.table)
   
 plot.kmers(kmer.stat.table, k, volcano.ymax = 60) 
-
-
-
 ```
 
 ## Exercises
 
 The plant-dedicated mirror of the Regulatory Sequence Analysis Tools (RSAT, <http://plants.rsat.eu>) offers specialized options for researchers dealing with plant transcriptional regulation. The web site contains whole-sequenced species regularly updated from Ensembl Plants and other sources (85 as of Dec 2020), and supports an array of tasks frequently required for the analysis of regulatory sequences, such as retrieving upstream sequences, motif discovery, motif comparison, pattern matching. RSAT::Plants also integrates the footprintDB collection of DNA motifs. This exercise consists on following a step-by-step protocol on how to discover DNA motifs in regulatory regions of clusters of co-expressed genes in plants. It also explains how to empirically control the significance of the result, and how to annotate any discovered motis. 
 
-<!-- this protocol has been published at --> 
+This protocol has been published at [@ContrerasMoreira2016a]. Other related protocols can be found at [@CastroMondragon2016,@ContrerasMoreira2016b].
 
-### Introduction
+### Background
 
 Transcriptome data (microarrays, RNA-seq) have been extensively used as a proxy for genetic regulation in many organisms, as the analysis of genome-wide profiles of gene transcription under different treatments uncovers clusters of genes with correlated behaviors, which may result from direct or indirect co-regulation. A classical application of this approach was done by @Beer2004 with yeast microarray data sets obtained in a variety of experimental conditions. In that experiment, expression data-mining was demonstrated to be an effective strategy for finding regulons, groups of genes that share regulatory mechanisms and functional annotations.
 
@@ -504,10 +502,6 @@ genome.stats[,2] = as.numeric(genome.stats[,2])/1e6 ## Convert genome sizes to M
 genome.stats[,5] = as.numeric(genome.stats[,5]-genome.stats[,4]) ## raw %mask also includes %N
 names(genome.stats) <- c("Organism / assembly ID", "Genome size (Mb)", "Contigs", "%N", "% repeat-masked", "Gene models", "Mean upstream length")
 # names(genome.stats)
-
-## DT::datatable gives sortable tables, very nice for a web page but not usefult for a chapter
-# library(DT)
-# DT::datatable(genome.stats) 
 
 ## Print the table
 kable(genome.stats,format.args = list(big.mark=","),
@@ -548,13 +542,13 @@ Before the proper analysis of the gene cluster, we will retrieve the promoter se
 
 1. Open a connection to the RSAT::Plants server. It can be reached at <http://plants.rsat.eu>. On the left-side menu, select 'Sequence tools -> retrieve sequence'.
 
-2. Choose 'Single organism -> Zea_mays.B73RefGen v4.42' for the examples of this protocol (see __Note  1__), which corresponds to Ensembl Plants release 42
+2. Choose 'Single organism -> Zea_mays.B73RefGen v4.46' for the examples of this protocol (see __Note  1__), which corresponds to Ensembl Plants release 46
 
 3. Choose 'Genes -> all'; this will retrieve all upstream sequences of the maize genome.
 
 4. Set appropriate upstream bounds. To replicate the work of @Yu2015 these should be set to 'From' -1000 'To' +200, with position 0 corresponding to transcriptional start sites (TSS). Beware that TSS positions in plant genomes often correspond to start codons, probably due to incomplete annotations. 
 
-5. We recommend to tick the option 'Mask repeats', as plant genomes are frequently repeat-rich (see __Table 1__; maize genome contains 78% of REs). This option should not be used if you suspect the transcription factors of interest bind to repeated sequences. 
+5. We recommend to tick the option 'Mask repeats', as plant genomes are frequently repeat-rich. This option should not be used if you suspect the transcription factors of interest bind to repeated sequences. 
 
 6. Press 'GO' and wait until the retrieve-seq result page is displayed (see __Note __^[Should the connection to the server interrupt it might be safer to go back and choose 'email' as delivery option.  The mail message provides a link to the data, which is actually stored at the server.]). The results include the executed command and a URL to the 'sequences' file, which must be saved. We will refer to this URL as '**all.fasta.URL**'. This FASTA-format file can also be stored as a local file on your computer, but note it can be rather large. 
 
@@ -566,7 +560,7 @@ We will now retrieve the upstream sequences of a cluster of co-expressed genes, 
 
 1. Choose cluster E2F from __Table 2__, copy the corresponding gene IDs (last column). As these identifiers are from an older assembly (v3), we need to paste them in <http://plants.ensembl.org/Zea_mays/Tools/IDMapper?db=core> or  <http://www.maizeinflorescence.org/v4/convert/index.php> to convert them to the current annotation. The translated IDs should be saved in a new text file, that you will store on your computer. Insert newline characters between genes^[It is crucial to have one gene ID per row for submitting queries to retrieve-seq, because only the first word of each row is considered as a query.]. 
 
-2. In the left menu of the RSAT server, click on 'retrieve sequence' to get a fresh form. Make sure that the option 'Genes -> selection' is activated and that the right organism, in this case ‘Zea mays.B73RefGen v4.42’, is selected. Tick 'Mask repeats', and set the same size limits as for the whole collection of promoters: from -1000 to +200. Paste the list of IDs of your gene cluster (one gene ID per row).
+2. In the left menu of the RSAT server, click on 'retrieve sequence' to get a fresh form. Make sure that the option 'Genes -> selection' is activated and that the right organism, in this case ‘Zea mays.B73RefGen v4.46’, is selected. Tick 'Mask repeats', and set the same size limits as for the whole collection of promoters: from -1000 to +200. Paste the list of IDs of your gene cluster (one gene ID per row).
 
 3. Press 'GO' and wait a few seconds until the result page is displayed. Inspection of these sequences might reveal N-masked sequence stretches, which correspond to annotated repeats. Save both 'query genes' and 'sequences' files to local files on your computer, we will refer to them as '**cluster.genes**' and '**cluster.fasta**' later on this protocol.
 
@@ -601,13 +595,13 @@ In this section, we propose a procedure to obtain an empirical estimation of the
 
 1. On the left-side menu of RSAT::Plants select 'Build control sets -> random gene selection'.
 
-2. Choose 'Organism -> Zea mays.B73RefGen v4.42' for the examples of this protocol. 
+2. Choose 'Organism -> Zea mays.B73RefGen v4.46' for the examples of this protocol. 
 
 3. Set 'Number of genes' to the size of one of the sample clusters on **Table 2**. For instance, the size of the negative control sets would be 18 for cluster E2F, 16 for cluster ABI4, and 56 for cluster WRI1. For convenience, in this tutorial only one random group is generated (the default), but this utility can generate several random groups in one go (see __Note __^[Clearly, more than one random cluster should be evaluated, as suggested in __Figure 1__, where the results of up to 50 random groups are displayed next to the clusters of @Yu2015.]).
 
 4. Press 'GO' and click the 'Next step' button 'retrieve sequences' at the bottom of the result page.  In the retrieve-seq form, set the other parameters as above: from -1000 to +200, check the 'Mask repeats' option and press 'GO'. 
 
-5. Save 'query genes' and 'sequences' files to local '**random.genes**' and '**random.fasta**' files and repeat steps 4-11 of section 9.3.2. 
+5. Save 'query genes' and 'sequences' files to local '**random.genes**' and '**random.fasta**' files and repeat steps 4-11 of section 4.1.3.2. 
 
 #### Validating motifs by scanning promoter sequences
 
@@ -621,13 +615,13 @@ A second goal is to investigate whether these regulatory motifs are conserved on
 
 2. Choose 'Reference organism -> Sorghum bicolor' for the maize example.
 
-3. Upload file '**cluster.genes**' generated in **step 3** of section 9.3.2. Press 'GO' and finally press 'retrieve sequences' on the next screen.
+3. Upload file '**cluster.genes**' generated in **step 3** of section 4.1.3.2. Press 'GO' and finally press 'retrieve sequences' on the next screen.
 
-4. Repeat steps 4-6 of section 9.3.1 but now select _Sorghum bicolor_ as organism. Save 'sequences' to local file '**cluster_orths.fasta**'.
+4. Repeat steps 4-6 of section 4.1.3.1 but now select _Sorghum bicolor_ as organism. Save 'sequences' to local file '**cluster_orths.fasta**'.
 
 5. On the left-side menu select 'Build control sets -> permute-matrix'.
 
-6. Upload '**cluster.motifs.tf**' (obtained in **step 12** of section 9.3.2) and press 'GO'. Save the results file as '**cluster.motifs.perm1.tf**' (see __Note __^[This will permute the columns of the input PWMs producing matrices with different consensus. Column-permuted matrices are used as negative controls because they conserve the information content and nucleotide frequencies of the original motifs, but at the same time alter the sequence of nucleotides captured by the original motif, which is not recognized anymore.]).
+6. Upload '**cluster.motifs.tf**' (obtained in **step 12** of section 4.1.3.2) and press 'GO'. Save the results file as '**cluster.motifs.perm1.tf**' (see __Note __^[This will permute the columns of the input PWMs producing matrices with different consensus. Column-permuted matrices are used as negative controls because they conserve the information content and nucleotide frequencies of the original motifs, but at the same time alter the sequence of nucleotides captured by the original motif, which is not recognized anymore.]).
 
 7. Select 'Pattern matching -> matrix scan (full options)'.
 
@@ -635,7 +629,7 @@ A second goal is to investigate whether these regulatory motifs are conserved on
 
 9. Upload file '**cluster.motifs.tf**' and select 'transfac' format.
 
-10. In the 'Background model' section select Markov order 2 and choose 'Organism-specific -> Zea mays.B73RefGen v4.42'. Press 'GO'.
+10. In the 'Background model' section select Markov order 2 and choose 'Organism-specific -> Zea mays.B73RefGen v4.46'. Press 'GO'.
 
 11. Save the 'Scan result' file as '**cluster.scan.ft**' and press the 'feature map' button to draw a map of the matched motif instances.
 
