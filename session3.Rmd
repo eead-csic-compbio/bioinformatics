@@ -39,15 +39,25 @@ knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE,
 
 # Introduction 
 
-If you have ever worked on a project, or collaborated with other team members, then you probably have have already created different versions of documents.This is a primitive way of the version control because it's manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone. 
+If you have ever worked on a project, or collaborated with other team members, then probably you have already created different versions of documents.This is a primitive way of the version control because it's manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone. 
 
-In this session, you'll be introduced to the concept of a version control system (VCS) to maintain a detailed history of the created versions and the modifications done. By using a VCS, we can know when the changes were made and who made them. This applies to documents, images, datafiles and source code, which are the bread and butter of research.
+In this session, you'll be introduced to the concept of a version control system (VCS) to maintain a detailed history of the created versions and the modifications done. 
+By using a VCS, we can know when the changes were made and who made them. This applies to documents, images, datafiles and source code, which are the bread and butter of research.
 
 # Current standards of reproducible research
 
-In the course of research projects there are several aspects that need to be addressed in order to ensure your work can reproduced by others. They are summarized in the next subsections.
+In  most of the cases, publishing an open access paper is not enough for the audience to take advantage of it. The real relevance of a scientific study is its reproducibility. 
 
-## Open data
+In fact, a reproducible work means making all the work materials: raw data, codes, figures available to readers by hosting it on an accessible platform (such as a git repository). Recently, scientific journals such Nature, PNAS, Plant physiology, etc are requiring to submit manuscripts with data accessible repositories and code links [@Fanelli2628; @Miyakawa2020].
+
+By doing so, you are
+
+  * Demonstarting to the audiance the reliabilty of your findings
+  * Allowing the readers to adopt your described methods and results in their analysis 
+
+In the course of research projects there are several aspects that need to be addressed in order to ensure your work can reproduced by others and to demonstarte the reliablity of your findings. They are summarized in the next subsections.
+
+## Reproducibilty and Open data
 
 The data generated in your project should be archived and published. For instance, genomic data must be deposited and accessioned prior to publication in a [INSDC](http://www.insdc.org) repository such as the [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home).Other related resources are the [European Variation Archive](https://www.ebi.ac.uk/eva) or [BioSamples](https://www.ebi.ac.uk/biosamples).
 
@@ -55,7 +65,91 @@ There are also resources such as [Figshare](https://figshare.com), [Zenodo](http
 
 ## Reproducible data analyses
 
-In order to make sure your data analysis protocols are reproducible they should be described in the form of documented source code with versioned data and software.
+The basic concept for a reproducible analysis is to 
+
+1. Separte the directories for a better organization:
+
+```{bash, eval=F}
+project
+│    └───README.md (contains general description of the project)
+│     
+└───data
+│   └─── Raw_data
+│   └─── processed_data
+│
+└───codes
+│    └─── R_scripts
+│         │   plot.R
+│         │   annotation.R
+│ 
+│    └─── makefiles
+│         │   kmer.mk
+│         │   peak_motifs.mk
+│
+└─── results
+         │ figures
+.        │ tables
+.
+.
+```
+2. Perform every analysis using well-documented coding scripts with versioned data and softwares.
+
+Herein we present a simple example of a makefile script:
+
+1. Create a directory called demo_project
+2. Copy and save the makefile script as get_sequences.mk
+3. Try to run the makefile targets using **make -s -f makefilename target**
+
+
+```{bash, eval=F}
+################################################################
+## This makefile is to retrieve 6 genes ids and to assign their
+## corresponding fasta sequences 
+##
+##################################################################
+
+MAKEFILE=~/demo_project/get_sequences.mk
+MAKE=make -s -f ${MAKEFILE}
+
+## Define parameters
+DATA=~/demo_project/sequences
+RESLTS=~/demo_project/results
+ARAB_IDS=${DATA}/genelist.txt
+ARAB_SEQ=${DATA}/arabidopsis_cdna.fasta
+
+dir:
+	@echo "Creating sequences and results directories"
+	mkdir -p ${DATA}  #the -p falg means create directory a if it doesn't exist
+	mkdir -p ${RESLTS}
+
+get-data:
+	@echo "getting the data from the github repo"
+  wget https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data/genelist.txt/
+	wget https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data/arabidopsis_cdna.fasta
+	
+	@echo
+	@echo "moving the data to the sequence folder"
+	mv genelist.txt ${DATA}
+	mv arabidopsis_cdna.fasta ${DATA}
+
+get-ids:
+	@echo
+	@echo "Generating 10 random genes from the gene list file"
+	shuf -n 10 ${ARAB_IDS} -o ${RESLTS}/random_genes.txt
+	@echo "${RESLTS}/random_genes.txt"
+
+get-fasta:
+	@echo
+	@echo "Assign fasta sequence to each gene"
+	cat ${RESLTS}/random_genes.txt | xargs -n 1 samtools faidx ${ARAB_SEQ} > ${RESLTS}/random-sequences.fna
+	@echo "${RESLTS}/random_genes.txt"
+	
+# Run all targets at one go
+all: dir get-data get-ids get-fasta
+	
+```
+
+
 
 software versions, data releases
 makefile, snakemake, nextflow, docker, conda, galaxy
@@ -63,7 +157,7 @@ makefile, snakemake, nextflow, docker, conda, galaxy
 
 # Git overview
 
-We will be using one of the most popular version control system called [Git](https://git-scm.com) and we will show you how to interact with Git through the command line or terminal.
+We will be using one of the most popular version control system called [Git](https://git-scm.com) and we will show you how to interact with Git through the command line or terminal [@Bryan2017].
 
 We will also learn how to set up an account with the service called [GitHub](https://github.com), so that you can create your own remote repositories to store your code and data.
 
@@ -130,7 +224,6 @@ To create a new local Git repository, we will first create a directory for a pro
 This repository is considered as a storage center where the git software will tracks all changes made and builds a history over time. In other terms, if we delete the .git folder, then the project´s history will be deleted.  
 
 ```{bash, eval=F}
-mkdir ~/demo_project
 cd ~/demo_project
 git init
 ls -la #check for the hidden directories
