@@ -334,6 +334,8 @@ See [here](https://bioinfoperl.blogspot.com/2011/08/decodificando-la-gene-ontolo
 Orthologous genes are derived by speciation, in contrast to paralogues, which evolve through duplication. Comparative genomic studies on a variety of clades suggest that orthologues among species typically are the most similar genes in terms of sequence, structure, domain architecture and function [@Gabaldon2013]. There are however many exceptions and thus orthology should be used as a proxy for similarity.
 In benchmarks with curated GO terms, it seems that orthology improves the annotation of sequences particularly on the Molecular Function side of the Gene Ontology [@HuertaCepas2017].
 
+[Ensembl Plants](http://plants.ensembl.org) and [PLAZA](https://bioinformatics.psb.ugent.be/plaza) are resources providing plant-specific comparative genomics tools for plants.
+
 # Exercises
 
 ## Annotating coding sequences by alignment to other sequences
@@ -427,12 +429,14 @@ Search for functional annotations for protein AT1G30330.2 with help from [HHPred
 
 ### Annotating function with Gene Ontology (GO) terms
 
-In this exercise we will use the GO-web browser [QuickGo](https://www.ebi.ac.uk/QuickGO) as it is an intuitive and weekly updated resource.  The goal is for you to learn how to:
+In this exercise we will use the GO-web browser [QuickGo](https://www.ebi.ac.uk/QuickGO) as it is an intuitive and weekly updated resource. Although we won't be using them in this session, there are many other related tools out there, such as [UniProt](https://www.uniprot.org) or [Ensembl Plants](http://plants.ensembl.org). 
+
+The goal of this task is for you to learn how to:
 - Search for GO annotations using different inputs (protein IDs, gene IDs and GO terms).
 - Search for all products annotated to specific GO term or GO ID.
 - Customize the research to better fit the user preferences. 
 
-Let's practice:
+Let's practice then:
 
 1.	Search for the GO terms and the functional categories of the following GO IDs GO:0009414, GO:0035618, GO:0016491. **Tip:** For multiple search GO IDs needs to be separated by a space.
 
