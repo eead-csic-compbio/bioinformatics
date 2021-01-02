@@ -354,11 +354,11 @@ div.tocify {
 <span class="fu">sudo</span> apt-get install git
 <span class="fu">git</span> --version <span class="co">#To verify that the installation has succeeded</span></code></pre></div>
 <p>We have already said that by using VCS we can know which user have made the changes. For this, we need to tell Git our identity using the following command lines:</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> config --global user.name <span class="st">&quot;my_name&quot;</span>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> config --global user.name <span class="st">&quot;name&quot;</span>
 <span class="fu">git</span> config --global user.email <span class="st">&quot;name@example.com&quot;</span></code></pre></div>
 <p>To check if the configuration was properly set</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> config --list</code></pre></div>
-<pre><code>user.name=my_name
+<pre><code>user.name=name
 user.email=name@example.com</code></pre>
 </div>
 <div id="setting-up-a-git-repository" class="section level2">
@@ -468,109 +468,133 @@ table, th, td <span class="kw">{</span>
 </div>
 <div id="undoing-the-changes-with-git" class="section level2">
 <h2><span class="header-section-number">2.4</span> Undoing the changes with Git</h2>
-<p>One of the main advantages of version control system, is the ability to undo the changes at different stages. In this section we will list some useful Git command lines.</p>
-<p>Lets practice</p>
+<p>One of the main advantages of version control systems, is the ability to undo the changes at different stages.</p>
+<p>Lets try out with some examples</p>
+<div id="cancel-the-changes-before-they-get-staged-before-git-add" class="section level3">
+<h3><span class="header-section-number">2.4.1</span> Cancel the changes before they get staged (Before git add)</h3>
+<p>In case you have made some changes to a file but you are not statisifed with the modifications,you can cover back its committed state using: <strong>git checkout filename</strong></p>
 <p><strong>Example 3</strong></p>
-<ol style="list-style-type: decimal">
-<li><strong>Cancel the changes in the working dir(Before git add)</strong>: git chekout filename</li>
-</ol>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="bu">cd</span> ~/demo_project
-  <span class="bu">echo</span> <span class="st">&quot;AT2G38470&quot;</span> <span class="op">&gt;&gt;</span> genes_list.txt 
-  <span class="fu">cat</span> genes_list.txt 
-  <span class="fu">git</span> chekout genes_list.txt
-  <span class="fu">cat</span> genes_list.txt </code></pre></div>
-<ol start="2" style="list-style-type: decimal">
-<li><strong>Cancel staged changes (Before git commit)</strong>: git reset HEAD filename</li>
-</ol>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="co"># Make a new change to the genes list</span>
-  <span class="bu">echo</span> <span class="st">&quot;transcription factor&quot;</span> <span class="op">&gt;&gt;</span> genes_list.txt 
-  <span class="co"># Stage the changes</span>
-  <span class="fu">git</span> add genes_list.txt
-  <span class="fu">git</span> status 
-  <span class="co"># Cancel the changes</span>
-  <span class="fu">git</span> reset HEAD genes_list.txt
-  <span class="fu">git</span> status  </code></pre></div>
-<ol start="3" style="list-style-type: decimal">
-<li><strong>Cancel the commits (after git commit)</strong>: git revet HEAD Note: We saw that git log displays all the commits done, assigning a unique indentifier (HEAD) to each one.</li>
-</ol>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Undo the last commit</span>
-<span class="fu">git</span> commit --amend</code></pre></div>
-<ol start="4" style="list-style-type: decimal">
-<li><strong>Remove files from working dir or staging area</strong>: git rm filename</li>
-</ol>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> rm genes_list.txt
-  <span class="fu">git</span> status
-  <span class="fu">git</span> add genes_list.txt
-  <span class="fu">git</span> commit -m <span class="st">&quot;deleted unwanted file&quot;</span>
-  </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">cd</span> ~/demo_project
+<span class="bu">echo</span> <span class="st">&quot;AT2G38470&quot;</span> <span class="op">&gt;&gt;</span> genes_list.txt <span class="co"># add gene of A. thaliana</span>
+<span class="fu">cat</span> genes_list.txt 
+<span class="fu">git</span> chekout genes_list.txt
+<span class="fu">cat</span> genes_list.txt </code></pre></div>
+</div>
+<div id="cancel-staged-changes-before-git-commit" class="section level3">
+<h3><span class="header-section-number">2.4.2</span> Cancel staged changes (Before git commit)</h3>
+<p>To unstage undesired file,use the following git command: <strong>git reset HEAD filename</strong></p>
+<p><strong>Example 4</strong></p>
+<ul>
+<li><p>Create a bash script called script.sh containing the following line: echo &quot;Hello, This is a Git tutorial&quot;</p></li>
+<li><p>Save the output of script in a text file called output.txt</p></li>
+<li><p>Add in one go all the files to the staging area.</p></li>
+<li><p>Check the status</p></li>
+<li><p>Unstage the output.txt file</p></li>
+<li><p>Check again the status</p></li>
+</ul>
+</div>
+<div id="modify-a-commit" class="section level3">
+<h3><span class="header-section-number">2.4.3</span> Modify a commit</h3>
+<p><strong>Example 5</strong></p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
+<span class="co"># Create a new folder</span>
+<span class="ex">Mkdir</span> sequences
+<span class="co"># Add 2 empty files</span>
+<span class="fu">touch</span> sequences/prunus.fa arabidopsis.fa
+<span class="co">#add and commit</span>
+<span class="fu">git</span> add sequences/prunus.fa
+<span class="fu">git</span> commit –m “added two fasta files”
+
+<span class="co"># add the missing file</span>
+<span class="fu">git</span> add sequences/arabidopsis.fa
+
+<span class="co"># Modify the commit (a text editor will open)</span>
+<span class="fu">git</span> commit --amend
+<span class="co"># Modify the commit by adding a description line for each file:</span>
+<span class="co">#prunus.fa contains all cdna sequences of prunus persica</span>
+<span class="co">#arabidopsis.fa contains all cdna sequences of Arabidopsis thaliana</span></code></pre></div>
+</div>
+<div id="remove-files-from-working-dir-or-staging-area" class="section level3">
+<h3><span class="header-section-number">2.4.4</span> Remove files from working dir or staging area</h3>
+<p>For this purpose, we will be using <strong>git rm filename</strong></p>
+<p><strong>Example 6</strong></p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> rm genes_list.txt
+<span class="fu">git</span> status
+<span class="fu">git</span> add genes_list.txt
+<span class="fu">git</span> commit -m <span class="st">&quot;deleted unwanted file&quot;</span></code></pre></div>
+</div>
 </div>
 <div id="using-branches" class="section level2">
 <h2><span class="header-section-number">2.5</span> Using branches</h2>
-<p>The default branch of a repository is called master. When we are working in parallel with other team members or developing a new project, its always a good practice to create new branches. Branching allows users to work on different features at the same time keeping stable and safe the original source code.</p>
-<p>Practicing:</p>
-<p><strong>Example 4</strong></p>
+<p>Branches are an important part of Git workflow. The default branch that git creates when you first initialize a repository is called master. When we are working in parallel with other team members or developing a new project, it is always a good practice to create new branches. Branching allows users to work on different features at the same time without worring about the safety of the master branch</p>
+<p><strong>Example 7</strong></p>
 <ol style="list-style-type: decimal">
 <li>Continuing in the initial demo_project create a new branch called test_branch</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> branch branchname</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> branch branchname</code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Lets take a look at the branches</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> branch </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> branch </code></pre></div>
 <p>Actually, the newly created branch is an exact copy of the master branch and the current branch we are working on is marked by (*).</p>
 <ol start="3" style="list-style-type: decimal">
 <li>From now on we will be working on the test_branch. Any changes we make will affect only the new one and the master branch will remain untouched. To Switch between them:</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="co"># Switch to test_branch</span>
-  <span class="fu">git</span> checkout branchname
-  
-  <span class="co"># Edit the test_branch, track and commit the changes</span>
-  <span class="fu">touch</span> script.py
-  <span class="fu">touch</span> Readme.txt
-  <span class="bu">echo</span> <span class="st">&quot;Hello, This is a simple a branching exercise&quot;</span> <span class="op">&gt;</span> Readme.txt
-  
-  <span class="fu">git</span> add -all
-  <span class="fu">git</span> commit -m <span class="st">&quot;added readme and python script to test branch&quot;</span>
-  
-  <span class="co"># Switch back to the master branch</span>
-  <span class="fu">git</span> checkout branchname
-  
-  <span class="co"># List the directory contents</span>
-  <span class="fu">ls</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Switch to test_branch</span>
+<span class="fu">git</span> checkout branchname
+
+<span class="co"># Edit the test_branch, track and commit the changes</span>
+<span class="fu">touch</span> script.py
+<span class="fu">touch</span> Readme.txt
+<span class="bu">echo</span> <span class="st">&quot;Hello, This is a simple a branching exercise&quot;</span> <span class="op">&gt;</span> Readme.txt
+
+<span class="fu">git</span> add -all
+<span class="fu">git</span> commit -m <span class="st">&quot;added readme and python script to test branch&quot;</span>
+
+<span class="co"># Switch back to the master branch</span>
+<span class="fu">git</span> checkout branchname
+
+<span class="co"># List the directory contents</span>
+<span class="fu">ls</span></code></pre></div>
 <p>As we can see, the master branch does not have the Readme.txt and script.py file as at the moment it only exists in the test_branch.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Merge the branches: whenever we are satisfied with the changes, they can be merged into the master branch</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
-  <span class="fu">git</span> merge test_branch
+<span class="fu">git</span> merge test_branch
 
-  <span class="fu">ls</span>
-  </code></pre></div>
+<span class="fu">ls</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>When the master branch is updated. The additional branch is no longer needed and can be romved</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
-  <span class="fu">git</span> branch -d test_branch
-  <span class="fu">git</span> branch
-  </code></pre></div>
+<span class="fu">git</span> branch -d test_branch
+<span class="fu">git</span> branch</code></pre></div>
 </div>
 <div id="interacting-with-github" class="section level2">
-<h2><span class="header-section-number">2.6</span> Interacting with Github</h2>
-<p>Git is version control software. Github, is a web-based Git repository hosting service. It provides a free access to git repositories To interact with Github, the first thing we need to do is create an <a href="https://github.com/join?source=login">account</a></p>
+<h2><span class="header-section-number">2.6</span> Interacting with GitHub</h2>
+<p>Git is version control software. GitHub, is a web-based Git repository hosting service. It provides a free access to git repositories. GitHub allows us to share and access repositories on the web and clone them to our local computer, so that we can work on them.</p>
+<p>To interact with GitHub, the first thing we need to do is to create an <a href="https://github.com/join?source=login">account</a>. So now is a great time to create one.</p>
 <p>Until now, we have been using Git locally. In this section, we will learn how to transfer a local repository to a Git hosting server. Means that a repository will pass from local to remote.</p>
-<p><strong>Example 5</strong></p>
-<ol style="list-style-type: decimal">
-<li>Go to github.</li>
-<li>Log in to your account.</li>
-<li>Click the new repository button in the top-right to create a public repository and initialize it with a README file</li>
-<li>Click the “Create repository” button.</li>
-<li>Push the existing repository by running the following commands</li>
-</ol>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> remote add origin <span class="op">&lt;</span>repository url<span class="op">&gt;</span>
-  <span class="fu">git</span> push -u origin master <span class="co">#you need to enter the username and password</span></code></pre></div>
+<p><strong>Example 8: Create a GitHub repo and pushing a local repo</strong></p>
+<ul>
+<li><p>Log in to your account.</p></li>
+<li><p>Start by creating a new repository, give it a name (ex: test_repository), let it public and initialize it with a README file.</p></li>
+<li><p>Now we will connect the local repo to the empty remote one that we just created on GitHub.</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
+<span class="fu">git</span> remote add origin <span class="op">&lt;</span>repository url<span class="op">&gt;</span> <span class="co">#the URL should look something like https://github.com/najlaksouri/test_repository .git</span>
+<span class="co"># Push the files to GitHb</span>
+<span class="fu">git</span> push -u origin master <span class="co">#GitHub will ask for the username and password</span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
-<li>Verify the Github accounf to check if the push was successfully done</li>
+<li>Refresh the Github account to check if the push was successfully done</li>
 </ol>
+<p>Let´s take a look at the remote command: <strong>git remote add name url</strong>:</p>
+<p>It takes 2 two arguments:</p>
+<ul>
+<li><p>A short name for the remote repository, per default, origin</p></li>
+<li><p>A remote URL, for example, <a href="https://%5Bhostname%5D/user/repo.git" class="uri">https://[hostname]/user/repo.git</a></p></li>
+</ul>
 </div>
 <div id="exercises" class="section level2">
 <h2><span class="header-section-number">2.7</span> Exercises</h2>
@@ -579,7 +603,7 @@ table, th, td <span class="kw">{</span>
 <li>Create a local repository in a new directory called exercises.</li>
 <li>create a Readme file and check the repository status.</li>
 <li>Add the Readme file to the staging area and commit the change with appropriate message.</li>
-<li>Copy the [test_code] (<a href="https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code)folder" class="uri">https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code)folder</a> in the working directory</li>
+<li>Copy the <a href="https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code">test_code</a>folder in the working directory</li>
 <li>Create and commit a configuration that ignore all files with .tpm extension and all the test_code directory</li>
 <li>Check that the configuration is well done</li>
 <li>Rename the Readme file as Readme.txt</li>
