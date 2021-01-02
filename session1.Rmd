@@ -334,7 +334,7 @@ See [here](https://bioinfoperl.blogspot.com/2011/08/decodificando-la-gene-ontolo
 Orthologous genes are derived by speciation, in contrast to paralogues, which evolve through duplication. Comparative genomic studies on a variety of clades suggest that orthologues among species typically are the most similar genes in terms of sequence, structure, domain architecture and function [@Gabaldon2013]. There are however many exceptions and thus orthology should be used as a proxy for similarity.
 In benchmarks with curated GO terms, it seems that orthology improves the annotation of sequences particularly on the Molecular Function side of the Gene Ontology [@HuertaCepas2017].
 
-[Ensembl Plants](http://plants.ensembl.org) and [PLAZA](https://bioinformatics.psb.ugent.be/plaza) are resources providing plant-specific comparative genomics tools for plants, such as orthology calls and syntenic/collinear genes.
+[Ensembl Plants](http://plants.ensembl.org) and [PLAZA](https://bioinformatics.psb.ugent.be/plaza) are resources providing plant-specific comparative genomics tools for plants, such as orthology calls and sintenic/collinear genes.
 
 # Exercises
 
