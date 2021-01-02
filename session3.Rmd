@@ -86,7 +86,7 @@ git --version #To verify that the installation has succeeded
 We have already said that by using VCS we can know which user have made the changes. For this, we need to tell Git our identity using the following command lines:
 
 ```{bash, eval=T}
-git config --global user.name "my_name"
+git config --global user.name "name"
 git config --global user.email "name@example.com"
 ```  
 
@@ -96,7 +96,7 @@ git config --list
 ```
 
 ```
-user.name=my_name
+user.name=name
 user.email=name@example.com
 ```
 
@@ -238,92 +238,127 @@ We can ask git to ignore unwanted files (e.g files with .log extensions) by crea
 
 ## Undoing the changes with Git
 
-One of the main advantages of version control system, is the ability to undo the changes at different stages.
-In this section we will list some useful Git command lines.
+One of the main advantages of version control systems, is the ability to undo the changes at different stages.
 
-Lets practice 
+Lets try out with some examples 
+
+
+### Cancel the changes before they get staged (Before git add)
+
+In case you have made some changes to a file but you are not statisifed with the modifications,you can cover back its committed state using: **git checkout filename**
 
 **Example 3** 
 
-1. **Cancel the changes in the working dir(Before git add)**: git chekout filename
 ```{bash, eval=F}
-  cd ~/demo_project
-  echo "AT2G38470" >> genes_list.txt 
-  cat genes_list.txt 
-  git chekout genes_list.txt
-  cat genes_list.txt 
+cd ~/demo_project
+echo "AT2G38470" >> genes_list.txt # add gene of A. thaliana
+cat genes_list.txt 
+git chekout genes_list.txt
+cat genes_list.txt 
 ```
 
-2. **Cancel staged changes (Before git commit)**: git reset HEAD filename
-```{bash, eval=F}
-  # Make a new change to the genes list
-  echo "transcription factor" >> genes_list.txt 
-  # Stage the changes
-  git add genes_list.txt
-  git status 
-  # Cancel the changes
-  git reset HEAD genes_list.txt
-  git status  
-```
 
-3. **Cancel the commits (after git commit)**: git revet HEAD
-Note: We saw that git log displays all the commits done, assigning a unique indentifier (HEAD) to each one.
+###  Cancel staged changes (Before git commit)
+
+To unstage undesired file,use the following git command: **git reset HEAD filename**
+
+**Example 4**
+
++ Create a bash script called script.sh containing the following line: echo "Hello, This is a Git tutorial"
+
++ Save the output of script in a text file called output.txt
+
++ Add in one go all the files to the staging area.
+
++ Check the status
+
++ Unstage the output.txt file
+
++ Check again the status
+
+
+
+
+### Modify a commit 
+
+**Example 5**
+
 ```{bash, eval=F}
-# Undo the last commit
+
+# Create a new folder
+Mkdir sequences
+# Add 2 empty files
+touch sequences/prunus.fa arabidopsis.fa
+#add and commit
+git add sequences/prunus.fa
+git commit –m “added two fasta files”
+
+# add the missing file
+git add sequences/arabidopsis.fa
+
+# Modify the commit (a text editor will open)
 git commit --amend
+# Modify the commit by adding a description line for each file:
+#prunus.fa contains all cdna sequences of prunus persica
+#arabidopsis.fa contains all cdna sequences of Arabidopsis thaliana
 
 ```
-4. **Remove files from working dir or staging area**: git rm filename
+
+
+
+### Remove files from working dir or staging area
+
+For this purpose, we will be using **git rm filename**
+
+**Example 6** 
 
 ```{bash, eval=F}
-  git rm genes_list.txt
-  git status
-  git add genes_list.txt
-  git commit -m "deleted unwanted file"
-  
+git rm genes_list.txt
+git status
+git add genes_list.txt
+git commit -m "deleted unwanted file"
+
 ``` 
 
 
 ## Using branches 
 
-The default branch of a repository is called master. When we are working in parallel with other team members or developing a new project, its always a good practice to create new branches.
-Branching allows users to work on different features at the same time keeping stable and safe the original source code.
+Branches are an important part of Git workflow. The default branch that git creates when you first initialize a repository is called master. When we are working in parallel with other team members or developing a new project, it is always a good practice to create new branches.
+Branching allows users to work on different features at the same time without worring about the safety of the master branch
 
-Practicing:
-
-**Example 4** 
+**Example 7** 
 
 1. Continuing in the initial demo_project create a new branch called test_branch
 ```{bash, eval=F}
-  git branch branchname
+git branch branchname
 ```
 
 2. Lets take a look at the branches 
 
 ```{bash, eval=F}
-  git branch 
+git branch 
 ```
 Actually, the newly created branch is an exact copy of the master branch and the current branch we are working on is marked by (*).
 
 3. From now on we will be working on the test_branch. Any changes we make will affect only the new one and the master branch will remain untouched. To Switch between them:
 
 ```{bash, eval=F}
-  # Switch to test_branch
-  git checkout branchname
-  
-  # Edit the test_branch, track and commit the changes
-  touch script.py
-  touch Readme.txt
-  echo "Hello, This is a simple a branching exercise" > Readme.txt
-  
-  git add -all
-  git commit -m "added readme and python script to test branch"
-  
-  # Switch back to the master branch
-  git checkout branchname
-  
-  # List the directory contents
-  ls
+# Switch to test_branch
+git checkout branchname
+
+# Edit the test_branch, track and commit the changes
+touch script.py
+touch Readme.txt
+echo "Hello, This is a simple a branching exercise" > Readme.txt
+
+git add -all
+git commit -m "added readme and python script to test branch"
+
+# Switch back to the master branch
+git checkout branchname
+
+# List the directory contents
+ls
 ```
 
 As we can see, the master branch does not have the Readme.txt and script.py file as at the moment it only exists in the test_branch. 
@@ -332,41 +367,55 @@ As we can see, the master branch does not have the Readme.txt and script.py file
 
 ```{bash, eval=F}
 
-  git merge test_branch
+git merge test_branch
 
-  ls
-  
+ls
+
 ```
 
 5. When the master branch is updated. The additional branch is no longer needed and can be romved 
 
 ```{bash, eval=F}
 
-  git branch -d test_branch
-  git branch
-  
+git branch -d test_branch
+git branch
+
 ```
 
-## Interacting with Github
+## Interacting with GitHub
 
-Git is version control software. Github, is a web-based Git repository hosting service. It provides a free access to git repositories  To interact with Github, the first thing we need to do is create an [account](https://github.com/join?source=login) 
+Git is version control software. GitHub, is a web-based Git repository hosting service. It provides a free access to git repositories. GitHub allows us to share and access repositories on the web and clone them to our local computer, so that we can work on them.
+
+To interact with GitHub, the first thing we need to do is to create an [account](https://github.com/join?source=login).
+So now is a great time to create one.
 
 Until now, we have been using Git locally. In this section, we will learn how to transfer a local repository to a Git hosting server. Means that a repository will pass from local to remote.
 
-**Example 5** 
 
-1. Go to github.
-2. Log in to your account.
-3. Click the new repository button in the top-right to create a public repository and initialize it with a README file
-4. Click the “Create repository” button.
-5. Push the existing repository by running the following commands
+**Example 8: Create a GitHub repo and pushing a local repo** 
+
+  + Log in to your account.
+  
+  + Start by creating a new repository, give it a name (ex: test_repository), let it public and initialize it with a README file. 
+  
+  + Now we will connect the local repo to the empty remote one that we just created on GitHub.
 
 ```{bash, eval=F}
-  git remote add origin <repository url>
-  git push -u origin master #you need to enter the username and password
-```
-6. Verify the Github accounf to check if the push was successfully done 
 
+git remote add origin <repository url> #the URL should look something like https://github.com/najlaksouri/test_repository .git
+# Push the files to GitHb
+git push -u origin master #GitHub will ask for the username and password
+```
+6. Refresh the Github account to check if the push was successfully done 
+
+
+Let´s take a look at the remote command: **git remote add name url**: 
+
+It takes 2 two arguments:
+
+  +	A short name for the remote repository, per default, origin
+  
+  +	A remote URL, for example, https://[hostname]/user/repo.git
 
 ## Exercises
 
@@ -375,7 +424,7 @@ Until now, we have been using Git locally. In this section, we will learn how to
 1. Create a local repository in a new directory called exercises.
 2. create a Readme file and check the repository status.
 3. Add the Readme file to the staging area and commit the change with appropriate message.
-4. Copy the [test_code] (https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code)folder in the working directory
+4. Copy the [test_code](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code)folder in the working directory
 5. Create and commit a configuration that ignore all files with .tpm extension and all the  test_code directory
 6. Check that the configuration is well done
 7. Rename the Readme file as Readme.txt
@@ -386,7 +435,7 @@ Until now, we have been using Git locally. In this section, we will learn how to
 
 **Exercise 2**
 
- 
+
 ## Bibliography
 
 
