@@ -325,26 +325,111 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>If you have ever worked on a project, or collaborated with other team members, then you probably have have already created different versions of documents.This is a primitive way of the version control because it's manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone.</p>
+<p>If you have ever worked on a project, or collaborated with other team members, then probably you have already created different versions of documents.This is a primitive way of the version control because it's manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone.</p>
 <p>In this session, you'll be introduced to the concept of a version control system (VCS) to maintain a detailed history of the created versions and the modifications done. By using a VCS, we can know when the changes were made and who made them. This applies to documents, images, datafiles and source code, which are the bread and butter of research.</p>
 </div>
 <div id="current-standards-of-reproducible-research" class="section level1">
 <h1><span class="header-section-number">2</span> Current standards of reproducible research</h1>
-<p>In the course of research projects there are several aspects that need to be addressed in order to ensure your work can reproduced by others. They are summarized in the next subsections.</p>
-<div id="open-data" class="section level2">
-<h2><span class="header-section-number">2.1</span> Open data</h2>
+<p>In most of the cases, publishing an open access paper is not enough for the audience to take advantage of it. The real relevance of a scientific study is its reproducibility.</p>
+<p>In fact, a reproducible work means making all the work materials: raw data, codes, figures available to readers by hosting it on an accessible platform (such as a git repository). Recently, scientific journals such Nature, PNAS, Plant physiology, etc are requiring to submit manuscripts with data accessible repositories and code links <span class="citation">(Fanelli 2018; Miyakawa 2020)</span>.</p>
+<p>By doing so, you are</p>
+<ul>
+<li>Demonstarting to the audiance the reliabilty of your findings</li>
+<li>Allowing the readers to adopt your described methods and results in their analysis</li>
+</ul>
+<p>In the course of research projects there are several aspects that need to be addressed in order to ensure your work can reproduced by others and to demonstarte the reliablity of your findings. They are summarized in the next subsections.</p>
+<div id="reproducibilty-and-open-data" class="section level2">
+<h2><span class="header-section-number">2.1</span> Reproducibilty and Open data</h2>
 <p>The data generated in your project should be archived and published. For instance, genomic data must be deposited and accessioned prior to publication in a <a href="http://www.insdc.org">INSDC</a> repository such as the <a href="https://www.ebi.ac.uk/ena/browser/home">European Nucleotide Archive</a>.Other related resources are the <a href="https://www.ebi.ac.uk/eva">European Variation Archive</a> or <a href="https://www.ebi.ac.uk/biosamples">BioSamples</a>.</p>
 <p>There are also resources such as <a href="https://figshare.com">Figshare</a>, <a href="https://zenodo.org">Zenodo</a> or <a href="https://datadryad.org">Dryad</a>, where you can accession and make citable data, documentation, code or preprints, or <a href="https://bigdata.cgiar.org/blog-post/copo-a-portal-to-describe-store-and-retrieve-plant-data">COPO</a>, which will assist you in archiving all your plant data and outputs, whatever the data types.</p>
 </div>
 <div id="reproducible-data-analyses" class="section level2">
 <h2><span class="header-section-number">2.2</span> Reproducible data analyses</h2>
-<p>In order to make sure your data analysis protocols are reproducible they should be described in the form of documented source code with versioned data and software.</p>
+<p>The basic concept for a reproducible analysis is to</p>
+<ol style="list-style-type: decimal">
+<li>Separte the directories for a better organization:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">project</span>
+│    └───<span class="ex">README.md</span> (contains general description of the project)
+│     
+└───<span class="ex">data</span>
+│   └─── <span class="ex">Raw_data</span>
+│   └─── <span class="ex">processed_data</span>
+│
+└───<span class="ex">codes</span>
+│    └─── <span class="ex">R_scripts</span>
+│         │   <span class="ex">plot.R</span>
+│         │   <span class="ex">annotation.R</span>
+│ 
+│    └─── <span class="ex">makefiles</span>
+│         │   <span class="ex">kmer.mk</span>
+│         │   <span class="ex">peak_motifs.mk</span>
+│
+└─── <span class="ex">results</span>
+         │ <span class="ex">figures</span>
+<span class="bu">.</span>        │ <span class="ex">tables</span>
+<span class="ex">.</span>
+<span class="ex">.</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Perform every analysis using well-documented coding scripts with versioned data and softwares.</li>
+</ol>
+<p>Herein we present a simple example of a makefile script:</p>
+<ol style="list-style-type: decimal">
+<li>Create a directory called demo_project</li>
+<li>Copy and save the makefile script as get_sequences.mk</li>
+<li>Try to run the makefile targets using <strong>make -s -f makefilename target</strong></li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">################################################################</span>
+<span class="co">## This makefile is to retrieve 6 genes ids and to assign their</span>
+<span class="co">## corresponding fasta sequences </span>
+<span class="co">##</span>
+<span class="co">##################################################################</span>
+
+<span class="va">MAKEFILE=</span>~/demo_project/get_sequences.mk
+<span class="va">MAKE=</span>make <span class="ex">-s</span> -f <span class="va">${MAKEFILE}</span>
+
+<span class="co">## Define parameters</span>
+<span class="va">DATA=</span>~/demo_project/sequences
+<span class="va">RESLTS=</span>~/demo_project/results
+<span class="va">ARAB_IDS=${DATA}</span>/genelist.txt
+<span class="va">ARAB_SEQ=${DATA}</span>/arabidopsis_cdna.fasta
+
+<span class="ex">dir</span>:
+    <span class="ex">@echo</span> <span class="st">&quot;Creating sequences and results directories&quot;</span>
+    <span class="fu">mkdir</span> -p <span class="va">${DATA}</span>  #the -p falg means create directory a if it doesn<span class="st">'t exist</span>
+<span class="st">    mkdir -p ${RESLTS}</span>
+
+<span class="st">get-data:</span>
+<span class="st">    @echo &quot;getting the data from the github repo&quot;</span>
+<span class="st">  wget https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data/genelist.txt/</span>
+<span class="st">    wget https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data/arabidopsis_cdna.fasta</span>
+<span class="st">    </span>
+<span class="st">    @echo</span>
+<span class="st">    @echo &quot;moving the data to the sequence folder&quot;</span>
+<span class="st">    mv genelist.txt ${DATA}</span>
+<span class="st">    mv arabidopsis_cdna.fasta ${DATA}</span>
+
+<span class="st">get-ids:</span>
+<span class="st">    @echo</span>
+<span class="st">    @echo &quot;Generating 10 random genes from the gene list file&quot;</span>
+<span class="st">    shuf -n 10 ${ARAB_IDS} -o ${RESLTS}/random_genes.txt</span>
+<span class="st">    @echo &quot;${RESLTS}/random_genes.txt&quot;</span>
+
+<span class="st">get-fasta:</span>
+<span class="st">    @echo</span>
+<span class="st">    @echo &quot;Assign fasta sequence to each gene&quot;</span>
+<span class="st">    cat ${RESLTS}/random_genes.txt | xargs -n 1 samtools faidx ${ARAB_SEQ} &gt; ${RESLTS}/random-sequences.fna</span>
+<span class="st">    @echo &quot;${RESLTS}/random_genes.txt&quot;</span>
+<span class="st">    </span>
+<span class="st"># Run all targets at one go</span>
+<span class="st">all: dir get-data get-ids get-fasta</span>
+<span class="st">    </span></code></pre></div>
 <p>software versions, data releases makefile, snakemake, nextflow, docker, conda, galaxy</p>
 </div>
 </div>
 <div id="git-overview" class="section level1">
 <h1><span class="header-section-number">3</span> Git overview</h1>
-<p>We will be using one of the most popular version control system called <a href="https://git-scm.com">Git</a> and we will show you how to interact with Git through the command line or terminal.</p>
+<p>We will be using one of the most popular version control system called <a href="https://git-scm.com">Git</a> and we will show you how to interact with Git through the command line or terminal <span class="citation">(Bryan 2018)</span>.</p>
 <p>We will also learn how to set up an account with the service called <a href="https://github.com">GitHub</a>, so that you can create your own remote repositories to store your code and data.</p>
 <p>Git is a version control program that keeps track of any changes you make to your files and directories. There are two main types of version control systems:</p>
 <ul>
@@ -385,8 +470,7 @@ user.email=name@example.com</code></pre>
 <h3><span class="header-section-number">3.2.1</span> Initializing a Git repository</h3>
 <p>To create a new local Git repository, we will first create a directory for a project then run the <strong><code>git init</code></strong> command. Doing so, a hidden folder “./git&quot; will be created in your current working directory. This is called a Git repository.</p>
 <p>This repository is considered as a storage center where the git software will tracks all changes made and builds a history over time. In other terms, if we delete the .git folder, then the project´s history will be deleted.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">mkdir</span> ~/demo_project
-<span class="bu">cd</span> ~/demo_project
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">cd</span> ~/demo_project
 <span class="fu">git</span> init
 <span class="fu">ls</span> -la <span class="co">#check for the hidden directories</span>
 <span class="fu">ls</span> -l <span class="co">#check the files inside the .git folder</span></code></pre></div>
@@ -628,8 +712,17 @@ table, th, td <span class="kw">{</span>
 <div id="bibliography" class="section level2 unnumbered">
 <h2>Bibliography</h2>
 <div id="refs" class="references">
+<div id="ref-Bryan2017">
+<p>Bryan, Jennifer. 2018. “Excuse Me, Do You Have a Moment to Talk About Version Control?” <em>The American Statistician</em> 72 (1). Taylor &amp; Francis: 20–27. doi:<a href="https://doi.org/10.1080/00031305.2017.1399928">10.1080/00031305.2017.1399928</a>.</p>
+</div>
 <div id="ref-10.5555/2695634">
 <p>Chacon, Scott, and Ben Straub. 2014. <em>Pro Git</em>. 2nd ed. USA: Apress.</p>
+</div>
+<div id="ref-Fanelli2628">
+<p>Fanelli, Daniele. 2018. “Opinion: Is Science Really Facing a Reproducibility Crisis, and Do We Need It to?” <em>Proceedings of the National Academy of Sciences</em> 115 (11). National Academy of Sciences: 2628–31. doi:<a href="https://doi.org/10.1073/pnas.1708272114">10.1073/pnas.1708272114</a>.</p>
+</div>
+<div id="ref-Miyakawa2020">
+<p>Miyakawa, Tsuyoshi. 2020. “No Raw Data, No Science: Another Possible Source of the Reproducibility Crisis.” <em>Molecular Brain</em> 13 (1). doi:<a href="https://doi.org/10.1186/s13041-020-0552-2">10.1186/s13041-020-0552-2</a>.</p>
 </div>
 </div>
 </div>
