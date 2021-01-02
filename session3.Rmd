@@ -37,20 +37,41 @@ knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE,
                       comment = "", results="markup")
 ```
 
-# Introduction
+# Introduction 
 
-If you have ever worked on a project, or collaborated with other team members, then you have already created different versions of your document to update it.  
+If you have ever worked on a project, or collaborated with other team members, then you probably have have already created different versions of documents.This is a primitive way of the version control because it's manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone. 
 
-This is a primitive way of the version control because it's manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and super error-prone. 
+In this session, you'll be introduced to the concept of a version control system (VCS) to maintain a detailed history of the created versions and the modifications done. By using a VCS, we can know when the changes were made and who made them. This applies to documents, images, datafiles and source code, which are the bread and butter of research.
 
-In this session, you'll be introduced to the concept of version control system (VCS) to maintain a detailed history of the created versions and the modifications done. By using a VCS, we can know when the changes were made and who made them.
+# Current standards of reproducible research
 
-We will be using one of the most popular version control system called [Git](https://git-scm.com/) and we will show you how to interact with Git through the command lines.
+In the course of research projects there are several aspects that need to be addressed in order to ensure your work can reproduced by others. They are summarized in the next subsections.
 
-We will also learn how to set up an account with the service called [GitHub](https://github.com/), so that you can create your own remote repositories to store your code and data.
+## Open data
+
+The data generated in your project should be archived and published. For instance, genomic data must be deposited and accessioned prior to publication in a [INSDC](http://www.insdc.org) repository such as the [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home).Other related resources are the [European Variation Archive](https://www.ebi.ac.uk/eva) or [BioSamples](https://www.ebi.ac.uk/biosamples).
+
+There are also resources such as [Figshare](https://figshare.com), [Zenodo](https://zenodo.org) or [Dryad](https://datadryad.org), where you can accession and make citable data, documentation, code or preprints, or [COPO](https://bigdata.cgiar.org/blog-post/copo-a-portal-to-describe-store-and-retrieve-plant-data), which will assist you in archiving all your plant data and outputs, whatever the data types.
+
+## Reproducible data analysis
+
+Software
 
 
-# Git Overview
+
+
+software versions, data releases
+Docker, version-control, github, zenodo, dryad,
+makefile, snakemake, nextflow
+markdown
+
+
+
+# Git overview
+
+We will be using one of the most popular version control system called [Git](https://git-scm.com) and we will show you how to interact with Git through the command line or terminal.
+
+We will also learn how to set up an account with the service called [GitHub](https://github.com), so that you can create your own remote repositories to store your code and data.
 
 Git is a version control program that keeps track of any changes you make to your files and directories.
 There are two main types of version control systems:
@@ -59,13 +80,11 @@ There are two main types of version control systems:
 
   + The distributed model: each user has a copy of entire repository on their computer and these repositroies can easily be synchronized.
 
-Git is a free distributed model, widely used in the programming world. It was developed in 2005 by Linus Torvalds, the creator of the Linux operating system kernel [@10.5555/2695634]. 
-
-(See figure below adapted from [beanstalkapp](http://guides.beanstalkapp.com/version-control/intro-to-version-control.html)).
+Git is a free distributed model, widely used in the programming world. It was developed in 2005 by Linus Torvalds, the creator of the Linux operating system kernel [@10.5555/2695634]. The next figure was adapted from [beanstalkapp](http://guides.beanstalkapp.com/version-control/intro-to-version-control.html):
 
 ![](./pics/vcs.png)
 
-## Installation and getting start with Git
+## Installation and getting starte with Git
 
 The first step is to check whether you have the Git installed on your computer by running:
 
