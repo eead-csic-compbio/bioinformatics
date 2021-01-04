@@ -11,14 +11,6 @@ output:
     theme: cerulean
     toc: yes
     toc_float: yes
-  ioslides_presentation:
-    css: ./comm/bkgr.css
-    fig_caption: yes
-    incremental: yes
-    logo: ./comm/quantBiotech.png
-    smaller: yes
-    toc: yes
-    toc_depth: 3
   pdf_document:
     fig_caption: yes
     highlight: zenburn
