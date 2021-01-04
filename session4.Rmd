@@ -35,6 +35,7 @@ knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE,
 <!-- 
 pecificity, sensitivity, recall, precision,
 Roc, falsos neg, cross validation, sobreentrenamiento
+balanced or unbalanced datasets
 https://www.kaggle.com/milesh1/receiver-operating-characteristic-roc-curve-in-r/log?select=winequality-red.csv
 -->
 
