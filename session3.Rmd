@@ -1,5 +1,8 @@
 ---
 title: "Session 3: Reproducible analysis practices"
+author:
+- affiliation: Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain 
+  name: Najla Ksouri, Bruno Contreras Moreira
 output:
   html_document:
     fig_caption: yes

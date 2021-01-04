@@ -1,5 +1,8 @@
 ---
 title: "Session 1: Annotation of coding sequences"
+author:
+- affiliation: Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain 
+  name: Bruno Contreras Moreira, Najla Ksouri
 output:
   html_document:
     fig_caption: yes
