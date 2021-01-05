@@ -41,11 +41,21 @@ https://www.kaggle.com/milesh1/receiver-operating-characteristic-roc-curve-in-r/
 
 # Introduction
 
-In this session we will continue annotating sequences, but now with a focus on non-coding sequences. If we revisit the next figure, I hope you'll see that non-coding sequences are usually the largest fraction of genomes [@Makinen2015]:
+In this session we will learn about benchmarks, which are experiments designed to measure the performance of algorithms, methodologies or statistical models. In particular, we will focus on classification problems. These are problems where data instances are assigned to a set of classes.  Note that methods that produce numeric scores can often be disguised as classifiers by adding rules that assign scores to classes.
 
-![](./pics/MakinenFigure1.2.jpg)
+## Definitions
 
-For instance, the genome of the model grass *Brachypodium distachyon* is about 270Mbp long, but its genes take only about 122Mbp. The difference increases as the genomes grow larger, as you can see in the next table:
+**Data instance:** individual observation within a data class. Exemple: a phenotype measurement on a plant, or from a single leaf.
+
+**Training set:** Set of data used to train a model or algorithm. 
+
+**Validation set:** Fraction of the data is used to check whether the trained model produces sensible output.
+
+**Test set:** Set of data used to measure the performance of a trained model or algorithm.
+
+![Examples of ways to partition a dataset. Dataset A only uses a training set and a test set. The test set would be used to test the trained model. For Dataset B, the validation set would be used to test the trained model, and the test set would evaluate the final model (@Km2020).](./pics/ML_dataset_training_validation_test_sets.png)
+
+
 
 ```{r gene_table}
 annot.stats <- read.csv(file="test_data/Ensembl_stats.tsv", sep="\t", comment.char=";")
@@ -63,7 +73,7 @@ The annotation of Transposable Elements (TEs) within plant genomes can help in t
 Usually TEs are annotated by alignment to curated libraries of repeated elements such as [REdat](https://pgsb.helmholtz-muenchen.de/plant/recat) [@Nussbaumer2013], where each sequence or element is classified according to the Wicker classification [@Wicker2007]. 
 Class I elements are "copy and paste", while Class II are "cut and paste". The next figure summarizes this taxonomy of TEs, which ressembles that of protein domains:
 
-![](./pics/WickerTE.png)
+
 
 More recently, there are other approaches which don't require any curation; instead, these simply identify repeated elements by counting words ($K$-mers) along the genome. An example of such tools is the [Repeat Detector](https://github.com/BioinformaticsToolsmith/Red) (Red) [@Girgis2015].
 
