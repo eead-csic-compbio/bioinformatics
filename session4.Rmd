@@ -32,10 +32,6 @@ knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE,
                       comment = "", results="markup")
 ```
 
-<!-- 
-https://www.kaggle.com/milesh1/receiver-operating-characteristic-roc-curve-in-r/log?select=winequality-red.csv
--->
-
 # Introduction
 
 In this session we will learn about benchmarks, which are experiments designed to measure the performance of algorithms, methodologies or statistical models. In particular, we will focus on classification problems. These are problems where data instances are assigned to a set of classes.  Note that methods that produce numeric scores can often be disguised as classifiers by adding rules that assign scores to classes. Neurons in neural nets use sigmoid functions for this, see [here](https://bioinfoperl.blogspot.com/2020/04/propagacion-en-una-red-neuronal.html) (in Spanish).
@@ -70,10 +66,11 @@ $$ spec = \frac{TN}{TN+FP} $$
 
 ## A benchmark example
 
+In this example, adapted from [@Miles2018], we will be using a dataset of red wines first published by [@Cortez2009]:
 
-```{r gene_table}
-annot.stats <- read.csv(file="test_data/Ensembl_stats.tsv", sep="\t", comment.char=";")
-kable(annot.stats,format.args = list(big.mark=","))
+```{r bench1}
+wines <- read.csv(file="test_data/red_wine_quality.csv", comment.char=";")
+kable(wines[1:5,])
 ```
 
 ## Exercise
