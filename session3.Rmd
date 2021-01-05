@@ -26,131 +26,334 @@ fontsize: 11pt
 bibliography: bib_myarticles_md.bib
 ---
 
-```{r knitr setup, include=FALSE,  eval=TRUE, echo=FALSE, warning=FALSE}
+```{r knitr setup, include=T,  eval=TRUE, echo=FALSE, warning=FALSE}
+#install.packages("remotes")
+#remotes::install_github("rlesur/klippy")
+klippy::klippy(position = c('top', 'right'), tooltip_message = 'Click to copy', tooltip_success = 'Copied')
 library(knitr)
-knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE, 
+knitr::opts_chunk$set(eval=T, cache=FALSE, message=FALSE, warning=FALSE, 
                       comment = "", results="markup")
 ```
 
-# Introduction 
+# Introduction
+In most of the cases, publishing an open access paper is not enough for the audience to take advantage of it. The real relevance of a scientific study is its reproducibility.
 
-If you have ever worked on a project, or collaborated with other team members, then probably you have already created different versions of documents.This is a primitive way of the version control because it's manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone. 
+In fact, a reproducible work means making all the work materials: raw data, codes, figures, results available to readers by hosting it on an accessible platform.
 
-In this session, you'll be introduced to the concept of a version control system (VCS) to maintain a detailed history of the created versions and the modifications done. 
-By using a VCS, we can know when the changes were made and who made them. This applies to documents, images, datafiles and source code, which are the bread and butter of research.
+Doing so, you are
 
-# Current standards of reproducible research
+•	Demonstrating to the audience the transparency of your findings.
 
-In  most of the cases, publishing an open access paper is not enough for the audience to take advantage of it. The real relevance of a scientific study is its reproducibility. 
+•	Allowing the readers to apply your described methods and results on their own data.
 
-In fact, a reproducible work means making all the work materials: raw data, codes, figures available to readers by hosting it on an accessible platform (such as a git repository). Recently, scientific journals such Nature, PNAS, Plant physiology, etc are requiring to submit manuscripts with data accessible repositories and code links [@Fanelli2628; @Miyakawa2020].
+•	Increasing the visibility and the citation of your study.
 
-By doing so, you are
+Recently, many scientific journals such Nature, PNAS, Plant physiology, etc. are requiring to submit manuscripts with data accessible repositories and code links (Fanelli 2018; Miyakawa 2020).
+In this session we will be using a set of tools to develop a reproducible research. 
 
-  * Demonstarting to the audiance the reliabilty of your findings
-  * Allowing the readers to adopt your described methods and results in their analysis 
+# The steps towards a reproducible research
 
-In the course of research projects there are several aspects that need to be addressed in order to ensure your work can reproduced by others and to demonstarte the reliablity of your findings. They are summarized in the next subsections.
+A reproducible analysis doesn’t emerge by sharing the code after the project is done. It’s a series of tasks required, **before**, **during**, and **after** finishing the data analysis.
 
-## Reproducibilty and Open data
+## Good practices before starting the analysis
 
-The data generated in your project should be archived and published. For instance, genomic data must be deposited and accessioned prior to publication in a [INSDC](http://www.insdc.org) repository such as the [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home).Other related resources are the [European Variation Archive](https://www.ebi.ac.uk/eva) or [BioSamples](https://www.ebi.ac.uk/biosamples).
+The first step needed to ensure the reproducibilty  is a good organization of folders and files. Indeed, it is laborious to reproduce a research when data are disorganized or missing.
 
-There are also resources such as [Figshare](https://figshare.com), [Zenodo](https://zenodo.org) or [Dryad](https://datadryad.org), where you can accession and make citable data, documentation, code or preprints, or [COPO](https://bigdata.cgiar.org/blog-post/copo-a-portal-to-describe-store-and-retrieve-plant-data), which will assist you in archiving all your plant data and outputs, whatever the data types.
+### Recommendations for project organization.
 
-## Reproducible data analyses
++ Have a single directory containing everything related to you project.
 
-The basic concept for a reproducible analysis is to 
++ Save a copy of your raw data
 
-1. Separte the directories for a better organization:
++ Separate raw and processed data.
+
++ Define the directories (input, scripts, results…)
+
++ Use a simple and descriptive file names (without special characters or space).
+
++ Ovoid using “final” when naming the files.
+
++ Get used to create a Readme file for your project. 
+(Readme is a descriptive file containing set of useful information about a project: title, author, data, software used, fundings ...)
+
++ Keep a  back up of the data to minimize risk of data loss (e.g external hard drive)
+
+**Example 1: a basic project directory structure**
 
 ```{bash, eval=F}
+
 project
-│    └───README.md (contains general description of the project)
-│     
-└───data
-│   └─── Raw_data
-│   └─── processed_data
+│   README.md
 │
 └───codes
-│    └─── R_scripts
-│         │   plot.R
-│         │   annotation.R
-│ 
-│    └─── makefiles
-│         │   kmer.mk
-│         │   peak_motifs.mk
-│
-└─── results
-         │ figures
-.        │ tables
-.
-.
+│   │   
+│   └───R_scripts
+│       │   density_plot.R
+│       │   heatmap.R
+│       │   ..
+│   │
+│   └───Makefiles
+│       │   peak_motifs.mk
+│       │   gene_annotation.mk
+│           ...
+│   
+└───data
+│   │   
+│   └───raw_data
+│   │
+│   └───processed_data
+│         
+└───results       
+│   │   
+│   └───figures
+│   │
+│   └───tables
+│         
+└───manuscript
+└───bibliography
+...
+
+
+
 ```
-2. Perform every analysis using well-documented coding scripts with versioned data and softwares.
 
-Herein we present a simple example of a makefile script:
+ 
 
-1. Create a directory called demo_project
-2. Copy and save the makefile script as get_sequences.mk
-3. Try to run the makefile targets using **make -s -f makefilename target**
+## Good practices during the analysis
 
+### Coding scripts
+
+The basic concept of reproducibility is to run the analysis using coding scripts (R.scripts, makefiles, etc) with detailed documentation for each step.
+
+** Recommendations for writing codes**
+
+  -	Write a clear code for each task (cleaning data, aligning reads, differential analysis, plotting …) using meaningful using meaningful file names
+  
+  -	Comments need to be informative and easy to understand for non-specialist readers.
+  
+  -	Output should be redirected automatically to the corresponding directories.
+  
+  -	Specify the software’s names and versions.
+  
+  -	Use clear variable names.
+
+
+**Example 2: good code vs. bad Rscript **
+
+
+herein we will compare two Rscripts written for the same purpose
+
+1. Check both R-scripts and choose which one is more informative for you
+
+```{r, include=T, eval=FALSE}
+
+required.libs <- c("ggplot2","gridExtra","ggridges")
+for (lib in required.libs){
+  library(lib, character.only = T)
+}
+
+data <- read.table("https://raw.githubusercontent.com/eead-csic-compbio/bioinformatics/main/test_data/binding_sites.tab",header=T, dec = ".", sep = "\t")
+
+p <- ggplot(data,aes(start, algorithm, fill = algorithm)) +
+  geom_density_ridges_gradient(scale = 1, show.legend = T) + theme_ridges() + 
+  theme(legend.position = "none") + labs(x = "upstream region",y = "density of the sites") +
+  scale_fill_manual(values = c("#868686FF","#fdef64"))+
+  scale_x_continuous (limit = c(-1500, +200),breaks = c(-1500,-500,0,+200)) + 
+  annotate("text", x = c(-250,-250), y = c(2.5,1.5), label = c("CAMTA", "CAMTA"))
+p
+
+```
+
+***
+
+```{r, eval=F}
+# @author:  username@gmail.com
+# @date: 04/01/2020
+# @description this script creates a Ridgeline plots showing the density distrubution of motif sites
+
+# Install the packages if not already installed then import the libraries
+required.libs <- c("ggplot2","gridExtra","ggridges")
+
+for (lib in required.libs){
+  if (!require(lib, character.only = T)){
+    install.packages(lib)
+    library(lib, character.only = T)
+  }
+}
+
+# Reading a text file directly from github then view data
+scan_data <- read.table("https://raw.githubusercontent.com/eead-csic-compbio/bioinformatics/main/test_data/binding_sites.tab",header=T, dec = ".", sep = "\t")
+
+head(scan_data)
+
+# Open a pdf file where the plot will be saved
+png(file = "~/demo_project/results/figures/densityplot.png", width=600, height=350) 
+
+# Create a unique density plot for each algorithm
+density_plot <- 
+  ggplot(scan_data,aes(start, algorithm, fill = algorithm))+
+  geom_density_ridges_gradient(scale = 1, show.legend = T) +
+  # Choose the theme
+  theme_ridges() + 
+  # Dont show the legend
+  theme(legend.position = "none") +
+  # Add axes description
+  labs(x = "upstream region",y = "density of the sites") +
+  # Changes the colors
+  scale_fill_manual(values = c("#868686FF","#fdef64"))+
+  # Customize continuous x and control the breaks
+  scale_x_continuous (limit = c(-1500, +200),breaks = c(-1500,-500,0,+200)) + 
+  # Add the appropiate annotation 
+  annotate("text", x = c(-250,-250), y = c(2.5,1.5), label = c("CAMTA", "CAMTA"))
+
+# Close the plot file 
+dev.off()
+message("; density plot done and saved")
+
+# Display the plot
+density_plot
+
+#display all packages used and their version
+sessionInfo()
+```
+
+
+
+### Automate the analysis process
+
+When multiple commands are needed, it’s better to compile them into a single script specifying the order in which the instructions needs to be executed and indicating the software required for each step. A common way to is to use makefiles
+
+**Example 3: Using Makefiles**
+
+1. Use mkdir to create a direcotory called demo_project and a subfolder demo_project/scripts.
+
+2. Copy and save the below makefile as get_sequences.mk in demo_project/scripts.
+
+3. To execute the makefile you need to indent the target-related instructions using `tabs` as they part of the syntax. Use vim or any text editor for this
+
+3. Before running this code, you need first to install samtools program.
 
 ```{bash, eval=F}
-################################################################
-## This makefile is to retrieve 6 genes ids and to assign their
-## corresponding fasta sequences 
-##
-##################################################################
-
-MAKEFILE=~/demo_project/get_sequences.mk
-MAKE=make -s -f ${MAKEFILE}
-
-## Define parameters
-DATA=~/demo_project/sequences
-RESLTS=~/demo_project/results
-ARAB_IDS=${DATA}/genelist.txt
-ARAB_SEQ=${DATA}/arabidopsis_cdna.fasta
-
-dir:
-	@echo "Creating sequences and results directories"
-	mkdir -p ${DATA}  #the -p falg means create directory a if it doesn't exist
-	mkdir -p ${RESLTS}
-
-get-data:
-	@echo "getting the data from the github repo"
-  wget https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data/genelist.txt/
-	wget https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data/arabidopsis_cdna.fasta
-	
-	@echo
-	@echo "moving the data to the sequence folder"
-	mv genelist.txt ${DATA}
-	mv arabidopsis_cdna.fasta ${DATA}
-
-get-ids:
-	@echo
-	@echo "Generating 10 random genes from the gene list file"
-	shuf -n 10 ${ARAB_IDS} -o ${RESLTS}/random_genes.txt
-	@echo "${RESLTS}/random_genes.txt"
-
-get-fasta:
-	@echo
-	@echo "Assign fasta sequence to each gene"
-	cat ${RESLTS}/random_genes.txt | xargs -n 1 samtools faidx ${ARAB_SEQ} > ${RESLTS}/random-sequences.fna
-	@echo "${RESLTS}/random_genes.txt"
-	
-# Run all targets at one go
-all: dir get-data get-ids get-fasta
-	
+sudo apt update
+sudo apt install samtools
+samtools --version
 ```
 
+4. The makefile can be executed target by target using **make -s -f makefilename target_name** or at one go by typing **make -s -f makefilename all**
+
+5. Check the structure organization of your project
+
+```{bash eval=F, class.source='klippy'}
+
+###########################################################################################
+## This makefile is to retrieve 5 random gene_ids from a list of arabidopsis genes, 
+## then will assign the corresponding fasta sequence to each gene. 
+## Gene list will be downloaded from a github and fasta sequence from EnsemblPlants
+###########################################################################################
+
+## Define the direcotries
+DATA=~/demo_project/sequences
+INPUT=~/demo_project/input
+RESLTS=~/demo_project/results
+FIGURES=~${RESLT}/figures
+ARAB_IDS=${INPUT}/arabidopsis_genes.txt
+ARAB_SEQ=${DATA}/Arabidopsis_thaliana.TAIR10.cdna.all.fa
 
 
-software versions, data releases
-makefile, snakemake, nextflow, docker, conda, galaxy
+## Start with the targets
+
+# Create the directories
+dir:# this is called target and all command lines dor each target need to be identend with a tab
+  @echo "Creating sequences and results directories"
+  mkdir -p ${DATA}
+  mkdir -p ${RESLTS}
+  mkdir -p ${INPUT}
+
+# Download the data
+get-data:
+  @echo "Getting the gene list from github"
+  wget https://raw.githubusercontent.com/eead-csic-compbio/bioinformatics/main/test_data/arabidopsis_genes.txt
+  @echo "getting the Arabidopsis_thaliana cdna sequences from ensemblPlants"
+  wget ftp://ftp.ensemblgenomes.org/pub/plants/release-49/fasta/arabidopsis_thaliana/cdna/Arabidopsis_thaliana.TAIR10.cdna.all.fa.gz
+  @echo "Unzipping the cdna file"
+  gunzip Arabidopsis_thaliana.TAIR10.cdna.all.fa.gz
+  @echo
+  @echo "Moving the data to their corresponging folders"
+  mv arabidopsis_genes.txt ${INPUT}
+  mv Arabidopsis_thaliana.TAIR10.cdna.all.fa ${DATA}
+
+# Get random gene ids
+get-ids:
+  @echo
+  @echo "Generating 5 random genes from the gene list"
+  shuf -n 5 ${ARAB_IDS} -o ${RESLTS}/random_genes.txt
+  @echo "${RESLTS}/random_genes.txt"
+
+# Assign fasta
+get-fasta:
+  @echo
+  @echo "Assign fasta sequence to each gene"
+  cat ${RESLTS}/random_genes.txt | xargs -n 1 samtools faidx ${ARAB_SEQ} > ${RESLTS}/random-sequences.fna
+  @echo "${RESLTS}/random-sequences.fna"
+
+# Run all targets at one go
+all: dir get-data get-ids get-fasta
+  @echo "tasks successfully done"
+
+```
+
+As we can see  instead of executing the instructions one by one in your terminal, searching for the path of each file you want to use, save the results etc, a makefile can run your entire workflow in one-button operation and give you a well organized output. So better to let the computer work for you!.
+
+It allows you to modify any step and regenerate the results with minimal effort. In case of error, you can easy track and fix the bug as the makefile won’t run if something is missed.
 
 
-# Git overview
+### Turn your scripts into reproducible reports
+
+Generally scripts are very clear for their author not for the others. It is very  helpful and recommended to convert codes to a reproducible report. This report is a single file containing the code and the documentation at the same time. Indeed, when the code is executed a document is generated including the documented command lines and any outputs(e.g. figures, tables…).
+The code is what the machine will read and execute and the documentation is what readers need to understand what we are doing and why we are doing it.
+
+This simultaneous construction of a code and its detailed documentation is called literate programming. It was introduced by [@Knuth84] with the purpose that make computer programs written in human-readable way so they can be easly understood.
+
+There are several literate programming tools: [Jupiter notebooks](https://jupyter.org/) for python users and [R Markdown](https://rmarkdown.rstudio.com/) and [knitr](https://yihui.org/knitr/) for R users. They both work in similar way integrations sections of code and sections of text.
+
+In this session, we will be using the Rmarkdown to generate a html report.
+
+R Markdown file, a plain text file that has the extension .Rmd. The rmarkdown package converts this file into a report, most commonly into HTML or Pdf.
+
+**Example 4: Writing reports using RMarkdown**
+
+1. Install R and RStudio
+
+2. To get RMarkdown working in RStudio, the first thing you need is the rmarkdown package
+
+```{r, eval=F}
+install.packages("rmarkdown")
+library(rmarkdown)
+```
+
+3. Create an Rmarkdown file, fill the title and  author name then choose a html output
+
+
+![](./pics/rmarkdown_launching.png){height=70% width=70% } 
+
+***
+4. The newly created .Rmd file comes with basic instructions, to create your own Rmarkdown script delete all except
+the YAML header section enclosed by three dashes (---) and containing by default; title, author, date and output format.
+
+5. Compile the .Rmd file to .html by clicking on the Knit button 
+
+6. Insert R code chunk (insert ---> R) with the documented Rscript of section 2.2.1 and click on knit
+
+7. For additional details about Rmardown syntax and code chunks, check this [guide](ruleshttps://www.markdownguide.org/basic-syntax/)
+
+
+### Use version control systems
+
+If you have ever worked on a project, or collaborated with other team members, then probably you have already created different versions of documents.This is a primitive way of the version control because it’s manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone.
+
+In this session, you’ll be introduced to the concept of a version control system (VCS) to maintain a detailed history of the created versions and the modifications done. By using a VCS, we can know when the changes were made and who made them. This applies to documents, images, datafiles and source code, which are the bread and butter of research.
+
+#### Git overview
 
 We will be using one of the most popular version control system called [Git](https://git-scm.com) and we will show you how to interact with Git through the command line or terminal [@Bryan2017].
 
@@ -167,7 +370,7 @@ Git is a free distributed model, widely used in the programming world. It was de
 
 ![](./pics/vcs.png)
 
-## Installation and getting starte with Git
+#### Installation and getting started with Git
 
 The first step is to check whether you have the Git installed on your computer by running:
 
@@ -187,7 +390,7 @@ git --version #To verify that the installation has succeeded
 
 We have already said that by using VCS we can know which user have made the changes. For this, we need to tell Git our identity using the following command lines:
 
-```{bash, eval=T}
+```{bash, eval=F}
 git config --global user.name "name"
 git config --global user.email "name@example.com"
 ```  
@@ -202,7 +405,7 @@ user.name=name
 user.email=name@example.com
 ```
 
-## Setting up a Git repository
+#### Setting up a Git repository
 
 Git stores all related-data of a particular project in a storge space called Git repository ('repo', for short).
 
@@ -212,9 +415,9 @@ There are 2 ways to start with a Git repository:
 2. Cloning an existing one from a remote server
 
 
-### Initializing a Git repository
+##### Initializing a Git repository
 
-To create a new local Git repository, we will first create a directory for a project then run the **`git init`** command.  Doing so, a hidden folder “./git" will be created in your current working directory. This is called a Git repository. 
+To create a new local Git repository, we will go to the demo_project and run the **`git init`** command.  Doing so, a hidden folder “./git" will be created in your current working directory. This is called a Git repository. 
 
 This repository is considered as a storage center where the git software will tracks all changes made and builds a history over time. In other terms, if we delete the .git folder, then the project´s history will be deleted.  
 
@@ -226,7 +429,7 @@ ls -l #check the files inside the .git folder
 ```
 
 
-### Cloning an existing remote Repository from GitHub
+##### Cloning an existing remote Repository from GitHub
 A remote repository is a repository that is hosted in a data center or in the cloud. There are many Git repositories hosting service such as GitHub: owned by Microsoft, GitLab: owned by GitLab and BitBucket. In this session, we will use [GitHub](https://github.com/).
 
 For example; if you would like to contribute to an existing project hosted on GitHub or a similar, the easiest way to do so is to copy (clone) the remote repo on your local machine.
@@ -244,16 +447,16 @@ Per default, the git clone will create a local directory with the same name as t
 
 ```{bash, eval=F}
 git clone Repository URL 
-git clone Repository URL <new-folder-name
+git clone Repository URL <new-folder-name>
 ```
 
 **Note:** git init and git clone are one-time operations needed for the initial setup of the repository
 
-## Adding and commiting the changes
+#### Adding and commiting the changes
 
 At this point, we need to know that Git has 3 main componemts:
 
-Working directory -> Staging area-> git repository. 
+Working directory -----> Staging area -----> git repository. 
 
 If we add or modify certain files in the working directory, Git won’t notice it unless we ask the program to track these changes using **git add**. Doing so, the changes will be moved from the working directory to the staging area.
 Next, to store the modifications in the git repository, we simply use **git commit**.
@@ -268,26 +471,28 @@ Next, to store the modifications in the git repository, we simply use **git comm
 Let´s see this with an example
 
 
-**Example 1**  
+**Example 5**  
 
   1. Go to the ~/demo_project directory and check the status the working dir by typing  **`git status`**.
-  2. Use touch to create a new empty file called index.html
-  3. Run the **`git status`** once again and try to compare between the Status messages.
-  4. Add the index.html to the staging area using the **`git add`** command.
+  2. add the untracked folder to the staging area using **`git add`** 
   
 ```{bash, eval=F}
-  git add index.html
-  git add --all #To add edited files at the same time
+  git add filename 
+  git add --all #To add all files at the same time
 ```
-  5. Check again the status.
-  6. Commit the changes typing "adding an empty index file".
+  3. Check again the status and try to compare between the Status messages.
+  4. Commit the changes typing "adding untracked data".
   
 ```{bash, eval=F}
   git commit -m <commit message>
-```  
- 7. Edit the index.html file pasting these lines then run **git diff**. What does git diff do?
+```   
  
-```html
+  5. Use touch to create a new empty file called index.html
+  3. Run the **`git status`** once again
+  4. Add the index.html and commit "adding an empty index file"
+  5. Edit the index.html  pasting these lines then run **git diff**. What does git diff do?
+ 
+```{html, class.source='klippy'}
 <html>
 <Header> </header>
 <style>
@@ -317,53 +522,60 @@ table, th, td {
 </body> 
 </html>
 ```
-  8. Run again the git status,add and commit commands
+  8. Run git status,add and commit commands
   9. Execute **git log**. What does this command do? Try also **git log --oneline** 
   
 
 We can ask git to ignore unwanted files (e.g files with .log extensions) by creating .gitignore file.
 
-**Example 2** 
+**Example 6** 
 
 ```{bash, eval=F}
   cd ~/demo_project
-  touch file1.log file2.log genes_list.txt
-  echo -e "PRUPE_1G130300\nPRUPE_4G232600" >> genes_list.txt #add gene ids to the file
+  touch file1.log file2.log Tfs.txt
+  echo -e "PRUPE_1G130300\nPRUPE_4G232600" >> Tfs_list.txt #add gene ids to the file
   git status
   touch .gitignore
   echo *.log >> .gitignore #to specify unwanted files
   git status
-  git add .gitignore genes_list.txt
+  git add --all 
   git commit -m "Ignore log files and add the gene list"
 ```
 
-## Undoing the changes with Git
+git mv" command lets you move (or rename) files within a repo.
+
+```{bash, eval=F}
+  git mv Tfs_list.txt input/
+  git add
+  git commit
+```
+#### Undoing the changes with Git
 
 One of the main advantages of version control systems, is the ability to undo the changes at different stages.
 
 Lets try out with some examples 
 
 
-### Cancel the changes before they get staged (Before git add)
+##### Cancel the changes before they get staged (Before git add)
 
 In case you have made some changes to a file but you are not statisifed with the modifications,you can cover back its committed state using: **git checkout filename**
 
-**Example 3** 
+**Example 7** 
 
 ```{bash, eval=F}
 cd ~/demo_project
-echo "AT2G38470" >> genes_list.txt # add gene of A. thaliana
-cat genes_list.txt 
-git chekout genes_list.txt
-cat genes_list.txt 
+echo "AT2G38470" >> input/Tfs_list.txt # add an A. thaliana transcription  factor
+cat Tfs_list.txt
+git chekout Tfs_list.txt
+cat Tfs_list.txt
 ```
 
 
-###  Cancel staged changes (Before git commit)
+#####  Cancel staged changes (Before git commit)
 
 To unstage undesired file,use the following git command: **git reset HEAD filename**
 
-**Example 4**
+**Example 8**
 
 + Create a bash script called script.sh containing the following line: echo "Hello, This is a Git tutorial"
 
@@ -378,18 +590,16 @@ To unstage undesired file,use the following git command: **git reset HEAD filena
 + Check again the status
 
 
+##### Modify a commit 
 
-
-### Modify a commit 
-
-**Example 5**
+**Example 9**
 
 ```{bash, eval=F}
 
 # Create a new folder
 Mkdir sequences
 # Add 2 empty files
-touch sequences/prunus.fa arabidopsis.fa
+touch sequences/prunus_persica.fa zea_.fa
 #add and commit
 git add sequences/prunus.fa
 git commit –m “added two fasta files”
@@ -407,11 +617,11 @@ git commit --amend
 
 
 
-### Remove files from working dir or staging area
+##### Remove files from working dir or staging area
 
 For this purpose, we will be using **git rm filename**
 
-**Example 6** 
+**Example 10** 
 
 ```{bash, eval=F}
 git rm genes_list.txt
@@ -422,12 +632,12 @@ git commit -m "deleted unwanted file"
 ``` 
 
 
-## Using branches 
+#### Using branches 
 
 Branches are an important part of Git workflow. The default branch that git creates when you first initialize a repository is called master. When we are working in parallel with other team members or developing a new project, it is always a good practice to create new branches.
 Branching allows users to work on different features at the same time without worring about the safety of the master branch
 
-**Example 7** 
+**Example 11** 
 
 1. Continuing in the initial demo_project create a new branch called test_branch
 ```{bash, eval=F}
@@ -436,7 +646,7 @@ git branch branchname
 
 2. Lets take a look at the branches 
 
-```{bash, eval=F}
+```{bash, eval=F }
 git branch 
 ```
 Actually, the newly created branch is an exact copy of the master branch and the current branch we are working on is marked by (*).
@@ -483,7 +693,7 @@ git branch
 
 ```
 
-## Interacting with GitHub
+### Interacting with GitHub
 
 Git is version control software. GitHub, is a web-based Git repository hosting service. It provides a free access to git repositories. GitHub allows us to share and access repositories on the web and clone them to our local computer, so that we can work on them.
 
@@ -493,7 +703,7 @@ So now is a great time to create one.
 Until now, we have been using Git locally. In this section, we will learn how to transfer a local repository to a Git hosting server. Means that a repository will pass from local to remote.
 
 
-**Example 8: Create a GitHub repo and pushing a local repo** 
+**Example 12: Create a GitHub repo and pushing a local repo** 
 
   + Log in to your account.
   
@@ -517,6 +727,22 @@ It takes 2 two arguments:
   +	A short name for the remote repository, per default, origin
   
   +	A remote URL, for example, https://[hostname]/user/repo.git
+  
+
+Other useful tools that can be adopted to make a reproducible research especially for the audience with little programming background are [Docker](https://www.docker.com/) and [Galaxy](https://usegalaxy.org/).
+
+Galaxy is an open web-based platform for accessible and reproducible research, where users can easily run tools without writing code [@Jalili2020]. So that sharing a framework on galaxy is a of great help. 
+
+On the other hand, if your analysis depends on a complex software hard to install, creating a docker container with all the softwares, data, and packages needed for your analysis might be a great solution for users to reproduce your results.
+
+
+## Good practices after the analysis
+
+### Archiving and citation of the data
+
+The data generated in your project should be archived and published. For instance, genomic data must be deposited and accessioned prior to publication in a [INSDC](http://www.insdc.org/) repository such as the [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home) .Other related resources are the [European Variation Archive](https://www.ebi.ac.uk/eva/) or [BioSamples](https://www.ebi.ac.uk/biosamples/).
+
+There are also resources such as [Figshare](https://figshare.com/), [Zenodo](https://zenodo.org/) or [Dryad](https://datadryad.org/stash), where you can accession and make citable data, documentation, code or preprints, or [COPO](https://bigdata.cgiar.org/blog-post/copo-a-portal-to-describe-store-and-retrieve-plant-data/), which will assist you in archiving all your plant data and outputs, whatever the data types.
 
 ## Exercises
 
@@ -535,6 +761,7 @@ It takes 2 two arguments:
 
 
 **Exercise 2**
+
 
 
 ## Bibliography
