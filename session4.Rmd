@@ -42,13 +42,15 @@ In this session we will learn about benchmarks, which are experiments designed t
 
 **Training set:** Set of data used to train a model or algorithm. You can read about how deep learning machines are trained [here](https://bioinfoperl.blogspot.com/2020/05/entrenamiento-de-una-red-neuronal.html) (in Spanish).
 
-**Validation set:** Fraction of the data used to checked the trained model during cross-validation.
+**Validation set:** Fraction of the data used to check the trained model during cross-validation.
 
 **Test set:** Independent set of data used to measure the performance of a trained model or algorithm. If only one dataset is available then test and validations sets might be the same.
 
 ![Ways to partition a dataset for benchmarking. Dataset A only uses a training set and a test set. The test set would be used to test the trained model. For Dataset B, the validation set would be used to test the trained model, and the test set would evaluate the final model (@Km2020)](./pics/ML_dataset_training_validation_test_sets.png)
 
-**Imbalanced dataset:** Occurs when the number of data instances in the training dataset in each class is not balanced. Severe imbalance happens when the distribution of instances is uneven by a large amount (e.g. 1:100 or more).
+**Cross-validation:** model validation procedure based on repeatedly spliting a dataset in to training and validation subsets. Partitions can be done in various ways, such as 80% training and %20 validation, or %50/%50. A test set can still be used to independently measure performance on an independent dataset.
+
+**Imbalanced dataset:** Occurs when the number of data instances in the training dataset in each class is not balanced. Severe imbalance happens when the distribution of instances is uneven by a large amount (e.g. 1:100 or more) and are particularly challenging for training.
 
 **Over-training:** Occurs when the performance on the training sets improve while getting worse on the validation sets. It is a form of over-fitting the training data. Learn more [here](https://bioinfoperl.blogspot.com/2020/05/sobreentrenamiento-de-una-red-neuronal.html) (in Spanish).
 
@@ -67,8 +69,8 @@ $$ spec = \frac{TN}{TN+FP} $$
 
 In this example, adapted from [@Miles2018], we will be using a dataset of red wines first published by [@Cortez2009]:
 
-```{r bench1}
-wines <- read.csv(file="./test_data/red_wine_quality.csv", comment.char=";")
+```{r data_sample}
+wines <- read.csv(file="./test_data/red_wine_quality.csv", sep=";")
 kable(wines[1:5,])
 ```
 
@@ -82,18 +84,23 @@ The code shown below requires the following R packages:
 + [pROC](https://cran.r-project.org/web/packages/pROC/index.html):
 + [randomForest](https://cran.r-project.org/web/packages/randomForest/index.html)
 
-```{r bench2}
-# load the data
-df <- read.csv("./test_data/red_wine_quality.csv")
+
+```{r wine_bench}
+# uncomment to install dependencies
+# install.packages(c("pROC", "randomForest"))
+
+# load the data, originally downloaded from
+# https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/
+df = read.csv(file="./test_data/red_wine_quality.csv", sep=";")
 
 # transform the quality column to a 1 (if quality > 5) or a 0
-df$quality <- ifelse(df$quality>5,1,0)
+df$quality = ifelse(df$quality>5,1,0)
 
 # change the quality column to a factor type
-df$quality <- as.factor(df$quality)
+df$quality = as.factor(df$quality)
 
 # split the dataframe into train and test sets
-index <- sample(1:nrow(df),size = 0.8*nrow(df))
+index = sample(1:nrow(df),size = 0.8*nrow(df))
 train <- df[index,]
 test <- df[-index,]
 
@@ -131,6 +138,8 @@ paste("Area under curve of logistic regression: ", ROC_lr_auc)
 
 ## Exercise
 
+
+How balanced is the wine dataset?
 
 # References and notes
 
