@@ -121,9 +121,9 @@ project
 
 ## Good practices during the analysis
 
-### Coding scripts
+### Source code of scripts
 
-The basic concept of reproducibility is to run the analysis using coding scripts (R.scripts, makefiles, etc) with detailed documentation for each step.
+The basic concept of reproducibility is to run the analysis using scripts (R.scripts, makefiles, etc) with detailed documentation for each step.
 
 ** Recommendations for writing codes**
 
@@ -302,10 +302,14 @@ all: dir get-data get-ids get-fasta
 
 ```
 
-As we can see  instead of executing the instructions one by one in your terminal, searching for the path of each file you want to use, save the results etc, a makefile can run your entire workflow in one-button operation and give you a well organized output. So better to let the computer work for you!.
+As we can see  instead of executing the instructions one by one in your terminal, searching for the path of each file you want to use, save the results etc, a **makefile** can run your entire workflow in one-button operation and give you a well organized output. So better to let the computer work for you!.
 
 It allows you to modify any step and regenerate the results with minimal effort. In case of error, you can easy track and fix the bug as the makefile won’t run if something is missed.
 
+Other options similar to makefiles in spirit but require more coding experince include [snakemake](https://snakemake.readthedocs.io/en/stable) or [nextflow](https://www.nextflow.io).
+
+Options for reproducible software environments include [docker](https://hub.docker.com), 
+[conda](https://docs.conda.io/en/latest) or [galaxy](https://usegalaxy.org).
 
 ### Turn your scripts into reproducible reports
 
