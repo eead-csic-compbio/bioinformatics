@@ -56,11 +56,10 @@ In this session we will learn about benchmarks, which are experiments designed t
 
 ![](./pics/Sensitivity_and_specificity.png)
 
-**Sensitivity or recall:** 
-
+**Sensitivity or recall:** True positive rate.
 $$ sens = \frac{TP}{TP+FN} $$
 
-**Specificity or precision:**
+**Specificity or precision:** False positive rate.
 
 $$ spec = \frac{TN}{TN+FP} $$
 
@@ -69,8 +68,65 @@ $$ spec = \frac{TN}{TN+FP} $$
 In this example, adapted from [@Miles2018], we will be using a dataset of red wines first published by [@Cortez2009]:
 
 ```{r bench1}
-wines <- read.csv(file="test_data/red_wine_quality.csv", comment.char=";")
+wines <- read.csv(file="./test_data/red_wine_quality.csv", comment.char=";")
 kable(wines[1:5,])
+```
+
+The last column (quality) is the dependent variable in this example, the one we will try to predict from the others and use to classify wines as high-quality (HQ) or low-quality (LQ). In order to convert quality estimates to HQ/LQ binary values, the original 3-8 values are assigned 1 when $quality > 5$ or else 0. 
+
+In order to graph performance and to compare different models we will plot 
+Receiver Operating Characteristic (ROC) curves, which show specificity vs sensitivity.
+The Area Under the Curve (AUC) allows comparing alternative models.
+Two different models are trained, a random forest and a logistic regression.
+The code shown below requires the following R packages:
++ [pROC](https://cran.r-project.org/web/packages/pROC/index.html):
++ [randomForest](https://cran.r-project.org/web/packages/randomForest/index.html)
+
+```{r bench2}
+# load the data
+df <- read.csv("./test_data/red_wine_quality.csv")
+
+# transform the quality column to a 1 (if quality > 5) or a 0
+df$quality <- ifelse(df$quality>5,1,0)
+
+# change the quality column to a factor type
+df$quality <- as.factor(df$quality)
+
+# split the dataframe into train and test sets
+index <- sample(1:nrow(df),size = 0.8*nrow(df))
+train <- df[index,]
+test <- df[-index,]
+
+# build the random forest model and test it
+library(randomForest)
+rf_model <- randomForest(quality ~., data = train)
+rf_prediction <- predict(rf_model, test, type = "prob")
+
+# build the logistic regression model and test it
+lr_model <- glm(quality ~., data = train, family = "binomial")
+lr_prediction <- predict(lr_model, test, type = "response")
+
+# ROC curves
+library(pROC)
+ROC_rf <- roc(test$quality, rf_prediction[,2])
+ROC_lr <- roc(test$quality, lr_prediction)
+
+# Area Under Curve (AUC) for each ROC curve (higher -> better)
+ROC_rf_auc <- auc(ROC_rf)
+ROC_lr_auc <- auc(ROC_lr)
+
+# plot ROC curves
+plot(ROC_rf, col="green", 
+	main="ROC For Random Forest (GREEN) vs Logistic Regression (RED)")
+lines(ROC_lr, col = "red")
+
+# print the performance summary
+paste("Accuracy % of random forest: ", 
+	mean(test$quality == round(rf_prediction[,2], digits = 0)))
+paste("Accuracy % of logistic regression: ", 
+	mean(test$quality == round(lr_prediction, digits = 0)))
+paste("Area under curve of random forest: ", ROC_rf_auc)
+paste("Area under curve of logistic regression: ", ROC_lr_auc)
 ```
 
 ## Exercise
