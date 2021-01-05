@@ -314,11 +314,12 @@ The code is what the machine will read and execute and the documentation is what
 
 This simultaneous construction of a code and its detailed documentation is called literate programming. It was introduced by [@Knuth84]with the purpose that make computer programs written in human-readable way so they can be easly understood.
 
-There are several literate programming tools: [Jupiter notebooks](https://jupyter.org/) for python users and [R Markdown](https://rmarkdown.rstudio.com/) and [knitr](https://yihui.org/knitr/) for R users. They both work in similar way integrations sections of code and sections of text.
+There are several literate programming tools, such as [Jupiter notebooks](https://jupyter.org) (many languages) or [R Markdown](https://rmarkdown.rstudio.com/) and [knitr](https://yihui.org/knitr/) (R). 
+Both integrate sections of code and sections of text in a single document.
 
-In this session, we will be using the Rmarkdown to generate a html report.
+In this session, we will be using the Rmarkdown to generate a HTML report.
 
-R Markdown file, a plain text file that has the extension .Rmd. The rmarkdown package converts this file into a report, most commonly into HTML or Pdf.
+R Markdown files are plain text filee with extension .Rmd. The rmarkdown package converts this file into a report, most commonly into HTML or PDF.
 
 **Example 4: Writing reports using RMarkdown**
 
@@ -758,10 +759,6 @@ There are also resources such as [Figshare](https://figshare.com/), [Zenodo](htt
 8. Track and commit the changes
 9. Check out the comment
 10. Summarize all the command used in a text file
-
-
-**Exercise 2**
-
 
 
 ## Bibliography
