@@ -48,7 +48,7 @@ Doing so, you are
 
 •	Increasing the visibility and the citation of your study.
 
-Recently, many scientific journals such Nature, PNAS, Plant physiology, etc. are requiring to submit manuscripts with data accessible repositories and code links (Fanelli 2018; Miyakawa 2020).
+Recently, many scientific journals such Nature, PNAS, Plant physiology, etc. are requiring to submit manuscripts with data accessible repositories and code links [@Fanelli2628; @Miyakawa2020].
 In this session we will be using a set of tools to develop a reproducible research. 
 
 # The steps towards a reproducible research
@@ -312,7 +312,7 @@ It allows you to modify any step and regenerate the results with minimal effort.
 Generally scripts are very clear for their author not for the others. It is very  helpful and recommended to convert codes to a reproducible report. This report is a single file containing the code and the documentation at the same time. Indeed, when the code is executed a document is generated including the documented command lines and any outputs(e.g. figures, tables…).
 The code is what the machine will read and execute and the documentation is what readers need to understand what we are doing and why we are doing it.
 
-This simultaneous construction of a code and its detailed documentation is called literate programming. It was introduced by [@Knuth84] with the purpose that make computer programs written in human-readable way so they can be easly understood.
+This simultaneous construction of a code and its detailed documentation is called literate programming. It was introduced by [@Knuth84]with the purpose that make computer programs written in human-readable way so they can be easly understood.
 
 There are several literate programming tools: [Jupiter notebooks](https://jupyter.org/) for python users and [R Markdown](https://rmarkdown.rstudio.com/) and [knitr](https://yihui.org/knitr/) for R users. They both work in similar way integrations sections of code and sections of text.
 
