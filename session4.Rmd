@@ -142,5 +142,5 @@ paste("Area under curve of logistic regression: ", ROC_lr_auc)
 
 How balanced is the wine dataset?
 
-# References and notes
+# References
 
