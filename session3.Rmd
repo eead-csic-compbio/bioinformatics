@@ -752,13 +752,13 @@ There are also resources such as [Figshare](https://figshare.com/), [Zenodo](htt
 1. Create a local repository in a new directory called exercises.
 2. create a Readme file and check the repository status.
 3. Add the Readme file to the staging area and commit the change with appropriate message.
-4. Copy the [test_code](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code)folder in the working directory
-5. Create and commit a configuration that ignore all files with .tpm extension and all the  test_code directory
+4. Copy the [test_code](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code) folder in the working directory
+5. Create and commit a configuration to ignore all files with .tpm extension and all the  test_code directory
 6. Check that the configuration is well done
 7. Rename the Readme file as Readme.txt
 8. Track and commit the changes
 9. Check out the comment
-10. Summarize all the command used in a text file
+10. Summarize all the commands used in a text file
 
 
 ## Bibliography
