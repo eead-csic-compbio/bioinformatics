@@ -124,7 +124,7 @@ ROC_lr_auc <- auc(ROC_lr)
 
 # plot ROC curves
 plot(ROC_rf, col="green", 
-	main="ROC For Random Forest (GREEN) vs Logistic Regression (RED)")
+	main="Random Forest (green) vs Logistic Regression (red)")
 lines(ROC_lr, col = "red")
 
 # print the performance summary
@@ -137,6 +137,7 @@ paste("Area under curve of logistic regression: ", ROC_lr_auc)
 ```
 
 ## Exercise
+
 
 
 How balanced is the wine dataset?
