@@ -48,7 +48,7 @@ In this session we will learn about benchmarks, which are experiments designed t
 
 The next figure from @Km2020 illustrates two possible ways to partition a dataset for benchmarking. On top, dataset A only uses a training set and a test set for testing the trained model. Below, dataset B is split in three parts, with train + validation using during cross-validation and a test set to evaluate the final model:
 
-![]](./pics/ML_dataset_training_validation_test_sets.png)
+![](./pics/ML_dataset_training_validation_test_sets.png)
 
 **Cross-validation:** model validation procedure based on repeatedly spliting a dataset in to training and validation subsets. Partitions can be done in various ways, such as 80% training and %20 validation, or %50/%50. A test set can still be used to independently measure performance on an independent dataset.
 
@@ -161,10 +161,11 @@ You shall write a R markdown report with source code and answers to the followin
   + With dataCV compute 3 iterations of cross-validation 
     * 80% training and 20% validation
     * compute AUC for both models
-  + With dataT do a final benchmark and produce a table with AUC values from all 3 iterations plus the final test
+  + With dataT do a final benchmark and produce a table with AUC values from all  iterations plus the final test
 
 4. Test and benchmark the final trained model with the dataset of white wines at 
 test_data/white_wine_quality.csv . 
+  + How many True and False Positives do you get?
   + Add the obtained AUC value to the table of task 3 and comment on the results.
 
 # References
