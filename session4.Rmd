@@ -164,7 +164,8 @@ You shall write a R markdown report with source code and answers to the followin
   + With dataT do a final benchmark and produce a table with AUC values from all 3 iterations plus the final test
 
 4. Test and benchmark the final trained model with the dataset of white wines at 
-test_data/white_wine_quality.csv . Add the obtained AUC value to the table of task 3 and comment on the results.
+test_data/white_wine_quality.csv . 
+  + Add the obtained AUC value to the table of task 3 and comment on the results.
 
 # References
 
