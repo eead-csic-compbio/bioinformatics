@@ -45,7 +45,7 @@ The annotation process requires at least two data sources:
 
 * Indexed literature in repositories such as [PubMed](https://pubmed.ncbi.nlm.nih.gov) or [EuroPMC](https://europepmc.org), where publications are uniquely identified with accession codes such as the [DOI](https://www.doi.org).
 
-The best source of annotated protein sequences from plants is the database [UniProt](https://www.uniprot.org), which contains both expert-review sequences (SwissProt) and automatically annotated entries (learn more [here](https://bioinfoperl.blogspot.com/2020/02/tu-conocimiento-plantas-servicio-uniprot.html) in Spanish. The next table summarizes total reviewed plant proteins as of Feb 2020:
+The best source of annotated protein sequences from plants is the database [UniProt](https://www.uniprot.org), which contains both expert-review sequences (SwissProt) and automatically annotated entries (learn more [here](https://bioinfoperl.blogspot.com/2020/02/tu-conocimiento-plantas-servicio-uniprot.html) in Spanish). The next table summarizes total reviewed plant proteins as of Feb 2020:
 
 ```{r annot_stats_table}
 annot.stats <- read.csv(file="test_data/uniprot_stats.tsv", sep="\t", comment.char=";", header=F)

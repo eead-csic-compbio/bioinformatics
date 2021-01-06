@@ -60,12 +60,15 @@ The next figure from @Km2020 illustrates two possible ways to partition a datase
 
 ![](./pics/Sensitivity_and_specificity.png)
 
-**Sensitivity or recall:** True positive rate.
+**Sensitivity or recall:** is also called True Positive Rate (TPR) 
 $$ sens = \frac{TP}{TP+FN} $$
 
-**Specificity or precision:** False positive rate.
+**Specificity or precision:** 
 
 $$ spec = \frac{TN}{TN+FP} $$
+Note that $$1 - specificity $$ is the False Positive Rate (FPR), typically used in ROC curves, as shown below.
+
+Read more about the interpretation of sensitivity and specificity [here](https://www.meneame.net/m/Art%C3%ADculos/elon-musk-resultados-divergentes-test-antigenos) (in Spanish).
 
 ## A benchmark example
 
@@ -123,12 +126,12 @@ library(pROC)
 ROC_rf <- roc(test$quality, rf_prediction[,2])
 ROC_lr <- roc(test$quality, lr_prediction)
 
-# Area Under Curve (AUC) for each ROC curve (higher -> better)
+# Area Under Curve (AUC) for each ROC curve 
 ROC_rf_auc <- auc(ROC_rf)
 ROC_lr_auc <- auc(ROC_lr)
 
 # plot ROC curves
-plot(ROC_rf, col="green", 
+plot(ROC_rf, col="green", legacy.axes=T,
 	main="Random Forest (green) vs Logistic Regression (red)")
 lines(ROC_lr, col = "red")
 
@@ -140,6 +143,8 @@ paste("Accuracy % of logistic regression: ",
 paste("Area under curve of random forest: ", ROC_rf_auc)
 paste("Area under curve of logistic regression: ", ROC_lr_auc)
 ```
+
+You can read more about ROC curves [here](https://mlr.mlr-org.com/articles/tutorial/roc_analysis.html).
 
 ## Exercise
 
