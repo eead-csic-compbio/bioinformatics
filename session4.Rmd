@@ -46,7 +46,9 @@ In this session we will learn about benchmarks, which are experiments designed t
 
 **Test set:** Independent set of data used to measure the performance of a trained model or algorithm. If only one dataset is available then test and validations sets might be the same.
 
-![Ways to partition a dataset for benchmarking. Dataset A only uses a training set and a test set. The test set would be used to test the trained model. For Dataset B, the validation set would be used to test the trained model, and the test set would evaluate the final model (@Km2020)](./pics/ML_dataset_training_validation_test_sets.png)
+The next figure from @Km2020 illustrates two possible ways to partition a dataset for benchmarking. On top, dataset A only uses a training set and a test set for testing the trained model. Below, dataset B is split in three parts, with train + validation using during cross-validation and a test set to evaluate the final model:
+
+![]](./pics/ML_dataset_training_validation_test_sets.png)
 
 **Cross-validation:** model validation procedure based on repeatedly spliting a dataset in to training and validation subsets. Partitions can be done in various ways, such as 80% training and %20 validation, or %50/%50. A test set can still be used to independently measure performance on an independent dataset.
 
@@ -78,10 +80,13 @@ The last column (quality) is the dependent variable in this example, the one we 
 
 In order to graph performance and to compare different models we will plot 
 Receiver Operating Characteristic (ROC) curves, which show specificity vs sensitivity.
-The Area Under the Curve (AUC) allows comparing alternative models.
-Two different models are trained, a random forest and a logistic regression.
-The code shown below requires the following R packages:
-+ [pROC](https://cran.r-project.org/web/packages/pROC/index.html):
+Note that ROC plots usually have a diagonal line to mark the performance gain over a random classifier. The Area Under the Curve (AUC) allows comparing alternative models, 
+with higher AUC values meaning better performance.
+
+Two different models are trained in this example, a [random forest](https://en.wikipedia.org/wiki/Random_forest) and a 
+[logistic regression](https://en.wikipedia.org/wiki/Logistic_regression).
+Thus, the code shown below requires the following R packages:
++ [pROC](https://cran.r-project.org/web/packages/pROC/index.html)
 + [randomForest](https://cran.r-project.org/web/packages/randomForest/index.html)
 
 
@@ -89,7 +94,7 @@ The code shown below requires the following R packages:
 # uncomment to install dependencies
 # install.packages(c("pROC", "randomForest"))
 
-# load the data, originally downloaded from
+# load the data, originally from
 # https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/
 df = read.csv(file="./test_data/red_wine_quality.csv", sep=";")
 
@@ -127,7 +132,7 @@ plot(ROC_rf, col="green",
 	main="Random Forest (green) vs Logistic Regression (red)")
 lines(ROC_lr, col = "red")
 
-# print the performance summary
+# print performance summary
 paste("Accuracy % of random forest: ", 
 	mean(test$quality == round(rf_prediction[,2], digits = 0)))
 paste("Accuracy % of logistic regression: ", 
@@ -138,9 +143,23 @@ paste("Area under curve of logistic regression: ", ROC_lr_auc)
 
 ## Exercise
 
+You shall write a R markdown report with source code and answers to the following questions:
 
+1. How many data instances are there in the dataset?
 
-How balanced is the wine dataset?
+2. After transforming the quality variable to a binary type, 
+  + how balanced is the dataset, ie how many wines are HQ and LQ?
+  + what quality cutff produces the most balanced dataset? By default the example uses 5.
+
+3. Do a 3-cross-validation benchmark as follows.
+  + Randomly split the data in two parts: 80% cross-validation (dataCV) + 20% test (dataT)
+  + With dataCV compute 3 iterations of cross-validation 
+    * 80% training and 20% validation
+    * compute AUC for both models
+  + With dataT do a final benchmark and produce a table with AUC values from all 3 iterations plus the final test
+
+4. Test and benchmark the final trained model with the dataset of white wines at 
+test_data/white_wine_quality.csv . Add the obtained AUC value to the table of task 3 and comment on the results.
 
 # References
 
