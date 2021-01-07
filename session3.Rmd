@@ -744,7 +744,7 @@ On the other hand, if your analysis depends on a complex software hard to instal
 
 ### Archiving and citation of the data
 
-The data generated in your project should be archived and published. For instance, genomic data must be deposited and accessioned prior to publication in a [INSDC](http://www.insdc.org/) repository such as the [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home) .Other related resources are the [European Variation Archive](https://www.ebi.ac.uk/eva/) or [BioSamples](https://www.ebi.ac.uk/biosamples/).
+The data generated in your project should be archived and published. For instance, genomic data must be deposited and accessioned prior to publication in a [INSDC](http://www.insdc.org/) repository such as the [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home) (ENA) or the [NCBI](https://www.ncbi.nlm.nih.gov).Other related resources are the [European Variation Archive](https://www.ebi.ac.uk/eva) or [BioSamples](https://www.ebi.ac.uk/biosamples).
 
 There are also resources such as [Figshare](https://figshare.com/), [Zenodo](https://zenodo.org/) or [Dryad](https://datadryad.org/stash), where you can accession and make citable data, documentation, code or preprints, or [COPO](https://bigdata.cgiar.org/blog-post/copo-a-portal-to-describe-store-and-retrieve-plant-data/), which will assist you in archiving all your plant data and outputs, whatever the data types.
 
