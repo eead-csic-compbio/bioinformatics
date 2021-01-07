@@ -36,11 +36,11 @@ knitr::opts_chunk$set(eval=T, cache=FALSE, message=FALSE, warning=FALSE,
 ```
 
 # Introduction
-In most of the cases, publishing an open access paper is not enough for the audience to take advantage of it. The real relevance of a scientific study is its reproducibility.
+In most cases, publishing an Open Access paper is not enough for the audience to take advantage of it. The real relevance of a scientific study is its reproducibility.
 
 In fact, a reproducible work means making all the work materials: raw data, codes, figures, results available to readers by hosting it on an accessible platform.
 
-Doing so, you are
+By doing so, you are
 
 •	Demonstrating to the audience the transparency of your findings.
 
@@ -48,8 +48,8 @@ Doing so, you are
 
 •	Increasing the visibility and the citation of your study.
 
-Recently, many scientific journals such Nature, PNAS, Plant physiology, etc. are requiring to submit manuscripts with data accessible repositories and code links [@Fanelli2628; @Miyakawa2020].
-In this session we will be using a set of tools to develop a reproducible research. 
+Most scientific journals, such Nature, PNAS, Plant physiology, etc, require to submit manuscripts with data accessible repositories and code links [@Fanelli2628; @Miyakawa2020].
+In this session we will be using a set of tools to perform reproducible research. 
 
 # The steps towards a reproducible research
 
@@ -67,16 +67,15 @@ The first step needed to ensure the reproducibilty  is a good organization of fo
 
 + Separate raw and processed data.
 
-+ Define the directories (input, scripts, results…)
++ Define the directories (input, scripts, results...)
 
 + Use a simple and descriptive file names (without special characters or space).
 
-+ Ovoid using “final” when naming the files.
++ Ovoid using "final" when naming the files.
 
-+ Get used to create a Readme file for your project. 
-(Readme is a descriptive file containing set of useful information about a project: title, author, data, software used, fundings ...)
++ Get used to create a Readme file for your project (Readme is a descriptive file containing set of useful information about a project: title, author, data, software used, fundings ...).
 
-+ Keep a  back up of the data to minimize risk of data loss (e.g external hard drive)
++ Keep a  back up of the data to minimize risk of data loss (e.g external hard drive).
 
 **Example 1: a basic project directory structure**
 
@@ -123,11 +122,11 @@ project
 
 ### Source code of scripts
 
-The basic concept of reproducibility is to run the analysis using scripts (R.scripts, makefiles, etc) with detailed documentation for each step.
+The basic concept of reproducibility is to run the analysis using scripts (R scripts, makefiles, etc) with detailed documentation for each step.
 
 ** Recommendations for writing codes**
 
-  -	Write a clear code for each task (cleaning data, aligning reads, differential analysis, plotting …) using meaningful using meaningful file names
+  -	Write a clear code for each task (cleaning data, aligning reads, differential analysis, plotting ...) using meaningful using meaningful file names
   
   -	Comments need to be informative and easy to understand for non-specialist readers.
   
