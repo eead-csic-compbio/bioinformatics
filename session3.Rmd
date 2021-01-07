@@ -124,7 +124,7 @@ project
 
 The basic concept of reproducibility is to run the analysis using scripts (R scripts, makefiles, etc) with detailed documentation for each step.
 
-** Recommendations for writing codes**
+**Recommendations for writing codes**
 
   -	Write a clear code for each task (cleaning data, aligning reads, differential analysis, plotting ...) using meaningful using meaningful file names
   
@@ -140,7 +140,7 @@ The basic concept of reproducibility is to run the analysis using scripts (R scr
 **Example 2: good code vs. bad Rscript **
 
 
-herein we will compare two Rscripts written for the same purpose
+herein we will compare two R-scripts written for the same purpose
 
 1. Check both R-scripts and choose which one is more informative for you
 
@@ -335,18 +335,18 @@ install.packages("rmarkdown")
 library(rmarkdown)
 ```
 
-3. Create an Rmarkdown file, fill the title and  author name then choose a html output
+3. Create an Rmarkdown file, fill the title and  author name then choose a html output.
 
 
-![](./pics/rmarkdown_launching.png){height=70% width=70% } 
+![](./pics/rmarkdown_launching.png){height=70% width=80% }. 
 
 ***
 4. The newly created .Rmd file comes with basic instructions, to create your own Rmarkdown script delete all except
 the YAML header section enclosed by three dashes (---) and containing by default; title, author, date and output format.
 
-5. Compile the .Rmd file to .html by clicking on the Knit button 
+5. Compile the .Rmd file to .html by clicking on the Knit button. 
 
-6. Insert R code chunk (insert ---> R) with the documented Rscript of section 2.2.1 and click on knit
+6. Insert R code chunk (insert ---> R) with the documented R-script of section 2.2.1 and click on **knit**.
 
 7. For additional details about Rmardown syntax and code chunks, check this [guide](ruleshttps://www.markdownguide.org/basic-syntax/)
 
@@ -372,7 +372,7 @@ There are two main types of version control systems:
 
 Git is a free distributed model, widely used in the programming world. It was developed in 2005 by Linus Torvalds, the creator of the Linux operating system kernel [@10.5555/2695634]. The next figure was adapted from [beanstalkapp](http://guides.beanstalkapp.com/version-control/intro-to-version-control.html):
 
-![](./pics/vcs.png)
+![](./pics/vcs.png){height=60% width=80% }.
 
 #### Installation and getting started with Git
 
@@ -768,21 +768,29 @@ There are also resources such as [Figshare](https://figshare.com/), [Zenodo](htt
 1.	A paper of interest mentions that data is archived in ENA under the project  “PRJEB12334”. 
 Go to the [ENA browser](https://www.ebi.ac.uk/ena/browser/home) and type this accession into the accession box then answer the following questions
 
-  *	What kind of data are available from this project (raw reads, assembly, annotation)
-  (Tip: Select "show related ENA records", right panel)
-  *	From which organism and analysis does this data originate
-  *	How many samples are available
-  *	What is the sequencing platform used and which type of libraries were generated (paired-end /single-end)
-  **Tip:** Select more options from "Show Column Selection" box
-  *	Download a fastq file of leaf control raw reads and check its format
-  **Tip:** Select sample title from "Show Column Selection" box to get information about the samples)
+  *	What kind of data are available from this project (raw reads, clean reads, assembly, annotation).
+  
+    **Tip**: Select "show related ENA records", right panel
+   
+  *	From which organism and analysis does this data originate?
+  
+  *	How many samples are available?
+  
+  *	What is the sequencing platform used and which type of libraries were generated (paired-end /single-end)?
+  
+    **Tip**: Select more options from "Show Column Selection"
+  
+  *	Download a fastq file of leaf control raw reads and check its format.
+  
+    **Tip**: Select sample title from "Show Column Selection" box to get information about the samples)
+  
   *	Do the same for the assembly file 
   
 2.	You can search across the ENA browser using the free text search: 
   *	Open the ENA browser in a new window and type **Arabidopsis thaliana** in "enter text search terms" box; you will get all information about *A.thaliana* archived in ENA
-  *	Type the following gene id GRMZM2G079440
-  *	What organism is this gene from and what is its taxon ID
-  *	What is the description of this gene
+  *	Type the following gene id *GRMZM2G079440*
+  *	What organism is this gene from and what is its taxon ID?
+  *	What is the description of this gene?
 
 
 ## Bibliography
