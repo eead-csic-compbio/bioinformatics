@@ -764,6 +764,28 @@ There are also resources such as [Figshare](https://figshare.com/), [Zenodo](htt
 9. Check out the comment
 10. Summarize all the commands used in a text file
 
+**Exercise 2: Searching and getting data from ENA**.
+
+1.	A paper of interest mentions that data is archived in ENA under the project  “PRJEB12334”. 
+Go to the [ENA browser](https://www.ebi.ac.uk/ena/browser/home) and type this accession into the accession box then answer the following questions
+
+  •	What king of data are available from this project (raw reads, assembly, annotation)
+  (Tip: Select "show related ENA records", right panel)
+  •	From which organism and analysis does this data originate
+  •	How many samples are available
+  •	What is the sequencing platform used and which type of libraries were generated (paired-end /single-end)
+  Tip (Select more options from “Show Column Selection” box
+  •	Download a fastq file of leaf control raw reads and check its format
+  (Tip Select sample title from “Show Column Selection” box to get information about the samples)
+  •	Do the same for the assembly file 
+  
+2.	You can search across the ENA browser using the free text search: 
+  •	Open the ENA browser in a new window and type Arabidopsis thaliana in “enter text search terms” box, you will get all information about *A.thaliana* archived in ENA
+  •	Type the following gene id GRMZM2G079440
+  •	What organism is this gene from and what is its taxon ID
+  •	What is the description of this gene
+
+
 
 ## Bibliography
 
