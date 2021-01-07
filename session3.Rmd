@@ -571,14 +571,14 @@ In case you have made some changes to a file but you are not statisifed with the
 cd ~/demo_project
 echo "AT2G38470" >> input/Tfs_list.txt # add an A. thaliana transcription  factor
 cat Tfs_list.txt
-git chekout Tfs_list.txt
+git checkout Tfs_list.txt
 cat Tfs_list.txt
 ```
 
 
 #####  Cancel staged changes (Before git commit)
 
-To unstage undesired file,use the following git command: **git reset HEAD filename**
+To unstage undesired files, use the following git command: **git reset HEAD filename**
 
 **Example 8**
 
@@ -607,7 +607,7 @@ Mkdir sequences
 touch sequences/prunus_persica.fa zea_.fa
 #add and commit
 git add sequences/prunus.fa
-git commit –m “added two fasta files”
+git commit -m "added two fasta files"
 
 # add the missing file
 git add sequences/arabidopsis.fa
@@ -640,23 +640,23 @@ git commit -m "deleted unwanted file"
 #### Using branches 
 
 Branches are an important part of Git workflow. The default branch that git creates when you first initialize a repository is called master. When we are working in parallel with other team members or developing a new project, it is always a good practice to create new branches.
-Branching allows users to work on different features at the same time without worring about the safety of the master branch
+Branching allows users to work on different features at the same time without worrying about the safety of the master branch
 
 **Example 11** 
 
-1. Continuing in the initial demo_project create a new branch called test_branch
+1. Continuing with the initial demo_project create a new branch called test_branch
 ```{bash, eval=F}
 git branch branchname
 ```
 
-2. Lets take a look at the branches 
+2. Let's take a look at the branches 
 
 ```{bash, eval=F }
 git branch 
 ```
 Actually, the newly created branch is an exact copy of the master branch and the current branch we are working on is marked by (*).
 
-3. From now on we will be working on the test_branch. Any changes we make will affect only the new one and the master branch will remain untouched. To Switch between them:
+3. From now on we will be working on the test_branch. Any changes we make will affect only the new one and the master branch will remain untouched. To switch between them:
 
 ```{bash, eval=F}
 # Switch to test_branch
@@ -689,7 +689,7 @@ ls
 
 ```
 
-5. When the master branch is updated. The additional branch is no longer needed and can be romved 
+5. When the master branch is updated. The additional branch is no longer needed and can be removed 
 
 ```{bash, eval=F}
 
@@ -705,8 +705,8 @@ Git is version control software. GitHub, is a web-based Git repository hosting s
 To interact with GitHub, the first thing we need to do is to create an [account](https://github.com/join?source=login).
 So now is a great time to create one.
 
-Until now, we have been using Git locally. In this section, we will learn how to transfer a local repository to a Git hosting server. Means that a repository will pass from local to remote.
-
+Until now, we have been using Git locally. 
+In this section, we will learn how to transfer a local repository to a Git hosting server in the cloud. This means that the repository will change from local to remote.
 
 **Example 12: Create a GitHub repo and pushing a local repo** 
 
@@ -769,22 +769,21 @@ There are also resources such as [Figshare](https://figshare.com/), [Zenodo](htt
 1.	A paper of interest mentions that data is archived in ENA under the project  “PRJEB12334”. 
 Go to the [ENA browser](https://www.ebi.ac.uk/ena/browser/home) and type this accession into the accession box then answer the following questions
 
-  •	What king of data are available from this project (raw reads, assembly, annotation)
+  *	What kind of data are available from this project (raw reads, assembly, annotation)
   (Tip: Select "show related ENA records", right panel)
-  •	From which organism and analysis does this data originate
-  •	How many samples are available
-  •	What is the sequencing platform used and which type of libraries were generated (paired-end /single-end)
-  Tip (Select more options from “Show Column Selection” box
-  •	Download a fastq file of leaf control raw reads and check its format
-  (Tip Select sample title from “Show Column Selection” box to get information about the samples)
-  •	Do the same for the assembly file 
+  *	From which organism and analysis does this data originate
+  *	How many samples are available
+  *	What is the sequencing platform used and which type of libraries were generated (paired-end /single-end)
+  **Tip:** Select more options from "Show Column Selection" box
+  *	Download a fastq file of leaf control raw reads and check its format
+  **Tip:** Select sample title from "Show Column Selection" box to get information about the samples)
+  *	Do the same for the assembly file 
   
 2.	You can search across the ENA browser using the free text search: 
-  •	Open the ENA browser in a new window and type Arabidopsis thaliana in “enter text search terms” box, you will get all information about *A.thaliana* archived in ENA
-  •	Type the following gene id GRMZM2G079440
-  •	What organism is this gene from and what is its taxon ID
-  •	What is the description of this gene
-
+  *	Open the ENA browser in a new window and type **Arabidopsis thaliana** in "enter text search terms" box; you will get all information about *A.thaliana* archived in ENA
+  *	Type the following gene id GRMZM2G079440
+  *	What organism is this gene from and what is its taxon ID
+  *	What is the description of this gene
 
 
 ## Bibliography
