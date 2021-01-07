@@ -336,12 +336,12 @@ Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain<br>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
 <p>In most cases, publishing an Open Access paper is not enough for the audience to take advantage of it. The real relevance of a scientific study is its reproducibility.</p>
-<p>In fact, a reproducible work means making all the work materials: raw data, codes, figures, results available to readers by hosting it on an accessible platform.</p>
+<p>In fact, a reproducible work means making all the work materials: raw data, codes, figures, results available to the readers by hosting it on an accessible platform.</p>
 <p>By doing so, you are</p>
 <p>• Demonstrating to the audience the transparency of your findings.</p>
 <p>• Allowing the readers to apply your described methods and results on their own data.</p>
 <p>• Increasing the visibility and the citation of your study.</p>
-<p>Most scientific journals, such Nature, PNAS, Plant physiology, etc, require to submit manuscripts with data accessible repositories and code links <span class="citation">(Fanelli 2018; Miyakawa 2020)</span>. In this session we will be using a set of tools to perform reproducible research.</p>
+<p>Most scientific journals, such Nature, PNAS, Plant physiology, etc, require to submit manuscripts with data accessible repositories and code links <span class="citation">(Fanelli 2018; Miyakawa 2020)</span>. In this session we will be using a set of tools to perform a reproducible research.</p>
 </div>
 <div id="the-steps-towards-a-reproducible-research" class="section level1">
 <h1><span class="header-section-number">2</span> The steps towards a reproducible research</h1>
@@ -352,13 +352,13 @@ Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain<br>
 <div id="recommendations-for-project-organization." class="section level3">
 <h3><span class="header-section-number">2.1.1</span> Recommendations for project organization.</h3>
 <ul>
-<li><p>Have a single directory containing everything related to you project.</p></li>
+<li><p>Have a single directory containing everything related to your project.</p></li>
 <li><p>Save a copy of your raw data</p></li>
 <li><p>Separate raw and processed data.</p></li>
 <li><p>Define the directories (input, scripts, results...)</p></li>
 <li><p>Use a simple and descriptive file names (without special characters or space).</p></li>
 <li><p>Ovoid using &quot;final&quot; when naming the files.</p></li>
-<li><p>Get used to create a Readme file for your project (Readme is a descriptive file containing set of useful information about a project: title, author, data, software used, fundings ...).</p></li>
+<li><p>Get used to create a Readme file for your project (Readme is a descriptive file containing useful information about a project such as title, author, data, softwares used, fundings ...).</p></li>
 <li><p>Keep a back up of the data to minimize risk of data loss (e.g external hard drive).</p></li>
 </ul>
 <p><strong>Example 1: a basic project directory structure</strong></p>
@@ -399,17 +399,17 @@ Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain<br>
 <h2><span class="header-section-number">2.2</span> Good practices during the analysis</h2>
 <div id="source-code-of-scripts" class="section level3">
 <h3><span class="header-section-number">2.2.1</span> Source code of scripts</h3>
-<p>The basic concept of reproducibility is to run the analysis using scripts (R scripts, makefiles, etc) with detailed documentation for each step.</p>
+<p>The basic concept of reproducibility is to run the analysis using scripts (R scripts, makefiles, etc) with detailed documentation of each step.</p>
 <p><strong>Recommendations for writing codes</strong></p>
 <ul>
-<li><p>Write a clear code for each task (cleaning data, aligning reads, differential analysis, plotting ...) using meaningful using meaningful file names</p></li>
-<li><p>Comments need to be informative and easy to understand for non-specialist readers.</p></li>
-<li><p>Output should be redirected automatically to the corresponding directories.</p></li>
+<li><p>Write a clear code for each task (cleaning data, aligning reads, differential analysis, plotting ...) using meaningful file names.</p></li>
+<li><p>The Comment need to be informative and easy to understand for non-specialist readers.</p></li>
+<li><p>Outputs should be redirected automatically to their corresponding directories.</p></li>
 <li><p>Specify the software’s names and versions.</p></li>
 <li><p>Use clear variable names.</p></li>
 </ul>
 <p><strong>Example 2: good code vs. bad Rscript </strong></p>
-<p>herein we will compare two R-scripts written for the same purpose</p>
+<p>Herein we will compare two R-scripts written for the same purpose.</p>
 <ol style="list-style-type: decimal">
 <li>Check both R-scripts and choose which one is more informative for you</li>
 </ol>
@@ -428,7 +428,7 @@ p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(data,<span class=
 <span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">250</span>,<span class="op">-</span><span class="dv">250</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="fl">2.5</span>,<span class="fl">1.5</span>), <span class="dt">label =</span> <span class="kw">c</span>(<span class="st">&quot;CAMTA&quot;</span>, <span class="st">&quot;CAMTA&quot;</span>))
 p</code></pre></div>
 <hr />
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># @author:  username@gmail.com</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># @author:  najlaksouri@gmail.com</span>
 <span class="co"># @date: 04/01/2020</span>
 <span class="co"># @description this script creates a Ridgeline plots showing the density distrubution of motif sites</span>
 
@@ -450,21 +450,21 @@ scan_data &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span
 <span class="co"># Open a pdf file where the plot will be saved</span>
 <span class="kw">png</span>(<span class="dt">file =</span> <span class="st">&quot;~/demo_project/results/figures/densityplot.png&quot;</span>, <span class="dt">width=</span><span class="dv">600</span>, <span class="dt">height=</span><span class="dv">350</span>) 
 
-<span class="co"># Create a unique density plot for each algorithm</span>
+<span class="co"># Create a density plot for each algorithm</span>
 density_plot &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(scan_data,<span class="kw">aes</span>(start, algorithm, <span class="dt">fill =</span> algorithm))<span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_density_ridges_gradient</span>(<span class="dt">scale =</span> <span class="dv">1</span>, <span class="dt">show.legend =</span> T) <span class="op">+</span>
 <span class="st">  </span><span class="co"># Choose the theme</span>
 <span class="st">  </span><span class="kw">theme_ridges</span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="co"># Dont show the legend</span>
+<span class="st">  </span><span class="co"># Hide the legend</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="co"># Add axes description</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;upstream region&quot;</span>,<span class="dt">y =</span> <span class="st">&quot;density of the sites&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="co"># Changes the colors</span>
+<span class="st">  </span><span class="co"># Change the colors</span>
 <span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#868686FF&quot;</span>,<span class="st">&quot;#fdef64&quot;</span>))<span class="op">+</span>
 <span class="st">  </span><span class="co"># Customize continuous x and control the breaks</span>
 <span class="st">  </span><span class="kw">scale_x_continuous</span> (<span class="dt">limit =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1500</span>, <span class="op">+</span><span class="dv">200</span>),<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1500</span>,<span class="op">-</span><span class="dv">500</span>,<span class="dv">0</span>,<span class="op">+</span><span class="dv">200</span>)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="co"># Add the appropiate annotation </span>
+<span class="st">  </span><span class="co"># Add the appropiate annotations </span>
 <span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">250</span>,<span class="op">-</span><span class="dv">250</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="fl">2.5</span>,<span class="fl">1.5</span>), <span class="dt">label =</span> <span class="kw">c</span>(<span class="st">&quot;CAMTA&quot;</span>, <span class="st">&quot;CAMTA&quot;</span>))
 
 <span class="co"># Close the plot file </span>
@@ -479,12 +479,13 @@ density_plot
 </div>
 <div id="automate-the-analysis-process" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> Automate the analysis process</h3>
-<p>When multiple commands are needed, it’s better to compile them into a single script specifying the order in which the instructions needs to be executed and indicating the software required for each step. A common way to is to use makefiles</p>
+<p>When multiple commands are needed, it’s better to compile them into a single script specifying the order in which the instructions need to be executed and indicating the software required for each step. A common way to automate the analysis is to use makefiles.</p>
+<p>Make is a unix tool and makefile is a file containing shell instructions to tell make what to do.</p>
 <p><strong>Example 3: Using Makefiles</strong></p>
 <ol style="list-style-type: decimal">
 <li><p>Use mkdir to create a direcotory called demo_project and a subfolder demo_project/scripts.</p></li>
 <li><p>Copy and save the below makefile as get_sequences.mk in demo_project/scripts.</p></li>
-<li><p>To execute the makefile you need to indent the target-related instructions using <code>tabs</code> as they part of the syntax. Use vim or any text editor for this</p></li>
+<li><p>To execute the makefile you need to indent the target-related instructions using <code>tabs</code> as they are part of the syntax. Use vim or any text editor to do so.</p></li>
 <li><p>Before running this code, you need first to install samtools program.</p></li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">sudo</span> apt update
@@ -549,15 +550,16 @@ density_plot
 <span class="co"># Run all targets at one go</span>
 <span class="ex">all</span>: dir get-data get-ids get-fasta
   <span class="ex">@echo</span> <span class="st">&quot;tasks successfully done&quot;</span></code></pre></div>
-<p>As we can see instead of executing the instructions one by one in your terminal, searching for the path of each file you want to use, save the results etc, a <strong>makefile</strong> can run your entire workflow in one-button operation and give you a well organized output. So better to let the computer work for you!.</p>
-<p>It allows you to modify any step and regenerate the results with minimal effort. In case of error, you can easy track and fix the bug as the makefile won’t run if something is missed.</p>
+<p>As we can see instead of executing the instructions one by one in your terminal, searching for the path of each file, saveing the results etc, a <strong>makefile</strong> can run your entire workflow in one-button operation and give you a well organized output. So better to let the computer work for you!.</p>
+<p>Working with makefiles will allow you to modify any step and regenerate the results with minimal effort. In case of error, you can easy track and fix the bug as the makefile won’t run if something is missed.</p>
 <p>Other options similar to makefiles in spirit but require more coding experince include <a href="https://snakemake.readthedocs.io/en/stable">snakemake</a> or <a href="https://www.nextflow.io">nextflow</a>.</p>
 <p>Options for reproducible software environments include <a href="https://hub.docker.com">docker</a>, <a href="https://docs.conda.io/en/latest">conda</a> or <a href="https://usegalaxy.org">galaxy</a>.</p>
 </div>
 <div id="turn-your-scripts-into-reproducible-reports" class="section level3">
 <h3><span class="header-section-number">2.2.3</span> Turn your scripts into reproducible reports</h3>
-<p>Generally scripts are very clear for their author not for the others. It is very helpful and recommended to convert codes to a reproducible report. This report is a single file containing the code and the documentation at the same time. Indeed, when the code is executed a document is generated including the documented command lines and any outputs(e.g. figures, tables…). The code is what the machine will read and execute and the documentation is what readers need to understand what we are doing and why we are doing it.</p>
-<p>This simultaneous construction of a code and its detailed documentation is called literate programming. It was introduced by <span class="citation">(Knuth 1984)</span>with the purpose that make computer programs written in human-readable way so they can be easly understood.</p>
+<p>Generally scripts are very clear for their author not for the others. It is very helpful and recommended to convert codes to a reproducible report. This report is a single file containing the code and the documentation at the same time. Indeed, when the code is executed, a report is generated including the documented command lines and any outputs(e.g. figures, tables…).</p>
+<p>Actually, the code is what the machine will read and execute and the documentation is what readers need to understand what we are doing and why we are doing it.</p>
+<p>This simultaneous construction of a code and its detailed description is called literate programming. This term was introduced by <span class="citation">(Knuth 1984)</span> with the purpose that make computer programs written in human-readable way so they can be easly understood.</p>
 <p>There are several literate programming tools, such as <a href="https://jupyter.org">Jupiter notebooks</a> (many languages) or <a href="https://rmarkdown.rstudio.com/">R Markdown</a> and <a href="https://yihui.org/knitr/">knitr</a> (R). Both integrate sections of code and sections of text in a single document.</p>
 <p>In this session, we will be using the Rmarkdown to generate a HTML report.</p>
 <p>R Markdown files are plain text filee with extension .Rmd. The rmarkdown package converts this file into a report, most commonly into HTML or PDF.</p>
@@ -575,20 +577,21 @@ density_plot
 <hr />
 <ol start="4" style="list-style-type: decimal">
 <li><p>The newly created .Rmd file comes with basic instructions, to create your own Rmarkdown script delete all except the YAML header section enclosed by three dashes (---) and containing by default; title, author, date and output format.</p></li>
-<li><p>Compile the .Rmd file to .html by clicking on the Knit button.</p></li>
+<li><p>Compile the .Rmd file to .html by clicking on the <strong>Knit</strong> button.</p></li>
 <li><p>Insert R code chunk (insert ---&gt; R) with the documented R-script of section 2.2.1 and click on <strong>knit</strong>.</p></li>
 <li><p>For additional details about Rmardown syntax and code chunks, check this <a href="ruleshttps://www.markdownguide.org/basic-syntax/">guide</a></p></li>
 </ol>
 </div>
 <div id="use-version-control-systems" class="section level3">
 <h3><span class="header-section-number">2.2.4</span> Use version control systems</h3>
-<p>If you have ever worked on a project, or collaborated with other team members, then probably you have already created different versions of documents.This is a primitive way of the version control because it’s manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone.</p>
+<p>If you have ever worked on a project, or collaborated with other team members, then probably you have already created different versions of your files. This is a primitive way of the version control because it’s manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone.</p>
 <p>In this session, you’ll be introduced to the concept of a version control system (VCS) to maintain a detailed history of the created versions and the modifications done. By using a VCS, we can know when the changes were made and who made them. This applies to documents, images, datafiles and source code, which are the bread and butter of research.</p>
 <div id="git-overview" class="section level4">
 <h4><span class="header-section-number">2.2.4.1</span> Git overview</h4>
-<p>We will be using one of the most popular version control system called <a href="https://git-scm.com">Git</a> and we will show you how to interact with Git through the command line or terminal <span class="citation">(Bryan 2018)</span>.</p>
+<p>We will be using one of the most popular version control system called <a href="https://git-scm.com">Git</a> and we will show you how to interact with Git through the command line or terminal.</p>
 <p>We will also learn how to set up an account with the service called <a href="https://github.com">GitHub</a>, so that you can create your own remote repositories to store your code and data.</p>
-<p>Git is a version control program that keeps track of any changes you make to your files and directories. There are two main types of version control systems:</p>
+<p>Git is a version control program that keeps track of any changes you make to your files and directories <span class="citation">(Bryan 2018)</span>.</p>
+<p>There are two main types of version control systems:</p>
 <ul>
 <li><p>The centralized model: all users connect to a central, master repository.</p></li>
 <li><p>The distributed model: each user has a copy of entire repository on their computer and these repositroies can easily be synchronized.</p></li>
@@ -659,7 +662,7 @@ user.email=name@example.com</code></pre>
 <p><strong>Example 5</strong></p>
 <ol style="list-style-type: decimal">
 <li>Go to the ~/demo_project directory and check the status the working dir by typing <strong><code>git status</code></strong>.</li>
-<li>add the untracked folder to the staging area using <strong><code>git add</code></strong></li>
+<li>Add the untracked folder to the staging area using <strong><code>git add</code></strong></li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> add filename 
   <span class="fu">git</span> add --all <span class="co">#To add all files at the same time</span></code></pre></div>
@@ -717,7 +720,7 @@ table, th, td <span class="kw">{</span>
   <span class="fu">git</span> status
   <span class="fu">git</span> add --all 
   <span class="fu">git</span> commit -m <span class="st">&quot;Ignore log files and add the gene list&quot;</span></code></pre></div>
-<p>git mv&quot; command lets you move (or rename) files within a repo.</p>
+<p><strong>git mv</strong> command lets you move (or rename) files within a repo.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> mv Tfs_list.txt input/
   <span class="fu">git</span> add
   <span class="fu">git</span> commit</code></pre></div>
@@ -741,12 +744,12 @@ table, th, td <span class="kw">{</span>
 <p>To unstage undesired files, use the following git command: <strong>git reset HEAD filename</strong></p>
 <p><strong>Example 8</strong></p>
 <ul>
-<li><p>Create a bash script called script.sh containing the following line: echo &quot;Hello, This is a Git tutorial&quot;</p></li>
-<li><p>Save the output of script in a text file called output.txt</p></li>
+<li><p>Create a bash script called script.sh containing the following line: echo &quot;Hello, This is a Git tutorial&quot;.</p></li>
+<li><p>Save the output of script in a text file called output.txt.</p></li>
 <li><p>Add in one go all the files to the staging area.</p></li>
-<li><p>Check the status</p></li>
-<li><p>Unstage the output.txt file</p></li>
-<li><p>Check again the status</p></li>
+<li><p>Check the status.</p></li>
+<li><p>Unstage the output.txt file.</p></li>
+<li><p>Check again the status.</p></li>
 </ul>
 </div>
 <div id="modify-a-commit" class="section level5">
@@ -782,14 +785,15 @@ table, th, td <span class="kw">{</span>
 </div>
 <div id="using-branches" class="section level4">
 <h4><span class="header-section-number">2.2.4.6</span> Using branches</h4>
-<p>Branches are an important part of Git workflow. The default branch that git creates when you first initialize a repository is called master. When we are working in parallel with other team members or developing a new project, it is always a good practice to create new branches. Branching allows users to work on different features at the same time without worrying about the safety of the master branch</p>
+<p>Branches are an important part of Git workflow. The default branch that git creates when you first initialize a repository is called master. When we are working in parallel with other team members or developing a new project, it is always a good practice to create new branches.</p>
+<p>Branching allows users to work on different features at the same time without worrying about the safety of the master branch</p>
 <p><strong>Example 11</strong></p>
 <ol style="list-style-type: decimal">
-<li>Continuing with the initial demo_project create a new branch called test_branch</li>
+<li>Continuing with the initial demo_project create a new branch called test_branch.</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> branch branchname</code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>Let's take a look at the branches</li>
+<li>Let's take a look at the branches .</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> branch </code></pre></div>
 <p>Actually, the newly created branch is an exact copy of the master branch and the current branch we are working on is marked by (*).</p>
@@ -821,7 +825,7 @@ table, th, td <span class="kw">{</span>
 
 <span class="fu">ls</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
-<li>When the master branch is updated. The additional branch is no longer needed and can be removed</li>
+<li>When the master branch is updated. The additional branch is no longer needed and can be removed.</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
 <span class="fu">git</span> branch -d test_branch

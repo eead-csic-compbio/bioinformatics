@@ -38,7 +38,7 @@ knitr::opts_chunk$set(eval=T, cache=FALSE, message=FALSE, warning=FALSE,
 # Introduction
 In most cases, publishing an Open Access paper is not enough for the audience to take advantage of it. The real relevance of a scientific study is its reproducibility.
 
-In fact, a reproducible work means making all the work materials: raw data, codes, figures, results available to readers by hosting it on an accessible platform.
+In fact, a reproducible work means making all the work materials: raw data, codes, figures, results available to the readers by hosting it on an accessible platform.
 
 By doing so, you are
 
@@ -49,7 +49,7 @@ By doing so, you are
 •	Increasing the visibility and the citation of your study.
 
 Most scientific journals, such Nature, PNAS, Plant physiology, etc, require to submit manuscripts with data accessible repositories and code links [@Fanelli2628; @Miyakawa2020].
-In this session we will be using a set of tools to perform reproducible research. 
+In this session we will be using a set of tools to perform a reproducible research. 
 
 # The steps towards a reproducible research
 
@@ -61,7 +61,7 @@ The first step needed to ensure the reproducibilty  is a good organization of fo
 
 ### Recommendations for project organization.
 
-+ Have a single directory containing everything related to you project.
++ Have a single directory containing everything related to your project.
 
 + Save a copy of your raw data
 
@@ -73,7 +73,7 @@ The first step needed to ensure the reproducibilty  is a good organization of fo
 
 + Ovoid using "final" when naming the files.
 
-+ Get used to create a Readme file for your project (Readme is a descriptive file containing set of useful information about a project: title, author, data, software used, fundings ...).
++ Get used to create a Readme file for your project (Readme is a descriptive file containing useful information about a project such as title, author, data, softwares used, fundings ...).
 
 + Keep a  back up of the data to minimize risk of data loss (e.g external hard drive).
 
@@ -122,15 +122,15 @@ project
 
 ### Source code of scripts
 
-The basic concept of reproducibility is to run the analysis using scripts (R scripts, makefiles, etc) with detailed documentation for each step.
+The basic concept of reproducibility is to run the analysis using scripts (R scripts, makefiles, etc) with detailed documentation of each step.
 
 **Recommendations for writing codes**
 
-  -	Write a clear code for each task (cleaning data, aligning reads, differential analysis, plotting ...) using meaningful using meaningful file names
+  -	Write a clear code for each task (cleaning data, aligning reads, differential analysis, plotting ...) using meaningful file names.
   
-  -	Comments need to be informative and easy to understand for non-specialist readers.
+  -	The Comment need to be informative and easy to understand for non-specialist readers.
   
-  -	Output should be redirected automatically to the corresponding directories.
+  -	Outputs should be redirected automatically to their corresponding directories.
   
   -	Specify the software’s names and versions.
   
@@ -140,7 +140,7 @@ The basic concept of reproducibility is to run the analysis using scripts (R scr
 **Example 2: good code vs. bad Rscript **
 
 
-herein we will compare two R-scripts written for the same purpose
+Herein we will compare two R-scripts written for the same purpose.
 
 1. Check both R-scripts and choose which one is more informative for you
 
@@ -166,7 +166,7 @@ p
 ***
 
 ```{r, eval=F}
-# @author:  username@gmail.com
+# @author:  najlaksouri@gmail.com
 # @date: 04/01/2020
 # @description this script creates a Ridgeline plots showing the density distrubution of motif sites
 
@@ -188,21 +188,21 @@ head(scan_data)
 # Open a pdf file where the plot will be saved
 png(file = "~/demo_project/results/figures/densityplot.png", width=600, height=350) 
 
-# Create a unique density plot for each algorithm
+# Create a density plot for each algorithm
 density_plot <- 
   ggplot(scan_data,aes(start, algorithm, fill = algorithm))+
   geom_density_ridges_gradient(scale = 1, show.legend = T) +
   # Choose the theme
   theme_ridges() + 
-  # Dont show the legend
+  # Hide the legend
   theme(legend.position = "none") +
   # Add axes description
   labs(x = "upstream region",y = "density of the sites") +
-  # Changes the colors
+  # Change the colors
   scale_fill_manual(values = c("#868686FF","#fdef64"))+
   # Customize continuous x and control the breaks
   scale_x_continuous (limit = c(-1500, +200),breaks = c(-1500,-500,0,+200)) + 
-  # Add the appropiate annotation 
+  # Add the appropiate annotations 
   annotate("text", x = c(-250,-250), y = c(2.5,1.5), label = c("CAMTA", "CAMTA"))
 
 # Close the plot file 
@@ -220,7 +220,9 @@ sessionInfo()
 
 ### Automate the analysis process
 
-When multiple commands are needed, it’s better to compile them into a single script specifying the order in which the instructions needs to be executed and indicating the software required for each step. A common way to is to use makefiles
+When multiple commands are needed, it’s better to compile them into a single script specifying the order in which the instructions need to be executed and indicating the software required for each step. A common way to automate  the analysis is to use makefiles. 
+
+Make is a unix tool and makefile is a file containing shell instructions to tell make what to do.
 
 **Example 3: Using Makefiles**
 
@@ -228,7 +230,7 @@ When multiple commands are needed, it’s better to compile them into a single s
 
 2. Copy and save the below makefile as get_sequences.mk in demo_project/scripts.
 
-3. To execute the makefile you need to indent the target-related instructions using `tabs` as they part of the syntax. Use vim or any text editor for this
+3. To execute the makefile you need to indent the target-related instructions using `tabs` as they are part of the syntax. Use vim or any text editor to do so.
 
 3. Before running this code, you need first to install samtools program.
 
@@ -301,9 +303,9 @@ all: dir get-data get-ids get-fasta
 
 ```
 
-As we can see  instead of executing the instructions one by one in your terminal, searching for the path of each file you want to use, save the results etc, a **makefile** can run your entire workflow in one-button operation and give you a well organized output. So better to let the computer work for you!.
+As we can see  instead of executing the instructions one by one in your terminal, searching for the path of each file, saveing the results etc, a **makefile** can run your entire workflow in one-button operation and give you a well organized output. So better to let the computer work for you!.
 
-It allows you to modify any step and regenerate the results with minimal effort. In case of error, you can easy track and fix the bug as the makefile won’t run if something is missed.
+Working with makefiles will allow you to modify any step and regenerate the results with minimal effort. In case of error, you can easy track and fix the bug as the makefile won’t run if something is missed.
 
 Other options similar to makefiles in spirit but require more coding experince include [snakemake](https://snakemake.readthedocs.io/en/stable) or [nextflow](https://www.nextflow.io).
 
@@ -312,10 +314,11 @@ Options for reproducible software environments include [docker](https://hub.dock
 
 ### Turn your scripts into reproducible reports
 
-Generally scripts are very clear for their author not for the others. It is very  helpful and recommended to convert codes to a reproducible report. This report is a single file containing the code and the documentation at the same time. Indeed, when the code is executed a document is generated including the documented command lines and any outputs(e.g. figures, tables…).
-The code is what the machine will read and execute and the documentation is what readers need to understand what we are doing and why we are doing it.
+Generally scripts are very clear for their author not for the others. It is very  helpful and recommended to convert codes to a reproducible report. This report is a single file containing the code and the documentation at the same time. Indeed, when the code is executed, a report is generated including the documented command lines and any outputs(e.g. figures, tables…).
 
-This simultaneous construction of a code and its detailed documentation is called literate programming. It was introduced by [@Knuth84]with the purpose that make computer programs written in human-readable way so they can be easly understood.
+Actually, the code is what the machine will read and execute and the documentation is what readers need to understand what we are doing and why we are doing it.
+
+This simultaneous construction of a code and its detailed description is called literate programming. This term was introduced by [@Knuth84] with the purpose that make computer programs written in human-readable way so they can be easly understood.
 
 There are several literate programming tools, such as [Jupiter notebooks](https://jupyter.org) (many languages) or [R Markdown](https://rmarkdown.rstudio.com/) and [knitr](https://yihui.org/knitr/) (R). 
 Both integrate sections of code and sections of text in a single document.
@@ -344,7 +347,7 @@ library(rmarkdown)
 4. The newly created .Rmd file comes with basic instructions, to create your own Rmarkdown script delete all except
 the YAML header section enclosed by three dashes (---) and containing by default; title, author, date and output format.
 
-5. Compile the .Rmd file to .html by clicking on the Knit button. 
+5. Compile the .Rmd file to .html by clicking on the **Knit** button. 
 
 6. Insert R code chunk (insert ---> R) with the documented R-script of section 2.2.1 and click on **knit**.
 
@@ -353,17 +356,18 @@ the YAML header section enclosed by three dashes (---) and containing by default
 
 ### Use version control systems
 
-If you have ever worked on a project, or collaborated with other team members, then probably you have already created different versions of documents.This is a primitive way of the version control because it’s manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone.
+If you have ever worked on a project, or collaborated with other team members, then probably you have already created different versions of your files. This is a primitive way of the version control because it’s manual and not detailed. If we want to figure out the differences between 2 copies just by putting them side-by-side, it will be very time-consuming and error-prone.
 
 In this session, you’ll be introduced to the concept of a version control system (VCS) to maintain a detailed history of the created versions and the modifications done. By using a VCS, we can know when the changes were made and who made them. This applies to documents, images, datafiles and source code, which are the bread and butter of research.
 
 #### Git overview
 
-We will be using one of the most popular version control system called [Git](https://git-scm.com) and we will show you how to interact with Git through the command line or terminal [@Bryan2017].
+We will be using one of the most popular version control system called [Git](https://git-scm.com) and we will show you how to interact with Git through the command line or terminal.
 
 We will also learn how to set up an account with the service called [GitHub](https://github.com), so that you can create your own remote repositories to store your code and data.
 
-Git is a version control program that keeps track of any changes you make to your files and directories.
+Git is a version control program that keeps track of any changes you make to your files and directories [@Bryan2017].
+
 There are two main types of version control systems:
 
   + The centralized model:  all users connect to a central, master repository.
@@ -478,7 +482,7 @@ Let´s see this with an example
 **Example 5**  
 
   1. Go to the ~/demo_project directory and check the status the working dir by typing  **`git status`**.
-  2. add the untracked folder to the staging area using **`git add`** 
+  2. Add the untracked folder to the staging area using **`git add`** 
   
 ```{bash, eval=F}
   git add filename 
@@ -546,7 +550,7 @@ We can ask git to ignore unwanted files (e.g files with .log extensions) by crea
   git commit -m "Ignore log files and add the gene list"
 ```
 
-git mv" command lets you move (or rename) files within a repo.
+**git mv** command lets you move (or rename) files within a repo.
 
 ```{bash, eval=F}
   git mv Tfs_list.txt input/
@@ -581,17 +585,17 @@ To unstage undesired files, use the following git command: **git reset HEAD file
 
 **Example 8**
 
-+ Create a bash script called script.sh containing the following line: echo "Hello, This is a Git tutorial"
++ Create a bash script called script.sh containing the following line: echo "Hello, This is a Git tutorial".
 
-+ Save the output of script in a text file called output.txt
++ Save the output of script in a text file called output.txt.
 
 + Add in one go all the files to the staging area.
 
-+ Check the status
++ Check the status.
 
-+ Unstage the output.txt file
++ Unstage the output.txt file.
 
-+ Check again the status
++ Check again the status.
 
 
 ##### Modify a commit 
@@ -639,16 +643,17 @@ git commit -m "deleted unwanted file"
 #### Using branches 
 
 Branches are an important part of Git workflow. The default branch that git creates when you first initialize a repository is called master. When we are working in parallel with other team members or developing a new project, it is always a good practice to create new branches.
+
 Branching allows users to work on different features at the same time without worrying about the safety of the master branch
 
 **Example 11** 
 
-1. Continuing with the initial demo_project create a new branch called test_branch
+1. Continuing with the initial demo_project create a new branch called test_branch.
 ```{bash, eval=F}
 git branch branchname
 ```
 
-2. Let's take a look at the branches 
+2. Let's take a look at the branches .
 
 ```{bash, eval=F }
 git branch 
@@ -688,7 +693,7 @@ ls
 
 ```
 
-5. When the master branch is updated. The additional branch is no longer needed and can be removed 
+5. When the master branch is updated. The additional branch is no longer needed and can be removed. 
 
 ```{bash, eval=F}
 
