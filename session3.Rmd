@@ -35,10 +35,27 @@ knitr::opts_chunk$set(eval=T, cache=FALSE, message=FALSE, warning=FALSE,
                       comment = "", results="markup")
 ```
 
+<!-- dependencies: 
+make, git, wget, r-base, rstudio
+R packages:
+ggplot2.3.3
+gridExtra
+ggridges 
+dplyr
+Rcpp 
+rlang
+Purrr
+Tibble 
+gtable 
+crayon 
+magrittr 
+pillar
+-->
+
 # Introduction
 In most cases, publishing an Open Access paper is not enough for the audience to take advantage of it. The real relevance of a scientific study is its reproducibility.
 
-In fact, a reproducible work means making all the work materials: raw data, codes, figures, results available to the readers by hosting it on an accessible platform.
+In fact, a reproducible work means making all the work materials: raw data, source code, figures, results available to the readers by hosting it on an accessible platform.
 
 By doing so, you are
 
@@ -48,8 +65,8 @@ By doing so, you are
 
 •	Increasing the visibility and the citation of your study.
 
-Most scientific journals, such Nature, PNAS, Plant physiology, etc, require to submit manuscripts with data accessible repositories and code links [@Fanelli2628; @Miyakawa2020].
-In this session we will be using a set of tools to perform a reproducible research. 
+Most scientific journals, such as Nature, PNAS, Plant physiology, etc, require to submit manuscripts with data accessible repositories and code links [@Fanelli2628; @Miyakawa2020].
+In this session we will be using a set of tools to perform reproducible research. 
 
 # The steps towards a reproducible research
 
@@ -69,11 +86,11 @@ The first step needed to ensure the reproducibilty  is a good organization of fo
 
 + Define the directories (input, scripts, results...)
 
-+ Use a simple and descriptive file names (without special characters or space).
++ Use simple and descriptive file names (without special characters or spaces).
 
-+ Ovoid using "final" when naming the files.
++ Avoid using "final" when naming the files.
 
-+ Get used to create a Readme file for your project (Readme is a descriptive file containing useful information about a project such as title, author, data, softwares used, fundings ...).
++ Get used to create a Readme file for your project (It is a descriptive file containing useful information about a project such as title, author, data, software used, fundings ...).
 
 + Keep a  back up of the data to minimize risk of data loss (e.g external hard drive).
 
@@ -124,15 +141,15 @@ project
 
 The basic concept of reproducibility is to run the analysis using scripts (R scripts, makefiles, etc) with detailed documentation of each step.
 
-**Recommendations for writing codes**
+**Recommendations for writing code**
 
-  -	Write a clear code for each task (cleaning data, aligning reads, differential analysis, plotting ...) using meaningful file names.
+  -	Write clear code for each task (cleaning data, aligning reads, differential analysis, plotting ...) using meaningful file names.
   
-  -	The Comment need to be informative and easy to understand for non-specialist readers.
+  -	Comments need to be informative and easy to understand for non-specialist readers.
   
-  -	Outputs should be redirected automatically to their corresponding directories.
+  -	Output should be redirected automatically to their corresponding directories.
   
-  -	Specify the software’s names and versions.
+  -	Specify the software name and **version**.
   
   -	Use clear variable names.
 
@@ -140,9 +157,9 @@ The basic concept of reproducibility is to run the analysis using scripts (R scr
 **Example 2: good code vs. bad Rscript **
 
 
-Herein we will compare two R-scripts written for the same purpose.
+Herein we will compare two R scripts written for the same purpose.
 
-1. Check both R-scripts and choose which one is more informative for you
+1. Check both scripts and choose which one is more informative for you
 
 ```{r, include=T, eval=FALSE}
 
@@ -185,7 +202,7 @@ scan_data <- read.table("https://raw.githubusercontent.com/eead-csic-compbio/bio
 
 head(scan_data)
 
-# Open a pdf file where the plot will be saved
+# Open a PNG file where the plot will be saved
 png(file = "~/demo_project/results/figures/densityplot.png", width=600, height=350) 
 
 # Create a density plot for each algorithm
@@ -222,7 +239,7 @@ sessionInfo()
 
 When multiple commands are needed, it’s better to compile them into a single script specifying the order in which the instructions need to be executed and indicating the software required for each step. A common way to automate  the analysis is to use makefiles. 
 
-Make is a unix tool and makefile is a file containing shell instructions to tell make what to do.
+[make](www.gnu.org/software/make) is a standard unix tool that processes makefiles containing shell instructions to tell make what to do.
 
 **Example 3: Using Makefiles**
 
@@ -232,7 +249,7 @@ Make is a unix tool and makefile is a file containing shell instructions to tell
 
 3. To execute the makefile you need to indent the target-related instructions using `tabs` as they are part of the syntax. Use vim or any text editor to do so.
 
-3. Before running this code, you need first to install samtools program.
+3. Before running this code, you need first to install samtools and check its version:
 
 ```{bash, eval=F}
 sudo apt update
@@ -271,6 +288,8 @@ dir:# this is called target and all command lines dor each target need to be ide
   mkdir -p ${INPUT}
 
 # Download the data
+# Note: this uses wget, which might not be installed in MacOS systems
+# wget can often be substituted with curl with minimal changes
 get-data:
   @echo "Getting the gene list from github"
   wget https://raw.githubusercontent.com/eead-csic-compbio/bioinformatics/main/test_data/arabidopsis_genes.txt
@@ -307,14 +326,14 @@ As we can see  instead of executing the instructions one by one in your terminal
 
 Working with makefiles will allow you to modify any step and regenerate the results with minimal effort. In case of error, you can easy track and fix the bug as the makefile won’t run if something is missed.
 
-Other options similar to makefiles in spirit but require more coding experince include [snakemake](https://snakemake.readthedocs.io/en/stable) or [nextflow](https://www.nextflow.io).
+Other options similar to makefiles in spirit but require more coding experience include [snakemake](https://snakemake.readthedocs.io/en/stable) or [nextflow](https://www.nextflow.io).
 
 Options for reproducible software environments include [docker](https://hub.docker.com), 
 [conda](https://docs.conda.io/en/latest) or [galaxy](https://usegalaxy.org).
 
 ### Turn your scripts into reproducible reports
 
-Generally scripts are very clear for their author not for the others. It is very  helpful and recommended to convert codes to a reproducible report. This report is a single file containing the code and the documentation at the same time. Indeed, when the code is executed, a report is generated including the documented command lines and any outputs(e.g. figures, tables…).
+Generally scripts are very clear for their author not for the others. It is very  helpful and recommended to convert codes to a reproducible report. This report is a single file containing the code and the documentation at the same time. Indeed, when the code is executed, a report is generated including the documented command lines and any outputs(e.g. figures, tables, etc).
 
 Actually, the code is what the machine will read and execute and the documentation is what readers need to understand what we are doing and why we are doing it.
 
@@ -329,7 +348,7 @@ R Markdown files are plain text filee with extension .Rmd. The rmarkdown package
 
 **Example 4: Writing reports using RMarkdown**
 
-1. Install R and RStudio
+1. Install R and RStudio desktop if required (see __Note__^[In Ubuntu, sudo apt install r-base] and __Note__^[see instructions at <https://rstudio.com/products/rstudio/download>])
 
 2. To get RMarkdown working in RStudio, the first thing you need is the rmarkdown package
 
@@ -338,18 +357,16 @@ install.packages("rmarkdown")
 library(rmarkdown)
 ```
 
-3. Create an Rmarkdown file, fill the title and  author name then choose a html output.
-
+3. Create a Rmarkdown file, fill the title and author name, then choose HTML output.
 
 ![](./pics/rmarkdown_launching.png){height=70% width=80% }. 
 
 ***
-4. The newly created .Rmd file comes with basic instructions, to create your own Rmarkdown script delete all except
-the YAML header section enclosed by three dashes (---) and containing by default; title, author, date and output format.
+4. The newly created .Rmd file comes with basic instructions, to create your own Rmarkdown script delete all except the YAML header section enclosed by three dashes (---) and containing by default; title, author, date and output format.
 
 5. Compile the .Rmd file to .html by clicking on the **Knit** button. 
 
-6. Insert R code chunk (insert ---> R) with the documented R-script of section 2.2.1 and click on **knit**.
+6. Insert R code chunk (insert ---> R) with the documented R script of section 2.2.1 and click on **knit**.
 
 7. For additional details about Rmardown syntax and code chunks, check this [guide](ruleshttps://www.markdownguide.org/basic-syntax/)
 
@@ -370,7 +387,7 @@ Git is a version control program that keeps track of any changes you make to you
 
 There are two main types of version control systems:
 
-  + The centralized model:  all users connect to a central, master repository.
+  + The centralized model: all users connect to a central, master repository.
 
   + The distributed model: each user has a copy of entire repository on their computer and these repositroies can easily be synchronized.
 
