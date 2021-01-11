@@ -26,8 +26,6 @@ fontsize: 11pt
 bibliography: bib_myarticles_md.bib
 ---
 
-<!-- ~/docencia$ perl -lne 'next if(/^%/); s/\\htmladdnormallink\{\S+?\}\{(\S+)?\}/$1/; print' bib_myarticles.bib > bib_myarticles_md.bib -->
-
 
 ```{r knitr setup, include=FALSE,  eval=TRUE, echo=FALSE, warning=FALSE}
 library(knitr)
@@ -37,7 +35,9 @@ knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE,
 
 # Introduction
 
-In Genomics and Computational Biology, annotating a sequence means decorating it with quantums of biological information, usually about its *molecular function*, the *biological process(es)* in which it takes part and the *cellular compartment* where that happens (see the [Gene Ontology](http://geneontology.org)). Other relevant annotations include the evolutionary conservation of a sequence or the biological sample where it was found.
+In Genomics and Computational Biology, annotating a sequence means decorating it with quantums of biological information, usually about its *molecular function*, the *biological process(es)* in which it takes part and the *cellular compartment* where that happens (see the [Gene Ontology](http://geneontology.org)). Other relevant annotations include the evolutionary conservation of a sequence or the biological sample where it was found. The next figure summarizes example genomic features whose annotation has been recognized of importance in wheat breeding by [@Borrill2019]:
+
+![](./pics/TPJ-97-56-g003.jpg)
 
 The annotation process requires at least two data sources:
 
