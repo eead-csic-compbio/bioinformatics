@@ -472,7 +472,7 @@ plot.kmers(kmer.stat.table, k, volcano.ymax = 60)
 
 The plant-dedicated mirror of the Regulatory Sequence Analysis Tools (RSAT, <http://plants.rsat.eu>) offers specialized options for researchers dealing with plant transcriptional regulation. The web site contains whole-sequenced species regularly updated from Ensembl Plants and other sources (85 as of Dec 2020), and supports an array of tasks frequently required for the analysis of regulatory sequences, such as retrieving upstream sequences, motif discovery, motif comparison, pattern matching. RSAT::Plants also integrates the footprintDB collection of DNA motifs. This exercise consists on following a step-by-step protocol on how to discover DNA motifs in regulatory regions of clusters of co-expressed genes in plants. It also explains how to empirically control the significance of the result, and how to annotate any discovered motis. 
 
-This protocol has been published at [@ContrerasMoreira2016a]. Other related protocols can be found at [@CastroMondragon2016]  [@ContrerasMoreira2016b].
+This protocol has been published at [@ContrerasMoreira2016a]. Other related protocols can be found at [@CastroMondragon2016; @ContrerasMoreira2016b].
 
 ### Background
 
