@@ -536,7 +536,7 @@ Before the proper analysis of the gene cluster, we will retrieve the promoter se
 
 1. Open a connection to the RSAT::Plants server. It can be reached at <http://plants.rsat.eu>. On the left-side menu, select 'Sequence tools -> retrieve sequence'.
 
-2. Choose 'Single organism -> Zea_mays.B73RefGen v4.46' for the examples of this protocol (see __Note  1__), which corresponds to Ensembl Plants release 46
+2. Choose 'Single organism -> Zea mays' for the examples of this protocol (see __Note  1__), which corresponds to 'Zea mays.B73RefGen v4.46' in Ensembl Plants release 46.
 
 3. Choose 'Genes -> all'; this will retrieve all upstream sequences of the maize genome.
 
