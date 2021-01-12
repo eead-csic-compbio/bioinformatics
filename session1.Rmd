@@ -220,7 +220,7 @@ The natural data structure for indexing **words of length $k$**, or **$k$-mers**
 
 ### Read alignment or mapping
 
-High throughput sequencing has found many applications in all fields of Science in recent years. The primary product of this array of technologies are sequence reads, usually in FASTQ format, of either Single-End (SE) or Paired-End (PE) sequences. PE reads usually have the following arrangement [@PEread]:
+High throughput sequencing has found many applications in all fields of Science in recent years. The primary product of this array of technologies are sequence reads, usually in FASTQ format, of either Single-End (SE) or Paired-End (PE) sequences. Long-reads, several Kb long, are increasingly popular as well. PE reads usually have the following arrangement [@PEread]:
 
 ![](./pics/PE.jpg)
 
