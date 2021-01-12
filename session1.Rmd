@@ -213,7 +213,7 @@ BLAST saves computing time by pre-processing the sequences producing indexed tab
 
 + Homologous proteins contain segments that can be aligned without indels. This simplifies the process of extending seed alignments. 
 
-The natural data structure for indexing words of length $k$, or $k$-mers, is the **$k$-mer index**. The figure below depicts the index for string 'AGAGCGAGAGCGCGC' and $k=2$ [@Makinen2015]:
+The natural data structure for indexing **words of length $k$**, or **$k$-mers**, is the **$k$-mer index**. The figure below depicts the index for string 'AGAGCGAGAGCGCGC' and $k=2$ [@Makinen2015]:
 
 ![](./pics/kmeridx.jpg)
 
