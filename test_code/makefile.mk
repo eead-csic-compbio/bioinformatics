@@ -16,7 +16,8 @@ ARAB_SEQ=${DATA}/Arabidopsis_thaliana.TAIR10.cdna.all.fa
 ## Start with the targets
 
 # Create the directories
-# this target is called target and all command lines or targets need to be identend with a tab
+# this target is called 'dir'
+# all command lines or targets need to be indented with a tab
 dir:
 	@echo "Creating sequences and results directories"
 	mkdir -p ${DATA}
