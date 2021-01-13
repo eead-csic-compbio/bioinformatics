@@ -161,7 +161,7 @@ Herein we will compare two R scripts written for the same purpose.
 
 1. Check both scripts and choose which one is more informative for you
 
-```{r, include=T, eval=FALSE}
+```{r, eval=FALSE}
 
 required.libs <- c("ggplot2","gridExtra","ggridges")
 for (lib in required.libs){
@@ -182,8 +182,8 @@ p
 
 ***
 
-```{r, eval=F}
-# @author:  najlaksouri@gmail.com
+```{r density plot, eval=F}
+# @author:najlaksouri@gmail.com
 # @date: 04/01/2020
 # @description this script creates a Ridgeline plots showing the density distrubution of motif sites
 
@@ -232,6 +232,8 @@ density_plot
 #display all packages used and their version
 sessionInfo()
 ```
+
+![](./pics/density_plot.png){height=70% width=70% }. 
 
 
 
@@ -506,7 +508,7 @@ Let´s see this with an example
   git add --all #To add all files at the same time
 ```
   3. Check again the status and try to compare between the Status messages.
-  4. Commit the changes typing "adding untracked data".
+  4. Commit the changes typing "adding folders and files".
   
 ```{bash, eval=F}
   git commit -m <commit message>
@@ -514,7 +516,7 @@ Let´s see this with an example
  
   5. Use touch to create a new empty file called index.html
   3. Run the **`git status`** once again
-  4. Add the index.html and commit "adding an empty index file"
+  4. Add the index.html and commit "adding an empty index"
   5. Edit the index.html  pasting these lines then run **git diff**. What does git diff do?
  
 ```{html, class.source='klippy'}
@@ -557,20 +559,19 @@ We can ask git to ignore unwanted files (e.g files with .log extensions) by crea
 
 ```{bash, eval=F}
   cd ~/demo_project
-  touch file1.log file2.log Tfs.txt
-  echo -e "PRUPE_1G130300\nPRUPE_4G232600" >> Tfs_list.txt #add gene ids to the file
-  git status
   touch .gitignore
   echo *.log >> .gitignore #to specify unwanted files
+  touch file1.log file2.log genes_list.txt
+  echo -e "PRUPE_1G130300\nPRUPE_4G232600" >> genes_list.txt #add gene ids to the file
   git status
   git add --all 
-  git commit -m "Ignore log files and add the gene list"
+  git commit -m "Ignore log files and add the list of genes"
 ```
 
 **git mv** command lets you move (or rename) files within a repo.
 
 ```{bash, eval=F}
-  git mv Tfs_list.txt input/
+  git mv genes_list.txt input/
   git add
   git commit
 ```
@@ -589,10 +590,10 @@ In case you have made some changes to a file but you are not statisifed with the
 
 ```{bash, eval=F}
 cd ~/demo_project
-echo "AT2G38470" >> input/Tfs_list.txt # add an A. thaliana transcription  factor
-cat Tfs_list.txt
-git checkout Tfs_list.txt
-cat Tfs_list.txt
+echo "AT2G38470" >> input/genes_list.txt # add new gene_ID
+cat input/genes_list.txt
+git checkout input/genes_list.txt
+cat input/genes_list.txt
 ```
 
 
@@ -602,15 +603,15 @@ To unstage undesired files, use the following git command: **git reset HEAD file
 
 **Example 8**
 
-+ Create a bash script called script.sh containing the following line: echo "Hello, This is a Git tutorial".
++ Create a bash script called script.sh containing the following line: echo "Hello, This is a Git tutorial". (Tip: Type chmod u+x script.sh to change the permission, then ./script.sh to run the code)
 
-+ Save the output of script in a text file called output.txt.
++ Save the output of script in a text file called message.txt.
 
 + Add in one go all the files to the staging area.
 
 + Check the status.
 
-+ Unstage the output.txt file.
++ Unstage the message file.
 
 + Check again the status.
 
@@ -621,22 +622,20 @@ To unstage undesired files, use the following git command: **git reset HEAD file
 
 ```{bash, eval=F}
 
-# Create a new folder
-Mkdir sequences
-# Add 2 empty files
-touch sequences/prunus_persica.fa zea_.fa
+# Go to the sequences folder and create new files
+touch prunus_persica.fna zea_mays.fna
 #add and commit
-git add sequences/prunus.fa
+git add prunus_persica.fna
 git commit -m "added two fasta files"
 
 # add the missing file
-git add sequences/arabidopsis.fa
+git add zea_mays.fna
 
 # Modify the commit (a text editor will open)
 git commit --amend
 # Modify the commit by adding a description line for each file:
-#prunus.fa contains all cdna sequences of prunus persica
-#arabidopsis.fa contains all cdna sequences of Arabidopsis thaliana
+#prunus.fna contains all cdna sequences of prunus persica
+#zea_mays.fna contains all cdna sequences of zea_mays.fna
 
 ```
 
@@ -649,9 +648,8 @@ For this purpose, we will be using **git rm filename**
 **Example 10** 
 
 ```{bash, eval=F}
-git rm genes_list.txt
+git rm sequences/Arabidopsis_thaliana.TAIR10.cdna.all.fa
 git status
-git add genes_list.txt
 git commit -m "deleted unwanted file"
 
 ``` 
@@ -684,21 +682,20 @@ Actually, the newly created branch is an exact copy of the master branch and the
 git checkout branchname
 
 # Edit the test_branch, track and commit the changes
-touch script.py
 touch Readme.txt
 echo "Hello, This is a simple a branching exercise" > Readme.txt
 
-git add -all
-git commit -m "added readme and python script to test branch"
+git add filename
+git commit -m "added a readme to the test branch"
 
 # Switch back to the master branch
-git checkout branchname
+git checkout master
 
 # List the directory contents
 ls
 ```
 
-As we can see, the master branch does not have the Readme.txt and script.py file as at the moment it only exists in the test_branch. 
+As we can see, the master branch does not have the Readme.txt, as at the moment it only exists in the test_branch. 
 
 4. Merge the branches: whenever we are satisfied with the changes, they can be merged into the master branch
 
@@ -733,13 +730,13 @@ In this section, we will learn how to transfer a local repository to a Git hosti
 
   + Log in to your account.
   
-  + Start by creating a new repository, give it a name (ex: test_repository), let it public and initialize it with a README file. 
+  + Start by creating a new repository, give it a name (ex: demo_repository), let it public and initialize it with a README file. 
   
   + Now we will connect the local repo to the empty remote one that we just created on GitHub.
 
 ```{bash, eval=F}
 
-git remote add origin <repository url> #the URL should look something like https://github.com/najlaksouri/test_repository .git
+git remote add origin <repository url> #the URL should look something like https://github.com/najlaksouri/demo_repository .git
 # Push the files to GitHb
 git push -u origin master #GitHub will ask for the username and password
 ```
