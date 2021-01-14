@@ -50,9 +50,9 @@ The next figure from @Km2020 illustrates two possible ways to partition a datase
 
 ![](./pics/ML_dataset_training_validation_test_sets.png)
 
-**Cross-validation:** model validation procedure based on repeatedly spliting a dataset in to training and validation subsets. Partitions can be done in various ways, such as 80% training and %20 validation, or %50/%50. A test set can still be used to independently measure performance on an independent dataset.
+**Cross-validation:** model validation procedure based on repeatedly spliting a dataset in training and validation subsets. Partitions can be done in various ways, such as 80% training and %20 validation, or %50/%50. A test set can still be used to independently measure performance on an independent dataset.
 
-**Imbalanced dataset:** Occurs when the number of data instances in the training dataset in each class is not balanced. Severe imbalance happens when the distribution of instances is uneven by a large amount (e.g. 1:100 or more) and are particularly challenging for training.
+**Imbalanced dataset:** Occurs when the number of data instances in each class is not balanced in the training dataset. Severe imbalance happens when the distribution of instances is uneven by a large amount (e.g. 1:100 or more) and are particularly challenging for training.
 
 **Over-training:** Occurs when the performance on the training sets improve while getting worse on the validation sets. It is a form of over-fitting the training data. Learn more [here](https://bioinfoperl.blogspot.com/2020/05/sobreentrenamiento-de-una-red-neuronal.html) (in Spanish).
 
@@ -81,8 +81,8 @@ kable(wines[1:5,])
 
 The last column (quality) is the dependent variable in this example, the one we will try to predict from the others and use to classify wines as high-quality (HQ) or low-quality (LQ). In order to convert quality estimates to HQ/LQ binary values, the original 3-8 values are assigned 1 when $quality > 5$ or else 0. 
 
-In order to graph performance and to compare different models we will plot 
-Receiver Operating Characteristic (ROC) curves, which show specificity vs sensitivity.
+In order to plot performance and to compare different models we will plot 
+Receiver Operating Characteristic (ROC) curves, which show 1-specificity vs sensitivity.
 Note that ROC plots usually have a diagonal line to mark the performance gain over a random classifier. The Area Under the Curve (AUC) allows comparing alternative models, 
 with higher AUC values meaning better performance.
 
