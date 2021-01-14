@@ -245,13 +245,16 @@ When multiple commands are needed, it’s better to compile them into a single s
 
 **Example 3: Using Makefiles**
 
-1. Use mkdir to create a direcotory called demo_project and a subfolder demo_project/scripts.
+1. Use mkdir to create a directory called demo_project and a subfolder demo_project/scripts.
 
-2. Copy and save the below makefile as get_sequences.mk in demo_project/scripts.
+2. Download the makefile from the Github then save it in subfolder demo_project/scripts.
 
-3. To execute the makefile you need to indent the target-related instructions using `tabs` as they are part of the syntax. Use vim or any text editor to do so.
+```{bash, eval=F}
+wget https://raw.githubusercontent.com/eead-csic-compbio/bioinformatics/main/test_code/makefile.mk
+```
 
-3. Before running this code, you need first to install samtools and check its version:
+
+3. Before running this code, you need first to install samtools and check it´s version:
 
 ```{bash, eval=F}
 sudo apt update
@@ -392,9 +395,9 @@ Git is a version control program that keeps track of any changes you make to you
 
 There are two main types of version control systems:
 
-  + The centralized model: all users connect to a central, master repository.
+  + The centralized model: there is a single central copy of the repository on the server and the users need to connect and make the changes on this central copy, where the history will be saved.
 
-  + The distributed model: each user has a copy of entire repository on their computer and these repositroies can easily be synchronized.
+  + The distributed model: each user has a copy of entire repository on its own computer and these repositroies can easily be synchronized.
 
 Git is a free distributed model, widely used in the programming world. It was developed in 2005 by Linus Torvalds, the creator of the Linux operating system kernel [@10.5555/2695634]. The next figure was adapted from [beanstalkapp](http://guides.beanstalkapp.com/version-control/intro-to-version-control.html):
 
@@ -421,7 +424,7 @@ git --version #To verify that the installation has succeeded
 We have already said that by using VCS we can know which user have made the changes. For this, we need to tell Git our identity using the following command lines:
 
 ```{bash, eval=F}
-git config --global user.name "name"
+git config --global user.name "name"   #Avoid spaces when writing the user name
 git config --global user.email "name@example.com"
 ```  
 
@@ -508,7 +511,7 @@ Let´s see this with an example
   
 ```{bash, eval=F}
   git add filename 
-  git add --all #To add all files at the same time
+  git add --all #To add all folders/files at the same time
 ```
   3. Check again the status and try to compare between the Status messages.
   4. Commit the changes typing "adding folders and files".
@@ -724,16 +727,20 @@ git branch
 Git is version control software. GitHub, is a web-based Git repository hosting service. It provides a free access to git repositories. GitHub allows us to share and access repositories on the web and clone them to our local computer, so that we can work on them.
 
 To interact with GitHub, the first thing we need to do is to create an [account](https://github.com/join?source=login).
-So now is a great time to create one.
+So now is a great time to create one. (**Tip**: Please remember to use the same username and email defined with git configuration.)
+
+
 
 Until now, we have been using Git locally. 
 In this section, we will learn how to transfer a local repository to a Git hosting server in the cloud. This means that the repository will change from local to remote.
+
+
 
 **Example 12: Create a GitHub repo and pushing a local repo** 
 
   + Log in to your account.
   
-  + Start by creating a new repository, give it a name (ex: demo_repository), let it public and initialize it with a README file. 
+  + Start by creating a new repository, give it a name (ex: demo_project), let it public and initialize it with a README file. 
   
   + Now we will connect the local repo to the empty remote one that we just created on GitHub.
 
@@ -755,6 +762,11 @@ It takes 2 two arguments:
   +	A remote URL, for example, https://[hostname]/user/repo.git
   
 
+In case you have modified locally your repository and you want to synchronize these changes with your remote repo, first you need to add and commit your changes then type **git push**. 
+
+In contrast, to download content from a remote repository and immediately update the local one to match that content,type **git pull**.
+
+****
 Other useful tools that can be adopted to make a reproducible research especially for the audience with little programming background are [Docker](https://www.docker.com/) and [Galaxy](https://usegalaxy.org/).
 
 Galaxy is an open web-based platform for accessible and reproducible research, where users can easily run tools without writing code [@Jalili2020]. So that sharing a framework on galaxy is a of great help. 
@@ -775,10 +787,10 @@ There are also resources such as [Figshare](https://figshare.com/), [Zenodo](htt
 **Exercise 1**.
 
 1. Create a local repository in a new directory called exercises.
-2. create a Readme file and check the repository status.
+2. Create a Readme file and check the repository status.
 3. Add the Readme file to the staging area and commit the change with appropriate message.
 4. Copy the [test_code](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code) folder in the working directory
-5. Create and commit a configuration to ignore all files with .tpm extension and all the  test_code directory
+5. Create and commit a configuration to ignore all files with .tpm extension and all the test_code directory
 6. Check that the configuration is well done
 7. Rename the Readme file as Readme.txt
 8. Track and commit the changes
@@ -798,7 +810,7 @@ Go to the [ENA browser](https://www.ebi.ac.uk/ena/browser/home) and type this ac
   
   *	How many samples are available?
   
-  *	What is the sequencing platform used and which type of libraries were generated (paired-end /single-end)?
+  *	What is the sequencing platform used and which type of libraries were generated (paired-end/single-end)?
   
     **Tip**: Select more options from "Show Column Selection"
   
