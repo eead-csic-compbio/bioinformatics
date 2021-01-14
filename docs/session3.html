@@ -860,10 +860,10 @@ table, th, td <span class="kw">{</span>
 <ul>
 <li><p>Log in to your account.</p></li>
 <li><p>Start by creating a new repository, give it a name (ex: demo_project), let it public and initialize it with a README file.</p></li>
-<li><p>Now we will connect the local repo to the empty remote one that we just created on GitHub.</p></li>
+<li><p>Now we will connect the local repository to the empty remote one that we have just created on GitHub.</p></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
-<span class="fu">git</span> remote add origin <span class="op">&lt;</span>repository url<span class="op">&gt;</span> <span class="co">#the URL should look something like https://github.com/najlaksouri/demo_repository .git</span>
+<span class="fu">git</span> remote add origin <span class="op">&lt;</span>repository url<span class="op">&gt;</span> <span class="co">#the URL should look something like https://github.com/username/demo_project .git</span>
 <span class="co"># Push the files to GitHb</span>
 <span class="fu">git</span> push -u origin master <span class="co">#GitHub will ask for the username and password</span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
@@ -873,9 +873,9 @@ table, th, td <span class="kw">{</span>
 <p>It takes 2 two arguments:</p>
 <ul>
 <li><p>A short name for the remote repository, per default, origin</p></li>
-<li><p>A remote URL, for example, <a href="https://%5Bhostname%5D/user/repo.git" class="uri">https://[hostname]/user/repo.git</a></p></li>
+<li><p>A remote URL, for example, <a href="https://%5Bhostname%5D/username/repo.git" class="uri">https://[hostname]/username/repo.git</a></p></li>
 </ul>
-<p>In case you have modified locally your repository and you want to synchronize these changes with your remote repo, first you need to add and commit your changes then type <strong>git push</strong>.</p>
+<p>In case you have modified locally your repository and you want to synchronize these changes with your remote repo, first you need to add and commit the changes then type <strong>git push</strong>.</p>
 <p>In contrast, to download content from a remote repository and immediately update the local one to match that content,type <strong>git pull</strong>.</p>
 <hr />
 <p>Other useful tools that can be adopted to make a reproducible research especially for the audience with little programming background are <a href="https://www.docker.com/">Docker</a> and <a href="https://usegalaxy.org/">Galaxy</a>.</p>

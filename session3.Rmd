@@ -742,11 +742,11 @@ In this section, we will learn how to transfer a local repository to a Git hosti
   
   + Start by creating a new repository, give it a name (ex: demo_project), let it public and initialize it with a README file. 
   
-  + Now we will connect the local repo to the empty remote one that we just created on GitHub.
+  + Now we will connect the local repository to the empty remote one that we have just created on GitHub.
 
 ```{bash, eval=F}
 
-git remote add origin <repository url> #the URL should look something like https://github.com/najlaksouri/demo_repository .git
+git remote add origin <repository url> #the URL should look something like https://github.com/username/demo_project .git
 # Push the files to GitHb
 git push -u origin master #GitHub will ask for the username and password
 ```
@@ -759,10 +759,10 @@ It takes 2 two arguments:
 
   +	A short name for the remote repository, per default, origin
   
-  +	A remote URL, for example, https://[hostname]/user/repo.git
+  +	A remote URL, for example, https://[hostname]/username/repo.git
   
 
-In case you have modified locally your repository and you want to synchronize these changes with your remote repo, first you need to add and commit your changes then type **git push**. 
+In case you have modified locally your repository and you want to synchronize these changes with your remote repo, first you need to add and commit the changes then type **git push**. 
 
 In contrast, to download content from a remote repository and immediately update the local one to match that content,type **git pull**.
 
