@@ -303,6 +303,8 @@ Two key resources for annotating proteins domains in input sequences are:
   + [Pfam](http://pfam.xfam.org), which defines sequence families (domains) by calculating and refining multiple alignments which are ultimately converted to hidden Markov models. It is part of a larger collection called [InterPro](https://www.ebi.ac.uk/interpro)
   + [HHPred](https://toolkit.tuebingen.mpg.de/tools/hhpred), which explicitely uses secondary structure, sequence profiles and tertiary structure classifications to call protein domains and annotate protein sequences. 
 
+Another resource comparable to Pfam is [PANTHER](http://www.pantherdb.org), which is related to the Gene Ontology.
+
 The next figure depicts the tertiary structure of a protein with two domains, adapted from [@Wuerges2006]. Note that strands are shown as arrows and helices as cilinders:
 
 ![](./pics/3sto2s.png)
