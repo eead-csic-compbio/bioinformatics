@@ -334,10 +334,12 @@ As we can see  instead of executing the instructions one by one in your terminal
 
 Working with makefiles will allow you to modify any step and regenerate the results with minimal effort. In case of error, you can easy track and fix the bug as the makefile won’t run if something is missed.
 
-Other options similar to makefiles in spirit but require more coding experience include [snakemake](https://snakemake.readthedocs.io/en/stable) or [nextflow](https://www.nextflow.io).
+Other options similar to makefiles in spirit but require more coding experience include [snakemake](https://snakemake.readthedocs.io/en/stable) or [nextflow](https://www.nextflow.io). 
+A snakemake intro is available [here](https://github.com/harvardinformatics/bioinformatics-coffee-hour).
 
 Options for reproducible software environments include [docker](https://hub.docker.com), 
 [conda](https://docs.conda.io/en/latest) or [galaxy](https://usegalaxy.org).
+A conda intro is available [here](https://github.com/harvardinformatics/bioinformatics-coffee-hour).
 
 ### Turn your scripts into reproducible reports
 
