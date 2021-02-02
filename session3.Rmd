@@ -235,7 +235,9 @@ sessionInfo()
 
 ![](./pics/density_plot.png){height=70% width=70% }. 
 
+### Citing software dependencies
 
+Third-party software used in your analyses should be properly cited, as explained in [@Katz2020], including when possible the actual version used.
 
 ### Automate the analysis process
 
@@ -778,11 +780,12 @@ On the other hand, if your analysis depends on a complex software hard to instal
 
 ## Good practices after the analysis
 
-### Archiving and citation of the data
+### Archiving and making your data citable
 
 The data generated in your project should be archived and published. For instance, genomic data must be deposited and accessioned prior to publication in a [INSDC](http://www.insdc.org/) repository such as the [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home) (ENA) or the [NCBI](https://www.ncbi.nlm.nih.gov).Other related resources are the [European Variation Archive](https://www.ebi.ac.uk/eva) or [BioSamples](https://www.ebi.ac.uk/biosamples).
 
 There are also resources such as [Figshare](https://figshare.com/), [Zenodo](https://zenodo.org/) or [Dryad](https://datadryad.org/stash), where you can accession and make citable data, documentation, code or preprints, or [COPO](https://bigdata.cgiar.org/blog-post/copo-a-portal-to-describe-store-and-retrieve-plant-data/), which will assist you in archiving all your plant data and outputs, whatever the data types.
+
 
 ## Exercises
 
