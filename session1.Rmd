@@ -435,7 +435,7 @@ The goal of this task is for you to learn how to:
 
 Let's practice then:
 
-1.	Search for the GO terms and the functional categories of the following GO IDs GO:0009414, GO:0035618, GO:0016491. **Tip:** For multiple search GO IDs needs to be separated by a space.
+1.	Search for the GO terms and the functional categories of the following GO IDs GO:0009414, GO:0035618, GO:0016491. **Tip :** For multiple search GO IDs needs to be separated by a space.
 
 2.	What are the GO ID and the functional category corresponding to photosynthesis?
 
@@ -445,9 +445,11 @@ Let's practice then:
 
 5.	How many gene products are involved in leaf development? Give the GO ID corresponding to this term.
 
-6.	How many proteins of *Arabidopsis thaliana*, *Prunus perisca* and *Zea mays* are assigned to the leaf development GO term. **Tip:** Zea mays. Taxonomy ID=4577
+6.	How many proteins of *Arabidopsis thaliana*, *Prunus perisca* and *Zea mays* are assigned to the leaf development GO term. 
+**Tip :** Zea mays. Taxonomy ID=4577
 
-7.	Check the total number of BP annotations and proteins supported by the **experimental** evidence codes in both *Arabidopsis thaliana* and *Prunus persica*. **Tip :** check the ‘Statistics’ box.
+7.	Check the total number of BP annotations and proteins supported by the **experimental** evidence codes in both *Arabidopsis thaliana* and *Prunus persica*. (see [the evidence codes](http://geneontology.org/docs/guide-go-evidence-codes/))
+**Tip :** check the ‘Statistics’ box.
 
 **Exe 9)** Summarize your results in a table.
 
