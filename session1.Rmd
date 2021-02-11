@@ -420,7 +420,7 @@ Search for homologous sequences and define protein domains of AT1G30330.2 with h
 
 ### Annotating function on orthology grounds
 
-Search for functional annotations for protein AT1G30330.2 with help from [HHPred](http://eggnog-mapper.embl.de). Make sure you set one-to-one orthologues only.
+Search for functional annotations for protein AT1G30330.2 with help from [eggNOG-mapper](http://eggnog-mapper.embl.de). Make sure you set one-to-one orthologues only.
 
 **Exe 8)** What are the GO terms and eggNOG orthology groups of this protein? 
 
