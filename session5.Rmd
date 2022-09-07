@@ -41,14 +41,23 @@ In order to run the examples in this section you will need to obtain some softwa
 |----|----|----|
 perl | [www.perl.org](https://www.perl.org) | [www.perl.org/docs](https://www.perl.org/docs.html), [perl one-liners](https://github.com/eead-csic-compbio/scripting_linux_shell/blob/master/session4.md) |
 bcftools | [samtools.github.io/bcftools/](https://samtools.github.io/bcftools/) | [BCFtools HowTo](https://samtools.github.io/bcftools/howtos/index.html) |
+64-bit Java | [www.java.com](https://www.java.com/en/download/manual.jsp) | [FAQ](https://www.java.com/en/download/help/java_win64bit.html) |
+R | [https://cran.r-project.org](https://cran.r-project.org) | |
+rstudio, soon to be renamed 'posit' | [www.rstudio.com](https://www.rstudio.com/products/rstudio/download) | | 
+rTASSEL | [https://maize-genetics.github.io/rTASSEL](https://maize-genetics.github.io/rTASSEL/articles/rtassel_walkthrough.html) | to be installed from Rstudio,  [troubleshooting](https://www.r-bloggers.com/2021/11/error-no-currentversion-entry-in-software-javasoft-registry) |
 
 Users of Debian/Ubuntu Linux can easily install these software dependencies with apt:
 
 ```{r apt, engine='bash', eval=FALSE}
-sudo apt install bcftools
+sudo apt install bcftools r-base rstudio libblas-dev liblapack-dev \
+  libjna-jni default-jdk libpcre2-dev liblzma-dev libbz2-dev
+ 
+# test java setup  
+sudo R CMD javareconf
 ```
 
-Windows users can use the [WSL](https://github.com/eead-csic-compbio/scripting_linux_shell/blob/master/session0.md#ubuntu-embedded-in-windows-10), which can be used to install Ubuntu, or [MobaXterm](https://mobaxterm.mobatek.net). In the latter case, you can install bcftools as follows:
+Windows users can instead use the [WSL](https://github.com/eead-csic-compbio/scripting_linux_shell/blob/master/session0.md#ubuntu-embedded-in-windows-10), which can be used to install Ubuntu, or [MobaXterm](https://mobaxterm.mobatek.net). 
+In the latter case, you can install bcftools as follows:
 
 ```{r compilation, engine='bash', eval=FALSE}
 apt-get install perl_base make git gcc-core zlib-devel liblzma-devel libbz2-devel libcurl-devel
@@ -59,6 +68,15 @@ make
 # this might throw errors, but the main binary will be produced anyway
 ls -ltr bcftools.exe
 ```
+
+rTASSEL is best installed from a Rstudio session, by typing in the console:
+
+```{r rtassel, eval=FALSE}
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("maize-genetics/rTASSEL")
+```
+
+
 
 
 
@@ -101,6 +119,11 @@ The goal here is to discuss a problem that might arise when mixing genotype call
 ## Handling VCF files with bcftools and one-liners
 
 In this section we will see what the VCF format, and its binary counterpart BCF, look like and some typical operations that they support.
+
+<!-- 
+https://twitter.com/MerKhaiBurch/status/1564235596415094785
+https://maize-genetics.github.io/rTASSEL/articles/genotype_filtration.html
+-->
 
 ### Extracting samples from VCF files
 
