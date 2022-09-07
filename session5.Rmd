@@ -109,16 +109,106 @@ kable(annot.stats,format.args = list(big.mark=","))
 
 # Practicals
 
-## Mixing allele calls from different genotyping platforms
+## The VCF format 
 
-The goal here is to discuss a problem that might arise when mixing genotype calls from Illumina 50k chips and other platforms.
+The de facto standard data format for genotyping studies is the Variant Call Format (VCF). 
+In this section we will see what the VCF format looks like. 
+Let's inspect the example below, which is modified from the official 
+[VCFv4.2 format specification](https://samtools.github.io/hts-specs/VCFv4.3.pdf):
+
+```{r vcf, engine='bash', eval=FALSE}
+##fileformat=VCFv4.3
+##fileDate=20090805
+##source=myImputationProgramV3.1
+##reference=file:///seq/references/1000GenomesPilot-NCBI36.fasta
+##contig=<ID=20,length=62435964,assembly=B36,md5=f126cdf8a..,species="Homo sapiens",taxonomy=x>
+##INFO=<ID=NS,Number=1,Type=Integer,Description="Number of Samples With Data">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
+##FILTER=<ID=q10,Description="Quality below 10">
+##FILTER=<ID=s50,Description="Less than 50% of samples have data">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read Depth">
+##FORMAT=<ID=HQ,Number=2,Type=Integer,Description="Haplotype Quality">
+#CHROM POS ID REF ALT QUAL FILTER INFO FORMAT NA00001 NA00002 NA00003
+20 17330 . T A 3 q10 NS=3;DP=11;AF=0.017 GT:GQ:DP:HQ 0/0:49:3:58,50 0/1:3:5:65,3 0/0:41:3
+20 1230237 . T . 47 PASS NS=2;DP=11;AA=T GT:GQ:DP:HQ 0/0:54:7:56,60 0/0:48:4:51,51 ./.:.:.
+```
+
+First, take your time to inspect the metadata in the header of the file, which are the lines that start with ##. These lines inform you about
+
+ + the format (ie VCFv4.3)
+ + the software that created the file
+ + the reference genome sequence where variants polymorphisms are mapped (ie human chr 20).  
+
+In addition you should check the INFO, FILTER and FORMAT lines, as they define the fileds that you will see in the actual data lines below. Note that these can change depending on the software / protocols used to produced the VCF file. 
+
+Then you can see the header line, with some fixed columns, starting with #CHROM, and then the actual names of the samples in the file (ie NA0001).
+
+Data lines show actual data for all loci genotyped.
+
+## The BCF format
+
+This is how the BCF format is described at the official [VCFv4.2 format specification](https://samtools.github.io/hts-specs/VCFv4.3.pdf):
+
+VCF is very expressive, accommodates multiple samples, and is widely used in the community. Its biggest drawback is that it is big and slow. Files are text and therefore require a lot of space on disk. A normal batch of ̃100 exome sis a few GB, but large-scale VCFs with thousands of exome samples quickly become hundreds of GBs. Because the file is text, it is extremely slow to parse.
+
+BCF2 is a binary, compressed equivalent of VCF that can be indexed with tabix and can be efficiently decoded from disk or streams. For efficiency reasons BCF2 only supports a subset of VCF, in that all info and genotype fields must have their full types specified.
+
+
+## Preparing, publishing and sharing your own VCF files
+
+The following statements are taken from [@10.12688/f1000research.109080.2]:
+
+Genotyping data is often published and shared without sufficient metadata to ensure interoperability and reuse. Some information that should be recorded cannot be easily retrieved from the analysis results, such as the identification of biological material studied, or the reference genome assembly and version used.
+
+Depending on who is handling the data and what skills are associated with the role, the difficulty of providing well-formatted metadata will vary. 
+
+ + Bioinformaticians who have directly performed the genotyping analyses and thus the creation of the VCF files will consider it a comparatively simple task to enter metadata directly into the file. 
+ + Gathering experimental data from conversations with wet lab colleagues or in a laboratory information management system (LIMS) search will be the more laborious. 
+ + Experimentalists who have little or no experience with the required metadata formats are most likely to be overwhelmed without a simple GUI or input template. 
+ + Principal investigators who want to submit the data at the end of an experiment may have similar difficulties. 
+ 
+From these observations, there is an urgent need for supporting tools or APIs for the structural and content validation of VCFs. We recommend performing both metadata and data validation. For the validation of VCF files, we recommend EBI’s [VCF validator](https://github.com/EBIvariation/vcf-validator).
+
+When the time comes to publish your own genotyping data, we encourage to the guidelines at [@10.12688/f1000research.109080.2].
+
+
+## Mixing allele calls from different experiments
+
+It is common to mix genotyping data from different experiments and laboratories.
+For instance you might want to enrich your own data with data already published from collaborators or from you own previous experiments. In this section we will visit frequent common problems that arise in this situation.
+
+### Different reference genome sequence
+
+
+
+
+
+### Different platforms
+
+Mixing genotype calls from different platforms might cause problems. 
+
+The goal here is to discuss the problems that might arise when mixing genotype calls from different platforms.
+
+For example, Illumina   Strand and Allele for the GoldenGate ® and
+Infinium ™ Assays.
+
+
+
+from Illumina 50k chips and other platforms.
+
+https://www.illumina.com/documents/products/technotes/technote_topbot.pdf
+
 
 <!-- Realizing presentar problema de fase de SNPs en Illumina 50K con Planet --> 
 
 
 ## Handling VCF files with bcftools and one-liners
 
-In this section we will see what the VCF format, and its binary counterpart BCF, look like and some typical operations that they support.
+In this section we will see typical operations that can be done on VCF files.
+
 
 <!-- 
 https://twitter.com/MerKhaiBurch/status/1564235596415094785
