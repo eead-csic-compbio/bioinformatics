@@ -114,7 +114,7 @@ kable(annot.stats,format.args = list(big.mark=","))
 The de facto standard data format for genotyping studies is the Variant Call Format (VCF). 
 In this section we will see what the VCF format looks like. 
 Let's inspect the example below, which is modified from the official 
-[VCFv4.2 format specification](https://samtools.github.io/hts-specs/VCFv4.3.pdf):
+[VCFv4.3 format specification](https://samtools.github.io/hts-specs/VCFv4.3.pdf):
 
 ```{r vcf, engine='bash', eval=FALSE}
 ##fileformat=VCFv4.3
@@ -130,23 +130,32 @@ Let's inspect the example below, which is modified from the official
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
 ##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
 ##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read Depth">
-##FORMAT=<ID=HQ,Number=2,Type=Integer,Description="Haplotype Quality">
 #CHROM POS ID REF ALT QUAL FILTER INFO FORMAT NA00001 NA00002 NA00003
-20 17330 . T A 3 q10 NS=3;DP=11;AF=0.017 GT:GQ:DP:HQ 0/0:49:3:58,50 0/1:3:5:65,3 0/0:41:3
-20 1230237 . T . 47 PASS NS=2;DP=11;AA=T GT:GQ:DP:HQ 0/0:54:7:56,60 0/0:48:4:51,51 ./.:.:.
+20 17330 . T A 3 q10 NS=3;DP=11;AF=0.017 GT:GQ:DP 0/0:49:3 0/1:3:5 0/0:41:3
+20 1110696 rs6040355 A G,T 67 PASS NS=2;DP=10;AF=0.333,0.667 GT:GQ:DP 1/2:21:6 2/1:2:2 ./.:.:.
 ```
 
-First, take your time to inspect the metadata in the header of the file, which are the lines that start with ##. These lines inform you about
+First, take your time to inspect the metadata in the header of the file, 
+which are the lines that start with ##. These lines inform you about
 
  + the format (ie VCFv4.3)
  + the software that created the file
  + the reference genome sequence where variants polymorphisms are mapped (ie human chr 20).  
 
-In addition you should check the INFO, FILTER and FORMAT lines, as they define the fileds that you will see in the actual data lines below. Note that these can change depending on the software / protocols used to produced the VCF file. 
+In addition you should check the INFO, FILTER and FORMAT lines, as they define the fields that you will see in the actual data lines below. Note that these can change depending on the software / protocols used to produced the VCF file. 
 
 Then you can see the header line, with some fixed columns, starting with #CHROM, and then the actual names of the samples in the file (ie NA0001).
 
-Data lines show actual data for all loci genotyped.
+Data lines show actual data for all loci genotyped. In the example there are only two loci, in particular
+positions 17330 and 1110696 of the human chr20. The (human) samples are diploid.
+
+The first one is a **biallelic** Single Nucleotide Polymorphism (SNP) where the reference genome is T (thymine) and the alternative allele is A (adenine, see their structure [here](http://eead-csic-compbio.github.io/bioinformatica_estructural/node5.html)). 
+Note that in this case the first sample is TT (0/0), the second is TA (0/1) and the third again TT (0/0).
+Note also that for each sample in the example there are three fields separated by ":", in the order GT:GQ:DP.
+Thus, you now know that the read depth (DP) of these calls is 3, 5 and 3 respectively.
+
+The second locus is a named SNP with **two alternative alleles** and the last sample is **missing data**.
+
 
 ## The BCF format
 
