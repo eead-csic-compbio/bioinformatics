@@ -161,9 +161,9 @@ The second locus is a named SNP with **two alternative alleles** and the last sa
 
 This is how the BCF format is described at the official [VCFv4.2 format specification](https://samtools.github.io/hts-specs/VCFv4.3.pdf):
 
-VCF is very expressive, accommodates multiple samples, and is widely used in the community. Its biggest drawback is that it is big and slow. Files are text and therefore require a lot of space on disk. A normal batch of ̃100 exome sis a few GB, but large-scale VCFs with thousands of exome samples quickly become hundreds of GBs. Because the file is text, it is extremely slow to parse.
+VCF is very expressive, accommodates multiple samples, and is widely used in the community. Its biggest drawback is that it is big and slow. Files are text and therefore require a lot of space on disk. A normal batch of ̃10 exomes is a few GB, but large-scale VCFs with thousands of exome samples quickly become hundreds of GBs. 
 
-BCF2 is a binary, compressed equivalent of VCF that can be indexed with tabix and can be efficiently decoded from disk or streams. For efficiency reasons BCF2 only supports a subset of VCF, in that all info and genotype fields must have their full types specified.
+BCF2 is a binary, compressed equivalent of VCF that can be indexed with [tabix](http://www.htslib.org/doc/tabix.html) and can be efficiently decoded from disk or streams. For efficiency reasons BCF2 only supports a subset of VCF, in that all info and genotype fields must have their full types specified.
 
 
 ## Preparing, publishing and sharing your own VCF files
@@ -187,19 +187,70 @@ When the time comes to publish your own genotyping data, we encourage to follow 
 ## Mixing allele calls from different experiments
 
 It is common to mix genotyping data from different experiments and laboratories.
-For instance you might want to enrich your own data with data already published from collaborators or from you own previous experiments. In this section we will visit frequent common problems that arise in this situation.
+For instance you might want to enrich your own data with other genotypes already published from collaborators or from you own previous experiments. 
+In this section we will visit frequent common problems that arise in this situation.
 
 ### Different reference genome sequence
 
+If you have two properly curated VCF files, inspecting the metadata will tell you whether the reference sequence used to map variants is the same or not. Note that reference sequences are usually in FASTA format,
+which looks like this:
 
+```{r morex2fna, engine='bash', eval=FALSE}
+>chr1H
+CGTGCACGACCATCGAGACGTCGCGGAAACTCGTCGTTTTTGTCGTTCGGGCCACTTTCA
+TGGGCTATAGCACACGGTATTGGGGTCCCGATTCAATTTTGGATTCTC...
+```
 
+Let's check the headers of two VCF files
+that use two versions of the barley reference genome (cultivar Morex) that correspond to assemblies 
+[GCA_902498975.1](https://www.ebi.ac.uk/ena/browser/view/GCA_902498975.1) and 
+[GCA_904849725.1](https://www.ebi.ac.uk/ena/browser/view/GCA_904849725.1):
+
+```{r morex2, engine='bash', eval=FALSE}
+##fileformat=VCFv4.3
+##fileDate=20181104
+##reference_ac=GCA_902498975.1
+##reference_url=“ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/498/975/GCA_902498975.1_Morex_v2.0/GCA_902498975.1_Morex_v2.0_genomic.fna.gz”
+```
+and
+
+```{r morex3, engine='bash', eval=FALSE}
+##fileformat=VCFv4.3
+##fileDate=20220112
+##reference_ac=GCA_904849725.1
+##reference_url=“https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/904/849/725/GCF_904849725.1_MorexV3_pseudomolecules_assembly/GCF_904849725.1_MorexV3_pseudomolecules_assembly_genomic.fna.gz”
+```
+
+If the metadata in the "##contig" line contains a md5 sum that can also be used to check the reference, but note that a different FASTA header is enough to change it.
+
+Another quick check is to check the chromosome/contig names of the VCF files, which you can do as follows:
+
+```{r chrcheck, engine='bash', eval=FALSE}
+zcat file1.vcf.gz | cut -f 1 | sort -u
+cat file2.vcf | cut -f 1 | sort -u
+```
+
+If you are not sure then you must check explicitly whether the references are the same before any joint analysis can be done. There are different ways to do this, here we'll use the command line.
+
+<!-- TODO
+
+1 get two VCF file
+2 extract 2col TSVs with pos, ref from both files
+3 compute intersection with grep
+
+-->
+
+If the references are indeed different you have two choices:
+
+ + Remap the reads used to build one of the VCF files on the same reference used for the other. This is probably the safest, as there might be large rearrangements among different genome versions, and some contigs might even change strand. However, this is time consuming and requires bioinformatics skills.
+ 
+ + Lift-over positions from reference1 to reference2 and then edit the VCF files accordingly. Most likely this will result is dropping a fraction of the original mappings. This task also requires bioinformatics skills.
 
 
 ### Different platforms
 
 Mixing genotype calls from different platforms might cause problems. 
 
-The goal here is to discuss the problems that might arise when mixing genotype calls from different platforms.
 
 For example, Illumina   Strand and Allele for the GoldenGate ® and
 Infinium ™ Assays.
