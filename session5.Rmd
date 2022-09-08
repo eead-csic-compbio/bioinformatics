@@ -172,7 +172,7 @@ Depending on who is handling the data and what skills are associated with the ro
  
 From these observations, there is an urgent need for supporting tools or APIs for the structural and content validation of VCFs. We recommend performing both metadata and data validation. For the validation of VCF files, we recommend EBI’s [VCF validator](https://github.com/EBIvariation/vcf-validator).
 
-When the time comes to publish your own genotyping data, we encourage to the guidelines at [@10.12688/f1000research.109080.2].
+When the time comes to publish your own genotyping data, we encourage to follow the guidelines at [@10.12688/f1000research.109080.2] and to submit the data to the [European Variation Archive](https://www.ebi.ac.uk/eva/) to ensure long-term availability [@10.1093/nar/gkab960].
 
 
 ## Mixing allele calls from different experiments
