@@ -5,7 +5,6 @@ author:
   name: Bruno Contreras Moreira
 output:
   html_document:
-    bookdown::html_document2: default
     fig_caption: yes
     highlight: zenburn
     number_sections: yes
@@ -232,15 +231,17 @@ zcat file1.vcf.gz | cut -f 1 | sort -u
 cat file2.vcf | cut -f 1 | sort -u
 ```
 
-If you are not sure then you must check explicitly whether the references are the same before any joint analysis can be done. There are different ways to do this, here we'll use the command line.
+If you are not sure then you must check explicitly whether the references are the same before any joint analysis can be done. There are different ways to do this; for instance you can use the command line:
 
-<!-- TODO
+```{r chrcheckfull, engine='bash', eval=FALSE}
+# get two VCF files
+ls 1.vcf 2.vcf
 
-1 get two VCF file
-2 extract 2col TSVs with pos, ref from both files
-3 compute intersection with grep
+# extract CHR,POS,REF columns from both VCFs to TSV files
 
--->
+
+# compute intersection with grep
+```
 
 If the references are indeed different you have two choices:
 
@@ -278,7 +279,7 @@ complement(call) \text{ if } CustomerStrand = \text{BOT}
 \end{cases}
 $$
 
-Nevertheless, you might cases where the reference allele is not the one in the genome sequence but perhaps the most common in a large population. For this reason, care should be taken when doing these conversions to make sure they're correct. The [recipe about computing identity](#identity) should help.
+Nevertheless, you might encounter cases where the reference allele is not the one in the genome sequence but perhaps the most common in a large population. For this reason, care should be taken when doing these conversions to make sure they're correct. The [recipe about computing identity](#identity) should help.
 
 
 ## Handling VCF files with bcftools and one-liners
