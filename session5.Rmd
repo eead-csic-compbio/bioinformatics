@@ -189,7 +189,10 @@ When the time comes to publish your own genotyping data, we encourage to follow 
 
 It is common to mix genotyping data from different experiments and laboratories.
 For instance you might want to enrich your own data with other genotypes already published from collaborators or from you own previous experiments. 
+
 In this section we will visit frequent common problems that arise in this situation.
+
+Note that having some genotypes, ie a couple barley cultivars, analyzed in separate experiments will be of great help, as we can use them as **controls and guides** to make sure the data is correct. For instance, at EEAD-CSIC we will typically add cv Morex to our new genotyping experiments.
 
 ### Different reference genome sequence
 
@@ -296,7 +299,10 @@ https://maize-genetics.github.io/rTASSEL/articles/genotype_filtration.html
 
 ### Merging separate VCF files 
 
-### Computing sequence identity of replicated samples {#identity}
+### Computing sequence identity among samples {#identity}
+
+Replicates, 
+
 
 ### Filtering out by depth and missing data
 

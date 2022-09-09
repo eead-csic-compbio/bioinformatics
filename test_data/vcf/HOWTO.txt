@@ -1,0 +1,21 @@
+
+RAWVCFGZ=   #GBS.vcf.gz
+
+# random barleys
+bcftools query -l $RAWVCFGZ | sort -R | head -50 > list1.samples
+bcftools query -l $RAWVCFGZ | sort -R | head -50 > list2.samples
+
+# chr2H
+bcftools view -S list1.samples -O z -o samples1.vcf.gz -r chr2H $RAWVCFGZ
+bcftools view -S list2.samples -O z -o samples2.vcf.gz -r chr2H $RAWVCFGZ
+
+# anonymize
+zcat samples1.vcf.gz | perl -lane 'if(/^#CHROM/){ $n=0; foreach $c (9 .. 58){ $n++; $F[$c]="sample$n" } print join("\t",@F) } else{ print }' > 1.vcf
+zcat samples2.vcf.gz | perl -lane 'if(/^#CHROM/){ $n=50; foreach $c (9 .. 58){ $n++; $F[$c]="sample$n" } print join("\t",@F) } else{ print }' > 2.vcf
+
+mv 1.vcf samples50.vcf
+mv 2.vcf samples100.vcf
+
+# edit metadata and compress
+
+pigz samples50.vcf samples100.vcf
