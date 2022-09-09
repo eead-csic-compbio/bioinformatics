@@ -5,6 +5,7 @@ author:
   name: Bruno Contreras Moreira
 output:
   html_document:
+    bookdown::html_document2: default
     fig_caption: yes
     highlight: zenburn
     number_sections: yes
@@ -24,6 +25,7 @@ output:
 geometry: margin=1cm
 fontsize: 11pt
 bibliography: bib_myarticles_md.bib
+link-citations: yes
 ---
 
 
@@ -249,20 +251,34 @@ If the references are indeed different you have two choices:
 
 ### Different platforms
 
-Mixing genotype calls from different platforms might cause problems. 
+Mixing genotype calls from different platforms might cause problems as SNPs and alleles might not be named equally or places in the same chromosome strand, even the reference genome sequence is the same. 
 
+To illustrate this we'll have a look at genotypes called with Illumina GoldenGate and Infinium Assays,
+which are quite common in barley breeding. When you get the results from your genotyping provider
+you should receive a **manifest** file, which for the so called barley Illumina 50k chips looks like this:
 
-For example, Illumina   Strand and Allele for the GoldenGate ® and
-Infinium ™ Assays.
+```{r engine='bash'}
+head test_data/manifest.csv
+```
 
+The key columns in the manifest are **CustomerStrand** and **IlmnStrand**, which according to the  documentation [@Illumina2021], are defined as follows:
 
+ + IlmnStrand: The strand used to design each probe is designated as TOP/BOT for SNPs as indicated in the ‘IlmnStrand’ column of the manifest. The alleles in the ‘SNP’ column are on the IlmnStrand.
 
-from Illumina 50k chips and other platforms.
+ + CustomerStrand: The strand submitted to the Illumina designer by Illumina or a customer is designated as TOP/BOT as indicated in the ‘SourceStrand’ column of the manifest.
+ 
+These two pieces of information really mean that the actual allele used to design a probe might be actually different to the one submitted, which is usually what the researcher want. This system has created a lot of confusion [@NELSON2012361; @Verma2014; @Zhao2017] as SNPs genotyped in other platforms don't follow this convention. 
 
-https://www.illumina.com/documents/products/technotes/technote_topbot.pdf
+It is frequently assumed that the first allele in a SNP (ie A in [A/T]) corresponds to the allele found in the reference genome forward sequence. If that's the case and that's the type of sequence submitted to Illumina to produce a genotyping kit, then you can convert Illumina calls as follows:
 
+$$
+\begin{cases}
+call \text{ if } CustomerStrand =  \text{TOP} \\
+complement(call) \text{ if } CustomerStrand = \text{BOT}
+\end{cases}
+$$
 
-<!-- Realizing presentar problema de fase de SNPs en Illumina 50K con Planet --> 
+Nevertheless, you might cases where the reference allele is not the one in the genome sequence but perhaps the most common in a large population. For this reason, care should be taken when doing these conversions to make sure they're correct. The [recipe about computing identity](#identity) should help.
 
 
 ## Handling VCF files with bcftools and one-liners
@@ -279,7 +295,7 @@ https://maize-genetics.github.io/rTASSEL/articles/genotype_filtration.html
 
 ### Merging separate VCF files 
 
-### Computing sequence identity of replicated samples
+### Computing sequence identity of replicated samples {#identity}
 
 ### Filtering out by depth and missing data
 
