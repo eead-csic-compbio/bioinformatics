@@ -237,13 +237,16 @@ cat file2.vcf | cut -f 1 | sort -u
 If you are not sure then you must check explicitly whether the references are the same before any joint analysis can be done. There are different ways to do this; for instance you can use the command line:
 
 ```{r chrcheckfull, engine='bash', eval=FALSE}
-# get two VCF files
-ls 1.vcf 2.vcf
+# get two VCF files, ie those at test_data/vcf/
+zcat test_data/vcf/samples50.vcf.gz | wc
+zcat test_data/vcf/samples100.vcf.gz | wc
 
-# extract CHR,POS,REF columns from both VCFs to TSV files
-
+# extract CHR,POS,REF columns from first VCF
+zcat test_data/vcf/samples50.vcf.gz | perl -lane 'next if(/^#/); print "$F[0]\t$F[1]"' > pos50.txt
 
 # compute intersection with grep
+zgrep -f pos50.txt test_data/vcf/samples50.vcf.gz | cut -f 1,2,4 | head 
+zgrep -f pos50.txt test_data/vcf/samples100.vcf.gz | cut -f 1,2,4 | head
 ```
 
 If the references are indeed different you have two choices:
