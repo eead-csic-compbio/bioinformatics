@@ -18,4 +18,4 @@ mv 2.vcf samples100.vcf
 
 # edit metadata and compress
 
-pigz samples50.vcf samples100.vcf
+bgzip samples50.vcf samples100.vcf
