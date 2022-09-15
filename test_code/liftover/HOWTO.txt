@@ -1,0 +1,99 @@
+
+
+
+# check chr names in VCF files
+zcat 180606_GBS_all_22621_samples_171263_SNPs.vcf.gz | cut -f 1 | sort -u
+...
+0
+1
+2
+3
+4
+5
+6
+7
+
+# prepare reference sequence with chr names as 0-7 
+perl -lpe 'if(/^>/){ s/chr(\d)H/$1/; s/chrUn/0/ }' \
+	../references/barley/IBSC2017/150831_barley_pseudomolecules.fasta \
+	> 150831_barley_pseudomolecules.fasta
+
+grep "^>" 150831_barley_pseudomolecules.fasta
+>1
+>2
+>3
+>4
+>5
+>6
+>7
+>0
+
+# quick check to make sure REF allele matches our reference
+zcat 180606_GBS_all_22621_samples_171263_SNPs.vcf.gz | grep -v "^#" | shuf -n 20 | \
+	perl -lane 'printf("%s\t%d\t%d\t%s\n",$F[0],$F[1]-1,$F[1],$F[3])' | sort -k1,1 -k2,2n \
+	> 180606_GBS_all_22621_samples_171263_SNPs.vcf.sample.bed
+
+cat 180606_GBS_all_22621_samples_171263_SNPs.vcf.sample.bed
+
+1	2471949	2471950	G
+1	490771921	490771922	G
+...
+7	591683506	591683507	A
+7	636662889	636662890	C
+
+
+bedtools getfasta -fi 150831_barley_pseudomolecules.fasta \
+	-bed 180606_GBS_all_22621_samples_171263_SNPs.vcf.sample.bed
+
+>1:2471949-2471950
+G
+>1:490771921-490771922
+G
+...
+>7:591683506-591683507
+A
+>7:636662889-636662890
+C
+
+# BED with all positions in VCF
+zcat 180606_GBS_all_22621_samples_171263_SNPs.vcf.gz | grep -v "^#" | \
+        perl -lane 'printf("%s\t%d\t%d\t%s\n",$F[0],$F[1]-1,$F[1],$F[3])' \
+        > 180606_GBS_all_22621_samples_171263_SNPs.vcf.bed
+
+# produce BED file with flanking sequences (+-50) and extract sequences
+zcat 180606_GBS_all_22621_samples_171263_SNPs.vcf.gz | grep -v "^#" | \
+        perl -lane 'printf("%s\t%d\t%d\t%s\n",$F[0],$F[1]-51,$F[1]+50,$F[3])' \
+        > 180606_GBS_all_22621_samples_171263_SNPs.vcf.flank50.bed
+
+bedtools getfasta -fi 150831_barley_pseudomolecules.fasta -name+ \
+        -bed 180606_GBS_all_22621_samples_171263_SNPs.vcf.flank50.bed > \
+        180606_GBS_all_22621_samples_171263_SNPs.vcf.flank50.fa
+
+# map VCF sequences in MorexV3 genome
+
+~/soft/bwa-0.7.16a/bwa index \
+	/data2/cebada/GCA_904849725.1_MorexV3_pseudomolecules.chrnames.fna
+
+~/soft/bwa-0.7.16a/bwa mem -t 4 \
+	/data2/cebada/GCA_904849725.1_MorexV3_pseudomolecules.chrnames.fna \
+	180606_GBS_all_22621_samples_171263_SNPs.vcf.flank50.fa \
+	-o 180606_GBS_all_22621_samples_171263_SNPs.vcf.flank50.sam	
+
+grep -v "^@" 180606_GBS_all_22621_samples_171263_SNPs.vcf.flank50.sam | head
+G::1:42213-42314	16	chr1H_LR890096.1	86715	60	53M1D48M	*	0	0	AAGAAGCCGTCGTACCTGCAGCCCAGCACACATTTCCATCATTCAATGACCACAAAAAAAAAGCAGTGGGGATCGGAAGGGGATCGGTAAGAGGGACGCAC	*	NM:i:1	MD:Z:53^A48	AS:i:94	XS:i:20
+T::1:42218-42319	16	chr1H_LR890096.1	86710	60	58M1D43M	*	0	0	AGAGGAAGAAGCCGTCGTACCTGCAGCCCAGCACACATTTCCATCATTCAATGACCACAAAAAAAAAGCAGTGGGGATCGGAAGGGGATCGGTAAGAGGGA	*	NM:i:1	MD:Z:58^A43	AS:i:94	XS:i:20
+G::1:42233-42334	16	chr1H_LR890096.1	86695	60	73M1D28M	*	0	0	TGGTGGCGAGCATGGAGAGGAAGAAGCCGTCGTACCTGCAGCCCAGCACACATTTCCATCATTCAATGACCACAAAAAAAAAGCAGTGGGGATCGGAAGGG	*	NM:i:1	MD:Z:73^A28	AS:i:94	XS:i:31
+
+# transform coordinates (QUAL==60 162942 > 157718) 
+
+perl -lane 'if(/^[^@]/ && $F[4]==60 && $F[5]=~/^(\d+)M/ && $1 >= 51){ printf("%s\t%d\t%d\t%s\n",$F[2],$F[3]+49,$F[3]+50,$F[0]) }' \
+	180606_GBS_all_22621_samples_171263_SNPs.vcf.flank50.sam > 180606_GBS_all_22621_samples_171263_SNPs.MorexV3.bed
+
+bedtools getfasta -fi /data2/cebada/GCA_904849725.1_MorexV3_pseudomolecules.chrnames.fna \
+        -bed 180606_GBS_all_22621_samples_171263_SNPs.MorexV3.bed -name+ \
+	> 180606_GBS_all_22621_samples_171263_SNPs.MorexV3.fa
+
+perl transform_coords.pl 180606_GBS_all_22621_samples_171263_SNPs.MorexV3.fa \
+	> 180606_GBS_all_22621_samples_171263_SNPs.MorexV3.coords.tsv
+
+
