@@ -1628,9 +1628,9 @@ one-liners</a></td>
 </tr>
 <tr class="even">
 <td>bcftools</td>
-<td><a href="https://samtools.github.io/bcftools/">samtools.github.io/bcftools/</a></td>
+<td><a href="https://samtools.github.io/bcftools">samtools.github.io/bcftools/</a></td>
 <td><a href="https://samtools.github.io/bcftools/howtos/index.html">BCFtools
-HowTo</a></td>
+HowTo</a> <span class="citation">(<a href="#ref-pmid33590861" role="doc-biblioref">Danecek et al. 2021</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>64-bit Java</td>
@@ -1650,7 +1650,8 @@ HowTo</a></td>
 <tr class="even">
 <td>rTASSEL</td>
 <td><a href="https://maize-genetics.github.io/rTASSEL/articles/rtassel_walkthrough.html">https://maize-genetics.github.io/rTASSEL</a></td>
-<td>to be installed from Rstudio, <a href="https://www.r-bloggers.com/2021/11/error-no-currentversion-entry-in-software-javasoft-registry">troubleshooting</a></td>
+<td>installed from Rstudio, <a href="https://www.r-bloggers.com/2021/11/error-no-currentversion-entry-in-software-javasoft-registry">troubleshooting</a>
+<span class="citation">(<a href="#ref-Monier2022" role="doc-biblioref">Monier et al. 2022</a>)</span></td>
 </tr>
 </tbody>
 </table>
@@ -1675,11 +1676,14 @@ you can install bcftools as follows:</p>
 console:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;devtools&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;maize-genetics/rTASSEL&quot;</span>)</span></code></pre></div>
-<!--# Introduction
-
-In Genomics and Computational Biology, annotating a sequence means decorating it with quantums of biological information, usually about its *molecular function*, the *biological process(es)* in which it takes part and the *cellular compartment* where that happens (see the [Gene Ontology](http://geneontology.org)). Other relevant annotations include the evolutionary conservation of a sequence or the biological sample where it was found. The next figure summarizes example genomic features whose annotation has been recognized of importance in wheat breeding by [@Borrill2019]: -->
+<p>Should the install fail, inspection of the errors is usually helpful
+to identify any missing dependencies.</p>
+<p><strong>Finally</strong>, users from either operating system can also
+clone this course to get copies of sample data and code, which are in
+folders <a href="https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data">test_data</a>
+and <a href="https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code">test_code</a>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/eead-csic-compbio/bioinformatics.git</span></code></pre></div>
 <!-- ![](./pics/TPJ-97-56-g003.jpg) -->
-<!--* Indexed literature in repositories such as [PubMed](https://pubmed.ncbi.nlm.nih.gov) or [EuroPMC](https://europepmc.org), where publications are uniquely identified with accession codes such as the [DOI](https://www.doi.org).-->
 <!--
 
 
@@ -1733,22 +1737,22 @@ Variant Call Format (VCF). In this section we will see what the VCF
 format looks like. Let’s inspect the example below, which is modified
 from the official <a href="https://samtools.github.io/hts-specs/VCFv4.3.pdf">VCFv4.3 format
 specification</a>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">##fileformat=VCFv4.3</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">##fileDate=20090805</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">##source=myImputationProgramV3.1</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">##reference=file:///seq/references/1000GenomesPilot-NCBI36.fasta</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">##contig=&lt;ID=20,length=62435964,assembly=B36,md5=f126cdf8a..,species=&quot;Homo sapiens&quot;,taxonomy=x&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">##INFO=&lt;ID=NS,Number=1,Type=Integer,Description=&quot;Number of Samples With Data&quot;&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">##INFO=&lt;ID=DP,Number=1,Type=Integer,Description=&quot;Total Depth&quot;&gt;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">##INFO=&lt;ID=AF,Number=A,Type=Float,Description=&quot;Allele Frequency&quot;&gt;</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">##FILTER=&lt;ID=q10,Description=&quot;Quality below 10&quot;&gt;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">##FILTER=&lt;ID=s50,Description=&quot;Less than 50% of samples have data&quot;&gt;</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">##FORMAT=&lt;ID=GT,Number=1,Type=String,Description=&quot;Genotype&quot;&gt;</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">##FORMAT=&lt;ID=GQ,Number=1,Type=Integer,Description=&quot;Genotype Quality&quot;&gt;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">##FORMAT=&lt;ID=DP,Number=1,Type=Integer,Description=&quot;Read Depth&quot;&gt;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#CHROM POS ID REF ALT QUAL FILTER INFO FORMAT NA00001 NA00002 NA00003</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">20</span> 17330 . T A 3 q10 NS=3<span class="kw">;</span><span class="va">DP</span><span class="op">=</span>11<span class="kw">;</span><span class="va">AF</span><span class="op">=</span>0.017 <span class="ex">GT:GQ:DP</span> 0/0:49:3 0/1:3:5 0/0:41:3</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ex">20</span> 1110696 rs6040355 A G,T 67 PASS NS=2<span class="kw">;</span><span class="va">DP</span><span class="op">=</span>10<span class="kw">;</span><span class="va">AF</span><span class="op">=</span>0.333,0.667 <span class="ex">GT:GQ:DP</span> 1/2:21:6 2/1:2:2 ./.:.:.</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">##fileformat=VCFv4.3</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">##fileDate=20090805</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">##source=myImputationProgramV3.1</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">##reference=file:///seq/references/1000GenomesPilot-NCBI36.fasta</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">##contig=&lt;ID=20,length=62435964,assembly=B36,md5=f126cdf8a..,species=&quot;Homo sapiens&quot;,taxonomy=x&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">##INFO=&lt;ID=NS,Number=1,Type=Integer,Description=&quot;Number of Samples With Data&quot;&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">##INFO=&lt;ID=DP,Number=1,Type=Integer,Description=&quot;Total Depth&quot;&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">##INFO=&lt;ID=AF,Number=A,Type=Float,Description=&quot;Allele Frequency&quot;&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">##FILTER=&lt;ID=q10,Description=&quot;Quality below 10&quot;&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">##FILTER=&lt;ID=s50,Description=&quot;Less than 50% of samples have data&quot;&gt;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">##FORMAT=&lt;ID=GT,Number=1,Type=String,Description=&quot;Genotype&quot;&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">##FORMAT=&lt;ID=GQ,Number=1,Type=Integer,Description=&quot;Genotype Quality&quot;&gt;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">##FORMAT=&lt;ID=DP,Number=1,Type=Integer,Description=&quot;Read Depth&quot;&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#CHROM POS ID REF ALT QUAL FILTER INFO FORMAT NA00001 NA00002 NA00003</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="ex">20</span> 17330 . T A 3 q10 NS=3<span class="kw">;</span><span class="va">DP</span><span class="op">=</span>11<span class="kw">;</span><span class="va">AF</span><span class="op">=</span>0.017 <span class="ex">GT:GQ:DP</span> 0/0:49:3 0/1:3:5 0/0:41:3</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="ex">20</span> 1110696 rs6040355 A G,T 67 PASS NS=2<span class="kw">;</span><span class="va">DP</span><span class="op">=</span>10<span class="kw">;</span><span class="va">AF</span><span class="op">=</span>0.333,0.667 <span class="ex">GT:GQ:DP</span> 1/2:21:6 2/1:2:2 ./.:.:.</span></code></pre></div>
 <p>First, take your time to inspect the metadata in the header of the
 file, which are the lines that start with ##. These lines inform you
 about</p>
@@ -1853,54 +1857,54 @@ genome sequence</h3>
 will tell you whether the reference sequence used to map variants is the
 same or not. Note that reference sequences are usually in FASTA format,
 which looks like this:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>chr1H</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">CGTGCACGACCATCGAGACGTCGCGGAAACTCGTCGTTTTTGTCGTTCGGGCCACTTTCA</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">TGGGCTATAGCACACGGTATTGGGGTCCCGATTCAATTTTGGATTCTC...</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>chr1H</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">CGTGCACGACCATCGAGACGTCGCGGAAACTCGTCGTTTTTGTCGTTCGGGCCACTTTCA</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">TGGGCTATAGCACACGGTATTGGGGTCCCGATTCAATTTTGGATTCTC...</span></span></code></pre></div>
 <p>Let’s check the headers of two VCF files that use two versions of the
 barley reference genome (cultivar Morex) that correspond to assemblies
 <a href="https://www.ebi.ac.uk/ena/browser/view/GCA_902498975.1">GCA_902498975.1</a>
 and <a href="https://www.ebi.ac.uk/ena/browser/view/GCA_904849725.1">GCA_904849725.1</a>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">##fileformat=VCFv4.3</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">##fileDate=20181104</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">##reference_ac=GCA_902498975.1</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">##reference_url=“ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/498/975/GCA_902498975.1_Morex_v2.0/GCA_902498975.1_Morex_v2.0_genomic.fna.gz”</span></span></code></pre></div>
-<p>and</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">##fileformat=VCFv4.3</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">##fileDate=20220112</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">##reference_ac=GCA_904849725.1</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">##reference_url=“https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/904/849/725/GCF_904849725.1_MorexV3_pseudomolecules_assembly/GCF_904849725.1_MorexV3_pseudomolecules_assembly_genomic.fna.gz”</span></span></code></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">##fileDate=20181104</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">##reference_ac=GCA_902498975.1</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">##reference_url=“ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/498/975/GCA_902498975.1_Morex_v2.0/GCA_902498975.1_Morex_v2.0_genomic.fna.gz”</span></span></code></pre></div>
+<p>and</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">##fileformat=VCFv4.3</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">##fileDate=20220112</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">##reference_ac=GCA_904849725.1</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">##reference_url=“https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/904/849/725/GCF_904849725.1_MorexV3_pseudomolecules_assembly/GCF_904849725.1_MorexV3_pseudomolecules_assembly_genomic.fna.gz”</span></span></code></pre></div>
 <p>If the metadata in the “##contig” line contains a md5 sum that can
 also be used to check the reference, but note that a different FASTA
 header is enough to change it.</p>
 <p>Another quick check is to check the chromosome/contig names of the
 VCF files, which you can do as follows:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> file1.vcf.gz <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> file2.vcf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use cat if file not compressed</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> test_data/vcf/samples50.vcf.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&quot;^#&quot;</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span></span></code></pre></div>
 <p>If you are not sure then you must check explicitly whether the
 references are the same before any joint analysis can be done. There are
 different ways to do this; for instance you can use the command
 line:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get two VCF files, ie those at test_data/vcf/</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> test_data/vcf/samples50.vcf.gz <span class="kw">|</span> <span class="fu">wc</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> test_data/vcf/samples100.vcf.gz <span class="kw">|</span> <span class="fu">wc</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># extract CHR,POS,REF columns from first VCF</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> test_data/vcf/samples50.vcf.gz <span class="kw">|</span> <span class="fu">perl</span> <span class="at">-lane</span> <span class="st">&#39;next if(/^#/); print &quot;$F[0]\t$F[1]&quot;&#39;</span> <span class="op">&gt;</span> pos50.txt</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># compute intersection with grep</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">zgrep</span> <span class="at">-f</span> pos50.txt test_data/vcf/samples50.vcf.gz <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,2,4 <span class="kw">|</span> <span class="fu">head</span> </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">zgrep</span> <span class="at">-f</span> pos50.txt test_data/vcf/samples100.vcf.gz <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,2,4 <span class="kw">|</span> <span class="fu">head</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get two VCF files, ie those at test_data/vcf/</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> test_data/vcf/samples50.vcf.gz <span class="kw">|</span> <span class="fu">wc</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> test_data/vcf/samples100.vcf.gz <span class="kw">|</span> <span class="fu">wc</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># extract CHR,POS,REF columns from first VCF</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> test_data/vcf/samples50.vcf.gz <span class="kw">|</span> <span class="fu">perl</span> <span class="at">-lane</span> <span class="st">&#39;next if(/^#/); print &quot;$F[0]\t$F[1]&quot;&#39;</span> <span class="op">&gt;</span> pos50.txt</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># compute intersection with grep</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">zgrep</span> <span class="at">-f</span> pos50.txt test_data/vcf/samples50.vcf.gz <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,2,4 <span class="kw">|</span> <span class="fu">head</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">zgrep</span> <span class="at">-f</span> pos50.txt test_data/vcf/samples100.vcf.gz <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,2,4 <span class="kw">|</span> <span class="fu">head</span></span></code></pre></div>
 <p>If the references are indeed different you have two choices:</p>
 <ul>
 <li><p>Remap the reads used to build one of the VCF files on the same
 reference used for the other. This is probably the safest, as there
 might be large rearrangements among different genome versions, and some
 contigs might even change strand. However, this is time consuming and
-requires bioinformatics skills.</p></li>
+requires a little bioinformatics.</p></li>
 <li><p>Lift-over positions from reference1 to reference2 and then edit
 the VCF files accordingly. Most likely this will result is dropping a
 fraction of the original mappings. This task also requires
-bioinformatics skills.</p></li>
+bioinformatics, you can follow my notes in folder <a href="https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code/liftover">test_code/liftover</a></p></li>
 </ul>
 </div>
 <div id="different-platforms" class="section level3" number="2.4.2">
@@ -1914,17 +1918,7 @@ Illumina GoldenGate and Infinium Assays, which are quite common in
 barley breeding. When you get the results from your genotyping provider
 you should receive a <strong>manifest</strong> file, which for the so
 called barley Illumina 50k chips looks like this:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> test_data/manifest.csv</span></code></pre></div>
-<pre><code>[Heading]
-Descriptor File Name(s),BarleySNP50-JHI_20012054_A2.bpm
-Assay Format,Infinium II
-SNP Count,44040
-[Assay]
-IlmnID,Name,IlmnStrand,SNP,AddressA_ID,AlleleA_ProbeSeq,AddressB_ID,AlleleB_ProbeSeq,Chr,MapInfo,Ploidy,Species,CustomerStrand,IlmnStrand,IllumicodeSeq,TopGenomicSeq
-BK_01-0_T_R_1867162176,BK_01,TOP,[A/C],75781258,,0,,0,0,diploid,Hordeum vulgare,BOT,TOP,,
-BK_03-0_T_R_1867162178,BK_03,TOP,[A/G],6656338,,0,,0,0,diploid,Hordeum vulgare,BOT,TOP,,
-BK_04-0_B_F_1867162179,BK_04,BOT,[T/C],1747980,,0,,0,0,diploid,Hordeum vulgare,BOT,BOT,,
-BK_05-0_B_F_1867162181,BK_05,BOT,[T/C],53738907,,0,,0,0,diploid,Hordeum vulgare,BOT,BOT,,</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> test_data/manifest.csv</span></code></pre></div>
 <p>The key columns in the manifest are <strong>CustomerStrand</strong>
 and <strong>IlmnStrand</strong>, which according to the documentation
 <span class="citation">(<a href="#ref-Illumina2021" role="doc-biblioref">Illumina 2021</a>)</span>, are defined as
@@ -1961,36 +1955,166 @@ conversions to make sure they’re correct. The <a href="#identity">recipe
 about computing identity</a> should help.</p>
 </div>
 </div>
-<div id="handling-vcf-files-with-bcftools-and-one-liners" class="section level2" number="2.5">
-<h2><span class="header-section-number">2.5</span> Handling VCF files
-with bcftools and one-liners</h2>
-<p>In this section we will see typical operations that can be done on
-VCF files.</p>
-<!-- 
+<div id="handling-vcf-files" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Handling VCF
+files</h2>
+<p>In this section we will see typical operations that are done on VCF
+files to prepare for further analyses. These tasks can be done on the
+terminal or alternatively from <a href="#rstudio">Rstudio/Posit</a>, you
+can choose your own, or combine them.</p>
+<p>We will be using two compressed VCF files that will be provided in
+class, but the same operations can be done with the example files in <a href="https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data/vcf">test_data/vcf</a></p>
+<div id="terminal" class="section level3" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> In the terminal
+with bcftools and one-liners</h3>
+<p>The following examples probably require some <a href="#setup">setup</a>.</p>
+<div id="compressing-and-indexing-vcf-files" class="section level4" number="2.5.1.1">
+<h4><span class="header-section-number">2.5.1.1</span> Compressing and
+indexing VCF files</h4>
+<p>A compressed VCF file, usually with extension .vcf.gz, takes less
+disk space and can be efficiently handled as well. However, it needs to
+be indexed before. Note that the compression format is called <a href="http://www.htslib.org/doc/bgzip.html">bgzip</a>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-I</span> <span class="at">-o</span> sample.vcf.gz <span class="at">-O</span> z sample.vcf</span></code></pre></div>
+<p>You could check the format and index it as follows:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file</span> sample.vcf.gz</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> index sample.vcf.gz</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># should produce sample.vcf.gz.csi</span></span></code></pre></div>
+<p>If a VCF is uncompressed there’s no need to index it.</p>
+</div>
+<div id="renaming-chromosome-names-and-removing-unwanted-data-fields-from-vcf-files" class="section level4" number="2.5.1.2">
+<h4><span class="header-section-number">2.5.1.2</span> Renaming
+chromosome names and removing unwanted data fields from VCF files</h4>
+<p>Should you need to edit the chromosome names or to remove unwanted
+SNP data you can do that with a command such as the next one, which
+removes fields GQ, AD, RO, QR and QA:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> annotate <span class="at">--rename-chrs</span> chrnames.tsv <span class="dt">\</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">-x</span> INFO,FORMAT/GQ,FORMAT/AD,FORMAT/RO,FORMAT/QR,FORMAT/QA <span class="at">-o</span> GBS.vcf <span class="dt">\</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        sample.vcf</span></code></pre></div>
+<p>Note this requires a TSV file named chrnames:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">LR890096.1</span>      chr1H</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">LR890097.1</span>      chr2H</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">LR890098.1</span>      chr3H</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">LR890099.1</span>      chr4H</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">LR890100.1</span>      chr5H</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="ex">LR890101.1</span>      chr6H</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="ex">LR890102.1</span>      chr7H</span></code></pre></div>
+</div>
+<div id="extracting-samples-from-vcf-files" class="section level4" number="2.5.1.3">
+<h4><span class="header-section-number">2.5.1.3</span> Extracting
+samples from VCF files</h4>
+<p>Often you might need to extract only selected samples from a larger
+VCF file. To do we should first find out which genotypes are included in
+such a file:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-l</span> sample.vcf.gz</span></code></pre></div>
+<p>You can use that information to prepare a <em>subset.txt</em> file
+such as this one:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sample1</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sample3</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sample25</span></span></code></pre></div>
+<p>Finally, you can now substract the relevant VCF content like
+this:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-S</span> subset.txt <span class="at">-O</span> z <span class="at">-o</span> subset.sample.vcf.gz sample.vcf.gz</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> index subset.sample.vcf.gz</span></code></pre></div>
+</div>
+<div id="merging-separate-vcf-files" class="section level4" number="2.5.1.4">
+<h4><span class="header-section-number">2.5.1.4</span> Merging separate
+VCF files</h4>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> merge <span class="at">-o</span> samples12.vcf.gz <span class="at">-O</span> z samples1.vcf.gz samples2.vcf.gz</span></code></pre></div>
+</div>
+<div id="identity" class="section level4" number="2.5.1.5">
+<h4><span class="header-section-number">2.5.1.5</span> Computing
+sequence identity among samples</h4>
+<p>A good quality control before you merge different VCF files is to
+check whether the called genotypes of repeated control samples, ie
+cultivar Morex in barley, match across experiments.</p>
+<p>The following example code does this for two samples in the same VCF
+file, which we know are the same from the same cultivar. Note that in
+this case they correspond to columns 10 and 17 of the file, you should
+adapt this to your own data:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cut is 1-based, first column is 1</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> sample.vcf.gz <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 10,17 <span class="kw">|</span> <span class="fu">perl</span> <span class="at">-lane</span> <span class="dt">\</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;next if(/\.\/\./); if(/(\S\/\S).*?\t(\S\/\S)/){ if($1==$2){ $eq++ } else { $neq++} } END{ printf(&quot;%1.3f n=%d\n&quot;,100*$eq/($eq+$neq),$eq+$neq)}&#39;</span></span></code></pre></div>
+<p>On a real dataset with DP=5 at hand I obtained:</p>
+<p>99.565 n=41570</p>
+<p>Note that the numbers I got with DP=3 where the following:</p>
+<p>99.056 n=51082</p>
+<p>This shows that read depth does have an effect on the accuracy of
+called genotypes.</p>
+</div>
+<div id="filtering-out-by-depth" class="section level4" number="2.5.1.6">
+<h4><span class="header-section-number">2.5.1.6</span> Filtering out by
+depth</h4>
+<p>As we saw in the previous example, read depth matters. Here we will
+see how to filter a VCF file by read depth. In this example we take
+multiallelic SNPs with DP&gt;=5, assuming that DP is the second field
+($d[1]):</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># perl is 0-based, first elem is 0, second is 1, last if $#F</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> sample.vcf.gz <span class="kw">|</span> <span class="fu">perl</span> <span class="at">-lane</span> <span class="dt">\</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;if(/^#/){ print } elsif(length($F[4]) &gt; 1){ next } else { foreach $c (9 .. $#F){ @d = split(/:/,$F[$c]); if($d[1]&lt;5){$d[0]=&quot;./.&quot;}; $F[$c]=join(&quot;:&quot;,@d)  }; print join(&quot;\t&quot;,@F) }&#39;</span>  <span class="op">&gt;</span> sample.DP5.vcf</span></code></pre></div>
+</div>
+<div id="filtering-out-by-missing-data" class="section level4" number="2.5.1.7">
+<h4><span class="header-section-number">2.5.1.7</span> Filtering out by
+missing data</h4>
+<p>To select SNPs with a max fraction of missing data (./.) the
+following one-liner would do:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> sample.vcf.gz <span class="kw">|</span> <span class="fu">perl</span> <span class="at">-lane</span> <span class="st">&#39;if(/^#/){ print } else { $M=0; while(/\.\/\.:/g){$M++}; $M/=($#F-8); print if($M &lt;= 0.2) }&#39;</span> <span class="op">&gt;</span> sample.MISS0.2.vcf</span></code></pre></div>
+</div>
+<div id="filtering-by-frequency-of-minor-allele-maf" class="section level4" number="2.5.1.8">
+<h4><span class="header-section-number">2.5.1.8</span> Filtering by
+frequency of minor allele (MAF)</h4>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assumes individuals are essentially homozygous</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># R is the reference allele</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A is the alternative allele</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># MAF is set to 0.01</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> sample.vcf.gz <span class="kw">|</span> <span class="fu">perl</span> <span class="at">-lne</span> <span class="dt">\</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;if(/^#/){ print } else { $R=$A=0; while(/0\/0:/g){$R++}; while(/1\/1:/g){$A++}; $t=$A+$R; print if($A &amp;&amp; $R &amp;&amp; $A/$t &gt;= 0.01 &amp;&amp; $R/$t &gt;= 0.01) } &gt; sample.MAF0.01.vcf</span></span></code></pre></div>
+</div>
+<div id="taking-only-biallelic-data" class="section level4" number="2.5.1.9">
+<h4><span class="header-section-number">2.5.1.9</span> Taking only
+biallelic data</h4>
+<p>After cleaning out the data often the next analysis requires
+biallelic SNPs from high-quality samples. This can be done with:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-m2</span> <span class="at">-M2</span> <span class="at">-v</span> snps <span class="at">-S</span> good.subset.txt <span class="at">-O</span> z <span class="at">-o</span> good.samples.bi.vcf.gz samples.vcf</span></code></pre></div>
+</div>
+<div id="imputing-missing-data" class="section level4" number="2.5.1.10">
+<h4><span class="header-section-number">2.5.1.10</span> Imputing missing
+data</h4>
+<p>with Beagle</p>
+<!--
+# preparacion de VCF limpio para GWAS
+bcftools view -O z -o samples1.vcf.gz samples1.vcf
+bcftools index samples1.vcf.gz
+bcftools view -O z -o samples2.vcf.gz samples2.vcf
+bcftools index samples2.vcf.gz
+
+# union
+bcftools merge -o samples12.vcf.gz -O z samples1.vcf.gz samples2.vcf.gz
+
+# max 20% missing data
+zcat samples12.vcf.gz | perl -lane 'if(/^#/){ print } else { $M=0; while(/\.\/\.:/g){$M++}; $M/=($#F-8); print if($M <= 0.8) }' > samples12.MISS0.2.vcf
+
+# MAF0.01
+perl -lne 'if(/^#/){ print } else { $R=$A=0; while(/0\/0:/g){$R++}; while(/1\/1:/g){$A++}; $t=$A+$R; print if($A && $R && $A/$t >= 0.01 && $R/$t >= 0.01) }' samples12.MISS0.2.vcf > samples12.MISS0.2.MAF0.01.vcf
+
+# biallelic only 
+bcftools view -m2 -M2 -v snps -O z -o samples12.MISS0.2.MAF0.01.bi.vcf.gz samples12.MISS0.2.MAF0.01.vcf
+zcat samples12.MISS0.2.MAF0.01.bi.vcf.gz | wc
+  11455 6682468 57962103
+-->
+</div>
+</div>
+<div id="rstudio" class="section level3" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> In RStudio/Posit
+with rTASSEL</h3>
+<p>We’ll know repeat some of the previous operations using the rTASSEL R
+package, which you can call from the terminal, from R scripts or even
+from RStudio/Posit.</p>
+<p><!-- 
 https://twitter.com/MerKhaiBurch/status/1564235596415094785
 https://maize-genetics.github.io/rTASSEL/articles/genotype_filtration.html
--->
-<div id="extracting-samples-from-vcf-files" class="section level3" number="2.5.1">
-<h3><span class="header-section-number">2.5.1</span> Extracting samples
-from VCF files</h3>
+--></p>
 </div>
-<div id="merging-separate-vcf-files" class="section level3" number="2.5.2">
-<h3><span class="header-section-number">2.5.2</span> Merging separate
-VCF files</h3>
-</div>
-<div id="identity" class="section level3" number="2.5.3">
-<h3><span class="header-section-number">2.5.3</span> Computing sequence
-identity among samples</h3>
-<p>Replicates,</p>
-</div>
-<div id="filtering-out-by-depth-and-missing-data" class="section level3" number="2.5.4">
-<h3><span class="header-section-number">2.5.4</span> Filtering out by
-depth and missing data</h3>
-</div>
-</div>
-<div id="imputing-missing-data-with-beagle" class="section level2" number="2.6">
-<h2><span class="header-section-number">2.6</span> Imputing missing data
-with Beagle</h2>
 </div>
 </div>
 <div id="bibliography" class="section level1 unnumbered">
@@ -2008,10 +2132,23 @@ Kumar, Gary Saunders, April Shen, et al. 2021. <span>“<span class="nocase">The
 genomic variation for all species</span>.”</span> <em>Nucleic Acids
 Research</em> 50 (D1): D1216–20. <a href="https://doi.org/10.1093/nar/gkab960">https://doi.org/10.1093/nar/gkab960</a>.
 </div>
+<div id="ref-pmid33590861" class="csl-entry">
+Danecek, P., J. K. Bonfield, J. Liddle, J. Marshall, V. Ohan, M. O.
+Pollard, A. Whitwham, et al. 2021. <span>“<span class="nocase"><span>T</span>welve years of
+<span>S</span><span>A</span><span>M</span>tools and
+<span>B</span><span>C</span><span>F</span>tools</span>.”</span>
+<em>Gigascience</em> 10 (2).
+</div>
 <div id="ref-Illumina2021" class="csl-entry">
 Illumina, Inc. 2021. <span>“<span class="nocase">How to interpret DNA
 strand and allele information for Infinium genotyping array
 data</span>.”</span> <a href="https://emea.support.illumina.com/bulletins/2017/06/how-to-interpret-dna-strand-and-allele-information-for-infinium-.html">https://emea.support.illumina.com/bulletins/2017/06/how-to-interpret-dna-strand-and-allele-information-for-infinium-.html</a>.
+</div>
+<div id="ref-Monier2022" class="csl-entry">
+Monier, Brandon, Terry M. Casstevens, Peter J. Bradbury, and Edward S.
+Buckler. 2022. <span>“rTASSEL: An r Interface to TASSEL for Analyzing
+Genomic Diversity.”</span> <em>Journal of Open Source Software</em> 7
+(76): 4530. <a href="https://doi.org/10.21105/joss.04530">https://doi.org/10.21105/joss.04530</a>.
 </div>
 <div id="ref-NELSON2012361" class="csl-entry">
 Nelson, Sarah C., Kimberly F. Doheny, Cathy C. Laurie, and Daniel B.

@@ -431,6 +431,29 @@ bcftools view -m2 -M2 -v snps -S good.subset.txt -O z -o good.samples.bi.vcf.gz 
 with Beagle
 
 
+<!--
+# preparacion de VCF limpio para GWAS
+bcftools view -O z -o samples1.vcf.gz samples1.vcf
+bcftools index samples1.vcf.gz
+bcftools view -O z -o samples2.vcf.gz samples2.vcf
+bcftools index samples2.vcf.gz
+
+# union
+bcftools merge -o samples12.vcf.gz -O z samples1.vcf.gz samples2.vcf.gz
+
+# max 20% missing data
+zcat samples12.vcf.gz | perl -lane 'if(/^#/){ print } else { $M=0; while(/\.\/\.:/g){$M++}; $M/=($#F-8); print if($M <= 0.8) }' > samples12.MISS0.2.vcf
+
+# MAF0.01
+perl -lne 'if(/^#/){ print } else { $R=$A=0; while(/0\/0:/g){$R++}; while(/1\/1:/g){$A++}; $t=$A+$R; print if($A && $R && $A/$t >= 0.01 && $R/$t >= 0.01) }' samples12.MISS0.2.vcf > samples12.MISS0.2.MAF0.01.vcf
+
+# biallelic only 
+bcftools view -m2 -M2 -v snps -O z -o samples12.MISS0.2.MAF0.01.bi.vcf.gz samples12.MISS0.2.MAF0.01.vcf
+zcat samples12.MISS0.2.MAF0.01.bi.vcf.gz | wc
+  11455 6682468 57962103
+-->
+
+
 ### In RStudio/Posit with rTASSEL {#rstudio}
 
 We'll know repeat some of the previous operations using the rTASSEL R package, which you can call from the terminal, from R scripts or even from RStudio/Posit.
