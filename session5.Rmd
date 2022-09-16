@@ -36,29 +36,34 @@ knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE,
 
 # Setup {#setup}
 
-In order to run the examples in this section you will need to obtain some software and data:
+In order to run the examples in this section you might need to obtain some software and data:
 
 |software|source|documentation|
 |----|----|----|
 perl | [www.perl.org](https://www.perl.org) | [www.perl.org/docs](https://www.perl.org/docs.html), [perl one-liners](https://github.com/eead-csic-compbio/scripting_linux_shell/blob/master/session4.md) |
 bcftools | [samtools.github.io/bcftools/](https://samtools.github.io/bcftools) | [BCFtools HowTo](https://samtools.github.io/bcftools/howtos/index.html) [@pmid33590861] |
 64-bit Java | [www.java.com](https://www.java.com/en/download/manual.jsp) | [FAQ](https://www.java.com/en/download/help/java_win64bit.html) |
+beagle | [JAR file](https://faculty.washington.edu/browning/beagle/beagle.22Jul22.46e.jar) | [docs](https://faculty.washington.edu/browning/beagle/beagle.html) [@BROWNING2018338]|
 R | [https://cran.r-project.org](https://cran.r-project.org) | |
 rstudio, soon to be renamed 'posit' | [www.rstudio.com](https://www.rstudio.com/products/rstudio/download) | | 
 rTASSEL | [https://maize-genetics.github.io/rTASSEL](https://maize-genetics.github.io/rTASSEL/articles/rtassel_walkthrough.html) | installed from Rstudio,  [troubleshooting](https://www.r-bloggers.com/2021/11/error-no-currentversion-entry-in-software-javasoft-registry) [@Monier2022] |
 
+## Linux
+
 Users of Debian/Ubuntu Linux can easily install these software dependencies with apt:
 
 ```{r apt, engine='bash', eval=FALSE}
-sudo apt install bcftools r-base rstudio libblas-dev liblapack-dev \
+sudo apt install bcftools r-base rstudio beagle libblas-dev liblapack-dev \
   libjna-jni default-jdk libpcre2-dev liblzma-dev libbz2-dev
  
 # test java setup  
 sudo R CMD javareconf
 ```
 
+## Windows
+
 Windows users can instead use the [WSL](https://github.com/eead-csic-compbio/scripting_linux_shell/blob/master/session0.md#ubuntu-embedded-in-windows-10), which can be used to install Ubuntu, or [MobaXterm](https://mobaxterm.mobatek.net). 
-In the latter case, you can install bcftools as follows:
+In the latter case, you can install **bcftools** as follows:
 
 ```{r compilation, engine='bash', eval=FALSE}
 apt-get install perl_base make git gcc-core zlib-devel liblzma-devel libbz2-devel libcurl-devel
@@ -70,6 +75,10 @@ make
 ls -ltr bcftools.exe
 ```
 
+**64-bit Java** should be installed from [www.java.com](https://www.java.com/en/download/manual.jsp)
+
+The **beagle** [JAR file](https://faculty.washington.edu/browning/beagle/beagle.22Jul22.46e.jar) should be downloaded and placed in a folder accessible from MobaXterm.
+
 rTASSEL is best installed from a Rstudio session, by typing in the console:
 
 ```{r rtassel, eval=FALSE}
@@ -78,7 +87,11 @@ devtools::install_github("maize-genetics/rTASSEL")
 ```
 Should the install fail, inspection of the errors is usually helpful to identify any missing dependencies.
 
-**Finally**, users from either operating system can also clone this course to get copies of sample data and code, which are in folders [test_data](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data) and [test_code](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code):
+## Sample data and code
+
+For this course we will be using two compressed VCF files that will be provided in the **Moodle platform**.
+
+However, external users can still follow the examples by cloning this course to get copies of sample data and code, which are in folders [test_data](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data) and [test_code](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code):
 ```{r clonecourse, engine='bash', eval=FALSE}
 git clone https://github.com/eead-csic-compbio/bioinformatics.git
 ```
@@ -126,6 +139,7 @@ Let's inspect the example below, which is modified from the official
 #CHROM POS ID REF ALT QUAL FILTER INFO FORMAT NA00001 NA00002 NA00003
 20 17330 . T A 3 q10 NS=3;DP=11;AF=0.017 GT:GQ:DP 0/0:49:3 0/1:3:5 0/0:41:3
 20 1110696 rs6040355 A G,T 67 PASS NS=2;DP=10;AF=0.333,0.667 GT:GQ:DP 1/2:21:6 2/1:2:2 ./.:.:.
+20 1230237 . T . 47 PASS NS=3;DP=13 GT:GQ:DP 0|0:54:7 0|0:48:4 0/0:61:2
 ```
 
 First, take your time to inspect the metadata in the header of the file, 
@@ -149,6 +163,7 @@ Thus, you now know that the read depth (DP) of these calls is 3, 5 and 3 respect
 
 The second locus is a named SNP with **two alternative alleles** and the last sample is **missing data**.
 
+The third locus shows two **phased genotypes** (0|0), which differ from unphased in that the underlying haplotypes are known.
 
 ## The BCF format
 
@@ -285,7 +300,6 @@ Nevertheless, you might encounter cases where the reference allele is not the on
 In this section we will see typical operations that are done on VCF files to prepare for further analyses.
 These tasks can be done on the terminal or alternatively from [Rstudio/Posit](#rstudio), you can choose your own, or combine them.
 
-We will be using two compressed VCF files that will be provided in class, but the same operations can be done with the example files in [test_data/vcf](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data/vcf)
 
 ### In the terminal with bcftools and one-liners {#terminal}
 
@@ -425,11 +439,24 @@ This can be done with:
 bcftools view -m2 -M2 -v snps -S good.subset.txt -O z -o good.samples.bi.vcf.gz samples.vcf
 ```
 
-
 #### Imputing missing data 
 
-with Beagle
+After the previous steps you might want to impute the missing data, a step in which missing genotype calls
+are inferred from the existing calls in order to increase the total number of marker SNPs. We can do this
+with the software **Beagle v5** [@BROWNING2018338], which is efficient and has been shown to work well in wheat [@pmid25886991] and yields an accuracy of [0.977 -0.991] in our tests with a panel of 500 barleys genotyped by sequencing (GBS) with MAF=0.01.
 
+```{r beagle, engine='bash', eval=FALSE}
+# Linux binary
+beagle gt=samples.vcf.gz out=samples.imputed
+
+# downloaded JAR
+java -jar beagle.22Jul22.46e.jar gt=samples.vcf.gz out=samples.imputed
+
+# if you need more RAM
+java -Xmx14564m -jar beagle.22Jul22.46e.jar gt=samples.vcf.gz out=samples.imputed
+```
+
+Note that *beagle* will add **phased** genotypes, ie 0|0 instead of the standard unphased 0/0
 
 <!--
 # preparacion de VCF limpio para GWAS
