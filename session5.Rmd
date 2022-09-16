@@ -1,7 +1,7 @@
 ---
 title: "Session 5: Genotyping"
 author:
-- affiliation: Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain 
+- affiliation: Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain, https://eead.csic.es/compbio
   name: Bruno Contreras Moreira
 output:
   html_document:
@@ -44,21 +44,24 @@ perl | [www.perl.org](https://www.perl.org) | [www.perl.org/docs](https://www.pe
 bcftools | [samtools.github.io/bcftools/](https://samtools.github.io/bcftools) | [BCFtools HowTo](https://samtools.github.io/bcftools/howtos/index.html) [@pmid33590861] |
 64-bit Java | [www.java.com](https://www.java.com/en/download/manual.jsp) | [FAQ](https://www.java.com/en/download/help/java_win64bit.html) |
 beagle | [JAR file](https://faculty.washington.edu/browning/beagle/beagle.22Jul22.46e.jar) | [docs](https://faculty.washington.edu/browning/beagle/beagle.html) [@BROWNING2018338]|
-R | [https://cran.r-project.org](https://cran.r-project.org) | |
-rstudio, soon to be renamed 'posit' | [www.rstudio.com](https://www.rstudio.com/products/rstudio/download) | | 
-rTASSEL | [https://maize-genetics.github.io/rTASSEL](https://maize-genetics.github.io/rTASSEL/articles/rtassel_walkthrough.html) | installed from Rstudio,  [troubleshooting](https://www.r-bloggers.com/2021/11/error-no-currentversion-entry-in-software-javasoft-registry) [@Monier2022] |
+
+<!--R | [https://cran.r-project.org](https://cran.r-project.org) | |
+rstudio, soon to be renamed 'Posit' | [www.rstudio.com](https://www.rstudio.com/products/rstudio/download) | | 
+rTASSEL | [https://maize-genetics.github.io/rTASSEL](https://maize-genetics.github.io/rTASSEL/articles/rtassel_walkthrough.html) | installed from Rstudio,  [troubleshooting](https://www.r-bloggers.com/2021/11/error-no-currentversion-entry-in-software-javasoft-registry) [@Monier2022] |-->
 
 ## Linux
 
 Users of Debian/Ubuntu Linux can easily install these software dependencies with apt:
 
 ```{r apt, engine='bash', eval=FALSE}
-sudo apt install bcftools r-base rstudio beagle libblas-dev liblapack-dev \
-  libjna-jni default-jdk libpcre2-dev liblzma-dev libbz2-dev
+sudo apt install bcftools beagle
  
 # test java setup  
 sudo R CMD javareconf
 ```
+<!--rTASSEL
+r-base rstudio libblas-dev liblapack-dev libjna-jni default-jdk libpcre2-dev liblzma-dev libbz2-dev
+-->
 
 ## Windows
 
@@ -79,6 +82,7 @@ ls -ltr bcftools.exe
 
 The **beagle** [JAR file](https://faculty.washington.edu/browning/beagle/beagle.22Jul22.46e.jar) should be downloaded and placed in a folder accessible from MobaXterm.
 
+<!--
 rTASSEL is best installed from a Rstudio session, by typing in the console:
 
 ```{r rtassel, eval=FALSE}
@@ -86,6 +90,8 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("maize-genetics/rTASSEL")
 ```
 Should the install fail, inspection of the errors is usually helpful to identify any missing dependencies.
+-->
+
 
 ## Sample data and code
 
@@ -295,17 +301,15 @@ $$
 Nevertheless, you might encounter cases where the reference allele is not the one in the genome sequence but perhaps the most common in a large population. For this reason, care should be taken when doing these conversions to make sure they're correct. The [recipe about computing identity](#identity) should help.
 
 
-## Handling VCF files 
+## Handling VCF files with the Linux terminal (bcftools, beagle, one-liners) {#terminal}
 
 In this section we will see typical operations that are done on VCF files to prepare for further analyses.
-These tasks can be done on the terminal or alternatively from [Rstudio/Posit](#rstudio), you can choose your own, or combine them.
 
-
-### In the terminal with bcftools and one-liners {#terminal}
+<!--The following tasks can be done on the terminal or alternatively from [Rstudio/Posit](#rstudio), you can choose your own, or combine them.-->
 
 The following examples probably require some [setup](#setup).
 
-#### Compressing and indexing VCF files 
+### Compressing and indexing VCF files 
 
 A compressed VCF file, usually with extension .vcf.gz, takes less disk space and can be efficiently handled as well. However, it needs to be indexed before. Note that the compression format is called [bgzip](http://www.htslib.org/doc/bgzip.html).
 
@@ -324,7 +328,7 @@ bcftools index sample.vcf.gz
 
 If a VCF is uncompressed there's no need to index it.
 
-#### Renaming chromosome names and removing unwanted data fields from VCF files
+### Renaming chromosome names and removing unwanted data fields from VCF files
 
 Should you need to edit the chromosome names or to remove unwanted SNP data you can do that
 with a command such as the next one, which removes fields GQ, AD, RO, QR and QA:
@@ -347,7 +351,7 @@ LR890101.1      chr6H
 LR890102.1      chr7H
 ```
 
-#### Extracting samples from VCF files
+### Extracting samples from VCF files
 
 Often you might need to extract only selected samples from a larger VCF file.
 To do we should first find out which genotypes are included in such a file:
@@ -371,13 +375,13 @@ bcftools view -S subset.txt -O z -o subset.sample.vcf.gz sample.vcf.gz
 bcftools index subset.sample.vcf.gz
 ```
 
-#### Merging separate VCF files 
+### Merging separate VCF files 
 
 ```{r merge, engine='bash', eval=FALSE}
 bcftools merge -o samples12.vcf.gz -O z samples1.vcf.gz samples2.vcf.gz
 ```
 
-#### Computing sequence identity among samples {#identity}
+### Computing sequence identity among samples {#identity}
 
 A good quality control before you merge different VCF files is to check whether the called genotypes of repeated control samples, ie cultivar Morex in barley, match across experiments.
 
@@ -399,7 +403,7 @@ Note that the numbers I got with DP=3 where the following:
   
 This shows that read depth does have an effect on the accuracy of called genotypes.
 
-#### Filtering out by depth 
+### Filtering out by depth 
 
 As we saw in the previous example, read depth matters.
 Here we will see how to filter a VCF file by read depth.
@@ -411,7 +415,7 @@ zcat sample.vcf.gz | perl -lane \
   'if(/^#/){ print } elsif(length($F[4]) > 1){ next } else { foreach $c (9 .. $#F){ @d = split(/:/,$F[$c]); if($d[1]<5){$d[0]="./."}; $F[$c]=join(":",@d)  }; print join("\t",@F) }'  > sample.DP5.vcf
 ```
 
-#### Filtering out by missing data 
+### Filtering out by missing data 
 
 To select SNPs with a max fraction of missing data (./.) the following one-liner would do:
 
@@ -419,7 +423,7 @@ To select SNPs with a max fraction of missing data (./.) the following one-liner
 zcat sample.vcf.gz | perl -lane 'if(/^#/){ print } else { $M=0; while(/\.\/\.:/g){$M++}; $M/=($#F-8); print if($M <= 0.2) }' > sample.MISS0.2.vcf
 ```
 
-#### Filtering by frequency of minor allele (MAF)
+### Filtering by frequency of minor allele (MAF)
 
 ```{r MAF, engine='bash', eval=FALSE}
 # assumes individuals are essentially homozygous
@@ -430,7 +434,7 @@ zcat sample.vcf.gz | perl -lne \
   'if(/^#/){ print } else { $R=$A=0; while(/0\/0:/g){$R++}; while(/1\/1:/g){$A++}; $t=$A+$R; print if($A && $R && $A/$t >= 0.01 && $R/$t >= 0.01) } > sample.MAF0.01.vcf
 ```
 
-#### Taking only biallelic data
+### Taking only biallelic data
 
 After cleaning out the data often the next analysis requires biallelic SNPs from high-quality samples.
 This can be done with:
@@ -439,7 +443,7 @@ This can be done with:
 bcftools view -m2 -M2 -v snps -S good.subset.txt -O z -o good.samples.bi.vcf.gz samples.vcf
 ```
 
-#### Imputing missing data 
+### Imputing missing data 
 
 After the previous steps you might want to impute the missing data, a step in which missing genotype calls
 are inferred from the existing calls in order to increase the total number of marker SNPs. We can do this
@@ -459,7 +463,9 @@ java -jar beagle.22Jul22.46e.jar nthreads=8 gt=samples.vcf.gz out=samples.impute
 java -Xmx14564m -jar beagle.22Jul22.46e.jar gt=samples.vcf.gz out=samples.imputed
 ```
 
-Note that *beagle* will add **phased** genotypes, ie 0|0 instead of the standard unphased 0/0, and will leave only the GT field for each called genotype. This means read depth (DP) is lost after this step.
+Note that *beagle* will add **phased** genotypes, ie 0|0 instead of the standard unphased 0/0, 
+and by default will leave only the GT field for each called genotype. 
+This means read depth (DP) is lost after this step.
 
 <!--
 # preparacion de VCF limpio para GWAS
@@ -483,15 +489,54 @@ zcat samples12.MISS0.2.MAF0.01.bi.vcf.gz | wc
   11455 6682468 57962103
 -->
 
-
-### In RStudio/Posit with rTASSEL {#rstudio}
-
-We'll know repeat some of the previous operations using the rTASSEL R package, which you can call from the terminal, from R scripts or even from RStudio/Posit.
-
- <!-- 
+<!--
 https://twitter.com/MerKhaiBurch/status/1564235596415094785
-https://maize-genetics.github.io/rTASSEL/articles/genotype_filtration.html
+## Handling VCF files in RStudio/Posit (rTASSEL) {#rstudio}
+
+In this section we will revisit the previous operations on VCF files from Rstudio/Posit, which might be more user-friendly for some of you. 
+
+We will use the [rTASSEL](https://maize-genetics.github.io/rTASSEL/articles/rtassel_walkthrough.html) 
+R package, which will need to be installed as explained in [setup](#setup). Note that *rTASSEL* can also be called from standalone R scripts or even in the R console.
+
+```{r rTASSELexamples, eval=FALSE} 
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("maize-genetics/rTASSEL")
+library(rTASSEL)
+library(magrittr)
+
+# optional, set max RAM, ie 6GB
+# to see default RMA: java -XX:+PrintFlagsFinal -version | grep MaxHeap
+#options(java.parameters = c("-Xmx6g"))
+
+# start logging operations
+rTASSEL::startLogger(fullPath=getwd(), fileName='logTASSEL.txt')
+
+# edit to match your data and local filesystem
+path2VCFfile = '/path/to/samples.vcf.gz'
+path2VCFfile = '/home/contrera/GENDIBAR/cursoIAMZTunez/samples1.vcf.gz'
+
+# actually load the genotype data
+VCFdata <- rTASSEL::readGenotypeTableFromPath(
+  path = path2VCFfile 
+)
+VCFdata
+
+
+# try some filters https://maize-genetics.github.io/rTASSEL/articles/genotype_filtration.html
+VCFdata %>% 
+    filterGenotypeTableSites(
+        siteMinCount = 100
+    )
+
+# crashes frequently while testing
+VCFdata %>% 
+    filterGenotypeTableSites(
+        siteMaxAlleleFreq = 0.99
+    )
+
+```
 -->
+
 
 
 # Bibliography
