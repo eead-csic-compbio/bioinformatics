@@ -452,11 +452,14 @@ beagle gt=samples.vcf.gz out=samples.imputed
 # downloaded JAR
 java -jar beagle.22Jul22.46e.jar gt=samples.vcf.gz out=samples.imputed
 
+# if using several CPU threads
+java -jar beagle.22Jul22.46e.jar nthreads=8 gt=samples.vcf.gz out=samples.imputed
+
 # if you need more RAM
 java -Xmx14564m -jar beagle.22Jul22.46e.jar gt=samples.vcf.gz out=samples.imputed
 ```
 
-Note that *beagle* will add **phased** genotypes, ie 0|0 instead of the standard unphased 0/0
+Note that *beagle* will add **phased** genotypes, ie 0|0 instead of the standard unphased 0/0, and will leave only the GT field for each called genotype. This means read depth (DP) is lost after this step.
 
 <!--
 # preparacion de VCF limpio para GWAS
