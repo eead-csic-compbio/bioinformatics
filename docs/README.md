@@ -16,6 +16,7 @@ We will use both standalone and Web-based tools and will also review reproducibl
 |3|Reproducible analysis practices|2h|[session 3](./session3.html)|
 |4|Benchmarks|2h|[session 4](./session4.html)|
 |5|Genotyping|3h|[session 5](./session5.html)|
+|6|Genome-Wide Association Analysis|2h|[session 6](./session6.html)| 
 
 
 We post regularly about these and related bioinformatics topics at the [#!/perl/bioinfo](https://bioinfoperl.blogspot.com) blog, mostly in Spanish.
