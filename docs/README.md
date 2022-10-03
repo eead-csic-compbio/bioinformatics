@@ -1,6 +1,6 @@
 # Bioinformatics resources and best-practices for plant breeders
 
-This material is maintained by Najla Ksouri and Bruno Contreras Moreira
+This material is maintained by Najla Ksouri, Chesco Montardit, Ernesto Igartua and Bruno Contreras Moreira
 
 ##  Summary
 
