@@ -1,0 +1,159 @@
+---
+title: "Session 6: Genome-wide Association Analysis"
+author:
+- affiliation: Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain, https://eead.csic.es/compbio
+  name: Francesc Montardit, Ernesto Igartua
+output:
+  html_document:
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+  slidy_presentation:
+    incremental: yes
+  word_document: default
+  html_notebook: 
+    toc: yes
+geometry: margin=1cm
+fontsize: 11pt
+#bibliography: bib_myarticles_md.bib
+link-citations: yes
+---
+
+
+```{r knitr setup, include=FALSE,  eval=TRUE, echo=FALSE, warning=FALSE}
+library(knitr)
+knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE, 
+                      comment = "", results="markup")
+```
+
+# Setup {#setup}
+
+In order to run the examples in this section you might need to obtain some software and data:
+
+|software|source|documentation|
+|----|----|----|
+GAPIT | [https://zzlab.net/GAPIT](https://zzlab.net/GAPIT) | [documentation](https://zzlab.net/GAPIT/gapit_help_document.pdf) |
+
+
+# Practical
+
+```{r apt, eval=FALSE}
+## Curso Tunez - IAMZ
+
+# Read packages
+install.packages("devtools")
+install.packages("vcfR")
+install.packages("tidyverse")
+devtools::install_github("jiabowang/GAPIT3",force=TRUE)
+
+library(GAPIT3)
+library(vcfR)
+library(tidyverse)
+
+# Set working directory to correct folder, create folder GWAS in each computer, 
+#and set it as working directory
+
+curso_iamz_folder <- getwd()
+setwd(curso_iamz_folder)
+
+# Read genotypic data
+# Use of package vcfR to read vcf files, extract relevant information, 
+# and convert it to formats usable by GAPIT
+
+#file reading
+gendibar <- read.vcfR("samples12.MISS0.2.MAF0.01.bi.impt.vcf.gz")
+#extract marker information from vcf file
+gendibar_numeric <- extract.gt(gendibar)
+#show 10 rows and 10 columns, just to check
+gendibar_numeric[1:10,1:10]
+#converting marker formats to single digits, 0 and 2 for homozygotes, 1 for 
+#heterozygotes
+gendibar_numeric <- ifelse(gendibar_numeric == "0|0", 0,
+                           ifelse(gendibar_numeric == "1|1", 2, 1))
+#show 10 rows and 10 columns, just to check
+gendibar_numeric[1:10,1:10]
+#transpose matrix because GAPIT needs accessions in rows, markers in columns
+gendibar_numeric <- t(gendibar_numeric)
+#show 10 rows and 10 columns, just to check
+gendibar_numeric[1:10,1:10]
+#conversion of file from a matrix to a data frame, to allow easy manipulation; 
+#the result is creating a 
+#new column with the row names
+gendibar_numeric <- as.data.frame(cbind(rownames(gendibar_numeric),
+                                        gendibar_numeric))
+#new column, number 1, named as "taxa"
+colnames(gendibar_numeric)[1] <- "taxa"
+#in this case, marker data were read as text, not numbers; next line converts 
+#marker columns to numbers
+gendibar_numeric[,2:ncol(gendibar_numeric)] <- sapply(gendibar_numeric[,2:ncol(gendibar_numeric)],
+                                                      as.numeric)
+#extract accession name from the "taxa" column, from character 13 until the end
+#(specific for these data)
+gendibar_numeric$taxa <- substr(gendibar_numeric$taxa,
+                                13,
+                                nchar(gendibar_numeric$taxa))
+
+#creation of new file with command from vcfR, which extracts relevant 
+#information for each marker:
+#identifier, chromosome, position
+gendibar_map <- getFIX(gendibar)
+#reorder columns as required by GAPIT: ID, chromosome, position, and rename 
+#columns as required by GAPIT
+gendibar_map <- as.data.frame(gendibar_map[,c(3,1,2)])
+colnames(gendibar_map) <- c("Name", "Chromosome", "Position")
+#fill "Name" in file gendibar_map, which was empty, with the colnames of 
+#gendibar_numeric, skipping the first column (taxa)
+gendibar_map$Name <- colnames(gendibar_numeric)[-1]
+#GAPIT requires numeric codes for chromosomes; transform codes if needed
+gendibar_map$Chromosome <- 2
+
+# Read phenotypic data
+#command read.csv2 reads csv filed with semi colon as column separator; path 
+#may have to be adjusted
+pheno_data <- read.csv2("Datos_Alturas_cluster.csv", dec = ".")
+#selects columns with target variables, not essential
+pheno_data <- pheno_data[, c(1:3, 6)]
+#removes rows (genotypes) with missing data in any variable
+pheno_data <- pheno_data[complete.cases(pheno_data),]
+#create a new object with intersection of files gendibar_numeric and pheno_data, 
+#with rows in which $id includes $taxa
+gendibar_numeric_2 <- gendibar_numeric[gendibar_numeric$taxa %in% pheno_data$id,]
+#same as previous command, but opposite
+pheno_data_2 <- pheno_data[pheno_data$id %in% gendibar_numeric$taxa,]
+#this is not needed, but explains the next command
+summary(gendibar_numeric_2$taxa == pheno_data_2$id)
+#match order of files; GAPIT requires same order of genotypic and phenotypic data  
+pheno_data_2 <- pheno_data_2[match(gendibar_numeric_2$taxa, pheno_data_2$id),]
+#change name of first column, to give the same name as recommended in the GAPIT manual
+colnames(pheno_data_2)[1:2] <- c("Taxa", "Row_type")
+
+# Run GAPIT
+
+GWAS_model <- "GLM"
+trait <- "height"
+#Create folders to store GAPIT outputs without overwritting
+GWAS_folder <- file.path(curso_iamz_folder, GWAS_model, trait)
+dir.create(GWAS_folder, showWarnings = FALSE, recursive = TRUE)
+setwd(GWAS_folder)
+#running GAPIT
+myGAPIT <- GAPIT(
+    Y = pheno_data_2[,c(1,3)],
+    GD = gendibar_numeric_2,
+    GM = gendibar_map,
+    SNP.MAF=0.05,
+    PCA.total = 10,
+    model="GLM",
+    SNP.fraction = 0.3,
+    Model.selection = TRUE
+  )
+
+```
+
