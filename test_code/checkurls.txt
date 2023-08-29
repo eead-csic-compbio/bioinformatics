@@ -1,1 +1,1 @@
-perl -MLWP::UserAgent -lne 'if(/\((http[^\)]+)/){ print $1," ",LWP::UserAgent->new(timeout => 10)->get($1)->is_success ? "OK":"KO" }' *.Rmd | grep KO
+perl -MLWP::UserAgent -lne 'if(/\((http[^\)]+)/){ print "$ARGV $1 ",LWP::UserAgent->new(timeout => 10)->get($1)->is_success ? "OK":"KO" }' *.Rmd | grep KO
