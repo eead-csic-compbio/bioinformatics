@@ -53,7 +53,10 @@ The goal of this session is to learn how regulatory sequences can be discovered 
 
 The annotation of Transposable Elements (TEs) within plant genomes can help in the interpretation of observed phenotypes, as sometimes TEs affect the expression of neighbor genes, and in computational tasks such as promoter whole genome alignment, promoter or pan-genome analyses.  
 
-Usually TEs are annotated by alignment to curated libraries of repeated elements such as [REdat](https://pgsb.helmholtz-muenchen.de/plant/recat) [@Nussbaumer2013], where each sequence or element is classified according to the Wicker classification [@Wicker2007]. 
+Usually TEs are annotated by alignment to curated libraries of repeated elements such as
+[RepetDB](https://urgi.versailles.inra.fr/Data/Transposable-elements/REPETDB) [@Amselem2019],
+<!--[REdat](https://pgsb.helmholtz-muenchen.de/plant/recat) [@Nussbaumer2013], -->
+where each sequence or element is classified according to the Wicker classification [@Wicker2007]. 
 Class I elements are "copy and paste", while Class II are "cut and paste". The next figure summarizes this taxonomy of TEs, which ressembles that of protein domains:
 
 ![](./pics/WickerTE.png)

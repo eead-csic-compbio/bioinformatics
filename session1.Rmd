@@ -348,7 +348,7 @@ HMMER | [hmmer.org](http://hmmer.org) | [URL](http://hmmer.org/documentation.htm
 ### Formatting a sequence collection for BLAST
 
 The first task is to format our test sequence set, which was obtained from
-[UniProt](http://www.uniprot.org/uniprot/?query=reviewed:yes):
+[UniProt](http://www.uniprot.org/uniprot/?query=reviewed:true):
 
 ```{r, engine='bash', eval=FALSE}
 cd test_data/
@@ -359,7 +359,7 @@ gunzip uniprot_Atha.fasta.gz
 
 ### Querying the collection with a sample coding sequence
 
-Here you will work with protein ARF6, annotated in [plntfdb.bio.uni-potsdam.de](http://plntfdb.bio.uni-potsdam.de). 
+Here you will work with protein ARF6. <!--, annotated in [plntfdb.bio.uni-potsdam.de](http://plntfdb.bio.uni-potsdam.de). -->
 Its protein and transcript sequence is in files *test.faa* and *test.fna*, 
 respectively.
 

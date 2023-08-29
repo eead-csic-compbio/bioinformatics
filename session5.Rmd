@@ -162,7 +162,7 @@ Then you can see the header line, with some fixed columns, starting with #CHROM,
 Data lines show actual data for all loci genotyped. In the example there are only three loci, in particular
 positions 17330, 1110696 and 1230237 of the human chr20. The (human) samples are diploid.
 
-The first one is a **biallelic** Single Nucleotide Polymorphism (SNP) where the reference genome is T (thymine) and the alternative allele is A (adenine, see their structure [here](http://eead-csic-compbio.github.io/bioinformatica_estructural/node5.html)). 
+The first one is a **biallelic** Single Nucleotide Polymorphism (SNP) where the reference genome is T (thymine) and the alternative allele is A (adenine, see their structure [here](http://eead-csic-compbio.github.io/bioinformatica_estructural/#nts)). 
 Note that in this case the first sample is TT (0/0), the second is TA (0/1) and the third again TT (0/0).
 Note also that for each sample in the example there are three fields separated by ":", in the order GT:GQ:DP.
 Thus, you now know that the read depth (DP) of these calls is 3, 5 and 3 respectively.
