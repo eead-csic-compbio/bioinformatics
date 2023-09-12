@@ -480,7 +480,7 @@ plot.kmers(kmer.stat.table, k, volcano.ymax = 60)
 
 The plant-dedicated mirror of the Regulatory Sequence Analysis Tools (RSAT, <http://plants.rsat.eu>) offers specialized options for researchers dealing with plant transcriptional regulation. The web site contains whole-sequenced species regularly updated from Ensembl Plants and other sources (85 as of Dec 2020), and supports an array of tasks frequently required for the analysis of regulatory sequences, such as retrieving upstream sequences, motif discovery, motif comparison, pattern matching. RSAT::Plants also integrates the footprintDB collection of DNA motifs. This exercise consists on following a step-by-step protocol on how to discover DNA motifs in regulatory regions of clusters of co-expressed genes in plants. It also explains how to empirically control the significance of the result, and how to annotate any discovered motis. 
 
-This protocol has been published at [@ContrerasMoreira2016a]. Other related protocols can be found at [@CastroMondragon2016; @ContrerasMoreira2016b].
+This protocol has been published at [@ContrerasMoreira2016a] and updated at [@Ksouri2021]. Other related protocols can be found at [@CastroMondragon2016; @ContrerasMoreira2016b].
 
 ### Background
 
@@ -510,7 +510,7 @@ kable(genome.stats,format.args = list(big.mark=","),
       digits=c(0,0,0,1,1,0,0))
 ```
 
-The step-by-step protocol below has been tested for the task of discovering and annotating DNA motifs in clusters of upstream sequences for species supported by RSAT::Plants, which have been obtained mostly from Ensembl Plants (<http://plants.ensembl.org>), but also include data from the JGI Genome Portal (<http://genome.jgi.doe.gov>) and other sources. In addition, RSAT::Plants integrates footprintDB (<http://floresta.eead.csic.es/footprintdb>), a collection of position-specific scoring matrices (PSSM) representing transcription factor binding motifs (TFBM), as well as their cognate binding proteins [@Sebastian2014], which can be used to annotate discovered motifs and to predict potentially binding transcription factors. 
+The step-by-step protocol below has been tested for the task of discovering and annotating DNA motifs in clusters of upstream sequences for species supported by RSAT::Plants, which have been obtained mostly from Ensembl Plants (<https://plants.ensembl.org>), but also include data from the JGI Genome Portal (<http://genome.jgi.doe.gov>) and other sources. In addition, RSAT::Plants integrates footprintDB (<https://footprintdb.eead.csic.es>), a collection of position-specific scoring matrices (PSSM) representing transcription factor binding motifs (TFBM), as well as their cognate binding proteins [@Sebastian2014], which can be used to annotate discovered motifs and to predict potentially binding transcription factors. 
 
 Discovering regulatory elements within natural genomic sequences is certainly an important scientific goal on its own, but can also be part of the design and validation of synthetic promoters. We envisage at least two applications in this context: 
 
@@ -562,7 +562,7 @@ We will now retrieve the upstream sequences of a cluster of co-expressed genes, 
 
 1. Choose cluster E2F from __Table 2__, copy the corresponding gene IDs (last column). As these identifiers are from an older assembly (v3), we need to paste them in <http://plants.ensembl.org/Zea_mays/Tools/IDMapper?db=core> or  <http://www.maizeinflorescence.org/v4/convert/index.php> to convert them to the current annotation. The translated IDs should be saved in a new text file, that you will store on your computer. Insert newline characters between genes^[It is crucial to have one gene ID per row for submitting queries to retrieve-seq, because only the first word of each row is considered as a query. Note that any transcript isoform numbers .1, .2 should be removed]. 
 
-2. In the left menu of the RSAT server, click on 'retrieve sequence' to get a fresh form. Make sure that the option 'Genes -> selection' is activated and that the right organism, in this case ‘Zea mays.B73RefGen v4.46’, is selected. Tick 'Mask repeats', and set the same size limits as for the whole collection of promoters: from -1000 to +200. Paste the list of IDs of your gene cluster (one gene ID per row).
+2. In the left menu of the RSAT server, click on 'retrieve sequence' to get a fresh form. Make sure that the option 'Genes -> selection' is activated and that the right organism, in this case ‘Zea mays.B73RefGen v4.46’, is selected. Tick 'Mask repeats', and set the same size limits as for the whole collection of promoters: from -1000 to +200. Paste the list of IDs of your gene cluster (one gene ID per row). 
 
 3. Press 'GO' and wait a few seconds until the result page is displayed. Inspection of these sequences might reveal N-masked sequence stretches, which correspond to annotated repeats. Save both 'query genes' and 'sequences' files to local files on your computer, we will refer to them as '**cluster.genes**' and '**cluster.fasta**' later on this protocol.
 
