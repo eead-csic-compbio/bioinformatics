@@ -207,7 +207,7 @@ Here I briefly describe a structural alignment approach for the comparison of DN
 
 DNA motifs inferred from protein-complexes can be analyzed in terms of their information content:
 
-![Information content of structure-derived DNA motifs of proteins belonging to several SCOP superfamilies as of Dec 2020, after @ContrerasMoreira2010](pics/superfam_specificity.png)
+![Information content of structure-derived DNA motifs of proteins belonging to several SCOP superfamilies as of Feb 2023, after @ContrerasMoreira2010](pics/superfam_specificity.png)
 
 # Discovering cis elements in genomes by counting words ($k$-mers)
 
