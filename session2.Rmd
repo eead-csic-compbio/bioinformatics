@@ -61,7 +61,7 @@ Class I elements are "copy and paste", while Class II are "cut and paste". The n
 
 ![](./pics/WickerTE.png)
 
-More recently, there are other approaches which don't require any curation; instead, these simply identify repeated elements by counting words ($K$-mers) along the genome. An example of such tools is the [Repeat Detector](https://github.com/BioinformaticsToolsmith/Red) (Red) [@Girgis2015].
+More recently, there are other approaches which don't require any curation; instead, these simply identify repeated elements by counting words ($K$-mers) along the genome. An example of such tools is the [Repeat Detector](https://github.com/BioinformaticsToolsmith/Red) [@Girgis2015], which has been used to routinely mask plant genomes [@ContrerasMoreira2021].
 
 The next table summarizes the fraction of repeated sequences in diverse plant genomes, as annotated with REdat, Red and the original papers describing those genomes:
 
@@ -94,7 +94,7 @@ The best descriptions of protein-DNA interfaces are provided by structural biolo
 
 ### Atomic interactions between protein and DNA residues
 
-The process of recognition of DNA sequences by proteins involves readout mechanisms, and also stabilizing atomic interactions that do not confer specificty.
+The process of recognition of DNA sequences by proteins involves readout mechanisms, and also stabilizing atomic interactions that do not confer specificity.
 
 **Direct readout** 
 
@@ -131,7 +131,7 @@ $deformation = \displaystyle\sum_{i=0}^6 \displaystyle\sum_{j=0}^6 spring_{ij} \
 
 ![Roll and twist of DNA steps are different for purine and pyrimidine steps, from @Olson1998](pics/roll-twist-steps.jpg)
 
-The accumulation of experimental and molecular dynamics data of DNA molecules currently supports predictive algorithms, such as [DNAshape](http://rohslab.cmb.usc.edu/DNAshape/), which predict the geometry of DNA sequences:  
+The accumulation of experimental and molecular dynamics data of DNA molecules currently supports predictive algorithms, such as [DNAshape](http://rohslab.cmb.usc.edu/DNAshape), which predict the geometry of DNA sequences:  
 
 ![Geometry descriptors of a DNA duplex by sliding a sequence window, from @Zhou2013. MGW=Major Groove Width.](pics/DNApentamers.jpg)
 
@@ -139,7 +139,7 @@ The accumulation of experimental and molecular dynamics data of DNA molecules cu
 
 Interfaces can be explored as generic bipartite graphs (@Sathyapriya2008) or with sub-graphs that focus only on specific sequence recognition:
 
-![Interface graph of NarL, where solid bases indicate indirect readout and arrows direct readout interactions. Adapted from [3d-footprint](http://floresta.eead.csic.es/3dfootprint/complexes/1je8_F.html) (@ContrerasMoreira2010)](pics/1je8-intf.png)
+![Interface graph of NarL, where solid bases indicate indirect readout and arrows direct readout interactions. Adapted from [3d-footprint](https://3dfootprint.eead.csic.es/complexes/1je8_F.html) (@ContrerasMoreira2010)](pics/1je8-intf.png)
 
 ## Comparison of DNA-binding proteins
 
@@ -147,17 +147,22 @@ A great variety of DNA-binding proteins has been observed in nature, which can b
 
 ![Example HTH transcription factors from the work of @Luscombe2000](pics/DNAbinding-classes.jpg)
 
-The  [Structural Classification of Proteins (SCOP)](http://scop.mrc-lmb.cam.ac.uk) systematically groups protein folds in superfamilies, of which some are the most common DNA-binding proteins. The next table shows superfamilies with more than 20 non-redundant complexes in the [Protein Data Bank](http://www.rcsb.org) as of Dec 2020, as annotated in the database [3d-footprint](http://floresta.eead.csic.es/3dfootprint/):
+The  [Structural Classification of Proteins (SCOP)](http://scop.mrc-lmb.cam.ac.uk) systematically groups protein folds in superfamilies, of which some are the most common DNA-binding proteins. 
+
+The next table shows superfamilies with more than 20 non-redundant complexes in the [Protein Data Bank](http://www.rcsb.org) as of Feb 2023, as annotated in the database [3d-footprint](https://3dfootprint.eead.csic.es):
 
 SCOP superfamily | Number of complexes
 ---------------- | -------------------
-Winged helix (WH) | 114
-Homeodomain-like (H) | 104
-Glucocorticoid-receptor-like (GR) | 43
-Restriction endonuclease-like (RE) | 25 
-Homing endonuclease (HE) | 36 
-p53-like (P53) | 25
-Lambda-repressor-like (LR) | 31
+Winged helix (WH) | 115
+Homeodomain-like (H) | 79
+Glucocorticoid-receptor-like (GR) | 40
+Restriction endonuclease-like (RE) | 21 
+Homing endonuclease (HE) | 38 
+p53-like (P53) | 24
+Lambda-repressor-like (LR) | 37
+
+![Color map illustrating the Plant-TFClass structural classification, from @BlancMathieu2023](pics/plant-tf-class.jpg)
+
 
 ![Number of hydrogen bonds and VdW interactions across some SCOP superfamilies of DNA-binding proteins (right) and total atomic contacts per monomer (left). ZF=C2H2 Zinc Finger, RHH=Ribbon-helix-helix, from @ContrerasMoreira2010b](pics/direct-stats.png)
 
@@ -165,7 +170,7 @@ Lambda-repressor-like (LR) | 31
 
 ### Analysis of protein-DNA interfaces in transcription factors families
 
-The available experimental structures of protein-DNA complexes in the PDB support the annotation of interface residues, those involved directly in sequence recognition, within protein families. The database [footprintDB](http://floresta.eead.csic.es/footprintdb) does exactly this.
+The available experimental structures of protein-DNA complexes in the PDB support the annotation of interface residues, those involved directly in sequence recognition, within protein families. The database [footprintDB](https://footprintdb.eead.csic.es) does exactly this.
  
 ![Annotation of interface residues by transference from PDB complexes in the footprintDB database](pics/intf-annot-hist.png)
 
