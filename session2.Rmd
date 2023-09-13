@@ -143,13 +143,11 @@ Interfaces can be explored as generic bipartite graphs (@Sathyapriya2008) or wit
 
 ## Comparison of DNA-binding proteins
 
-A great variety of DNA-binding proteins has been observed in nature, which can be analyzed and compared in terms of the features introduced above, such as readout, or instead with an evolutionary or topological perspective.  
+A great variety of DNA-binding proteins have been observed in nature, which can be analyzed and compared in terms of the features introduced above, such as readout, or instead with an evolutionary or topological perspective.  
 
 ![Example HTH transcription factors from the work of @Luscombe2000](pics/DNAbinding-classes.jpg)
 
-The  [Structural Classification of Proteins (SCOP)](http://scop.mrc-lmb.cam.ac.uk) systematically groups protein folds in superfamilies, of which some are the most common DNA-binding proteins. 
-
-The next table shows superfamilies with more than 20 non-redundant complexes in the [Protein Data Bank](http://www.rcsb.org) as of Feb 2023, as annotated in the database [3d-footprint](https://3dfootprint.eead.csic.es):
+The  [Structural Classification of Proteins (SCOP)](http://scop.mrc-lmb.cam.ac.uk) systematically groups protein folds in superfamilies, including DNA-binding proteins. The next table shows superfamilies with more than 20 non-redundant complexes in the [Protein Data Bank](http://www.rcsb.org) as of Feb 2023, as annotated in the database [3d-footprint](https://3dfootprint.eead.csic.es):
 
 SCOP superfamily | Number of complexes
 ---------------- | -------------------
@@ -161,7 +159,11 @@ Homing endonuclease (HE) | 38
 p53-like (P53) | 24
 Lambda-repressor-like (LR) | 37
 
-![Color map illustrating the Plant-TFClass structural classification, from @BlancMathieu2023](pics/plant-tf-class.jpg)
+DNA-binding proteins can also be grouped in terms of the organisms in which they are found. For instance,
+the **Plant-TFClass** structural classification currently accepts 56 plant transcription factor types, which include 
+up to 37 DNA-binding domains absent in mammals [@BlancMathieu2023]. 
+
+![Examples of plant transcription factor DNA binding domains in the Plant-TFClass structural classification, from @BlancMathieu2023](pics/plant-tf-class.jpg)
 
 
 ![Number of hydrogen bonds and VdW interactions across some SCOP superfamilies of DNA-binding proteins (right) and total atomic contacts per monomer (left). ZF=C2H2 Zinc Finger, RHH=Ribbon-helix-helix, from @ContrerasMoreira2010b](pics/direct-stats.png)
@@ -488,15 +490,15 @@ Transcriptome data (microarrays, RNA-seq) have been extensively used as a proxy 
 
 Other studies have unveiled that the outcome of these approaches largely depends on the genomic background of the species under study. For instance, @Sand2008 reported that the significance of DNA motifs discovered in *Saccharomyces cerevisiae* promoters is much higher for regulons than for random gene sets of the same sizes, but for human promoters the signal-to-noise ratio is almost null, because random gene sets give highly significant motifs due to heterogeneities in promoter compositions and biases due to repetitive elements. For metazoans, it is thus a real challenge to distinguish *bona fide* motifs from noise [@Sand2008]. These observations suggest that motif discovery on sequence clusters faces intrinsic properties of the genomes under study, regardless of the software used for the task. 
 
-Among plants, these strategies have so far been tested on the model *Arabidopsis thaliana*, and they have been successfully applied to the identification of novel cis-regulatory elements validated with synthetic promoters [@Koschmann2012]. Yet, with the exception of this model, these sorts of experiments have not been possible in other plants until recently. In spite of this, the growing list of available plant genomes encourages these analyses in combination with expression profiles obtained from either microarray or RNA-seq data sets, as in the recent work of @Yu2015, provided that these factors are considered:
+Among plants, these strategies have so far been tested on the model *Arabidopsis thaliana*, and they have been successfully applied to the identification of novel cis-regulatory elements validated with synthetic promoters [@Koschmann2012]. Yet, with the exception of this model, these sorts of experiments have not been possible in other plants until recently. In spite of this, the growing list of available plant genomes encourages these analyses in combination with expression profiles obtained from either microarray or RNA-seq data sets, as in the work of @Yu2015, provided that these factors are considered:
 
 * Plant genomes are rich in repetitive elements (RE) distributed along the genome [@Schmidt1998], which pose particular problems for motif discovery statistics (violation of the independence assumption).
 
 * Current genome assemblies range from 120Mb (_A. thaliana_) to 13,420Mb (_Triticum aestivum_). _Brachypodium distachyon_, a model species for grasses, is 272Mb. The quality of these assemblies and their RE content is also quite variable, as shown in __Table 1__.
    
-* Upstream regions, defined by annotated gene coordinates, are also of variable length, going from 1,151b on average in _A. thaliana_ to 2,560b in _Zea mays_ (see __Table 1__). 
+* Upstream regions, defined by annotated gene coordinates, are also of variable length, going from 1,151b on average in _A. thaliana_ to 2,820b in _Triticum_turgidum_ (see __Table 1__). Work by @Ksouri2021 has shown that the choice of upstream region length impacts on the discovery of regulatory sequences.
 
-**Table 1.** Features of some plant genomes in RSAT::Plants, taken from <http://plants.rsat.eu/data/stats>. Each ID concatenates the organism, the assembly version and the source. Most genome IDs add to the end the Ensembl Plants release number. For instance, Arabidopsis_thaliana.TAIR10.46, corresponds to _A.thaliana_ assembly 10 from TAIR <https://www.arabidopsis.org>, annotated in release 46 of Ensembl Plants. “%Ns” are stretches of uncharacterized nucleotides which often connect assembled sequence contigs. “%repeat-masked” segments are sequences with significant similarity to plant repetitive DNA sequences, which are masked. 
+**Table 1.** Features of some plant genomes in RSAT::Plants, taken from <http://plants.rsat.eu/data/stats>. Each ID concatenates the organism, the assembly version and the source. Most genome IDs add to the end the Ensembl Plants release number. For instance, Arabidopsis_thaliana.TAIR10.55, corresponds to _A.thaliana_ assembly 10 from TAIR <https://www.arabidopsis.org>, annotated in release 55 of Ensembl Plants. “%Ns” are stretches of uncharacterized nucleotides which often connect assembled sequence contigs. “%repeat-masked” segments are sequences with significant similarity to plant repetitive DNA sequences, which are masked. 
 
 ```{r genome_stats_table}
 genome.stats <- read.delim(file="test_data/summary.tab", row.names = NULL, comment.char=";")
@@ -532,25 +534,26 @@ The following protocol enumerates the steps required to discover DNA motifs, bas
 
 #### Collecting the full set of promoters for the genome of interest
 
-Before the proper analysis of the gene cluster, we will retrieve the promoter sequences of all the genes of the organism of interest, which will serve below to estimate the background model. **Table 2** shows three clusters of maize (_Zea mays_) genes used along the protocol, extracted from the published work of @Yu2015. Experimentally verified regulatory motifs of these clusters are indicated:  
+Before the proper analysis of the gene cluster, we will retrieve the promoter sequences of all the genes of the organism of interest, which will serve below to estimate the background model. **Table 2** shows three clusters of maize (_Zea mays_) genes used along the protocol, extracted from the published work of @Yu2015. The original gene identifiers have been translated to current gene models in the Zm-B73-REFERENCE-NAM-5.0.55 annotation using [maizeGDB](https://www.maizegdb.org) [@Woodhouse2021].
 
-| Cluster name | Confirmed motif | Number of sequences | Gene IDs | 
-|:------------:|:---------------:|:-------------------:|:--------:|
-|ABI4|GCGCRSGCGGSC|16|GRMZM2G025062 <br>GRMZM2G053503 <br>GRMZM2G069082 <br>GRMZM2G069126 <br>GRMZM2G069146 <br>GRMZM2G076896 <br>GRMZM2G081892 <br>GRMZM2G124011 <br>GRMZM2G129674 <br>GRMZM2G142179 <br>GRMZM2G169654 <br>GRMZM2G172936 <br>GRMZM2G173771 <br>GRMZM2G174347 <br>GRMZM2G175525 <br>GRMZM2G421033|
-|E2F|TTCCCGCCA|18|AC197146.3_FG001 <br>GRMZM2G017081 <br>GRMZM2G021069 <br>GRMZM2G037700 <br>GRMZM2G057571 <br>GRMZM2G062333 <br>GRMZM2G065205 <br>GRMZM2G066101 <br>GRMZM2G075978 <br>GRMZM2G100639 <br>GRMZM2G112074 <br>GRMZM2G117238 <br>GRMZM2G130351 <br>GRMZM2G139894 <br>GRMZM2G154267 <br>GRMZM2G162445 <br>GRMZM2G327032 <br>GRMZM2G450055|
-|WRI1|CGGCGGCGS|56|AC210013.4_FG019 <br>GRMZM2G008430 <br>GRMZM2G009968 <br>GRMZM2G010435 <br>GRMZM2G010599 <br>GRMZM2G014444 <br>GRMZM2G015097 <br>GRMZM2G017966 <br>GRMZM2G022019 <br>GRMZM2G027232 <br>GRMZM2G028110 <br>GRMZM2G035017 <br>GRMZM2G041238 <br>GRMZM2G045818 <br>GRMZM2G047727 <br>GRMZM2G048703 <br>GRMZM2G064807 <br>GRMZM2G068745 <br>GRMZM2G074300 <br>GRMZM2G076435 <br>GRMZM2G078779 <br>GRMZM2G078985 <br>GRMZM2G080608 <br>GRMZM2G092663 <br>GRMZM2G096165 <br>GRMZM2G098957 <br>GRMZM2G107336 <br>GRMZM2G108348 <br>GRMZM2G111987 <br>GRMZM2G115265 <br>GRMZM2G119865 <br>GRMZM2G122871 <br>GRMZM2G126603 <br>GRMZM2G126928 <br>GRMZM2G132095 <br>GRMZM2G140799 <br>GRMZM2G148744 <br>GRMZM2G150434 <br>GRMZM2G151252 <br>GRMZM2G152599 <br>GRMZM2G170262 <br>GRMZM2G181336 <br>GRMZM2G311914 <br>GRMZM2G312521 <br>GRMZM2G322413 <br>GRMZM2G325606 <br>GRMZM2G343543 <br>GRMZM2G353785 <br>GRMZM2G409407 <br>GRMZM2G439201 <br>GRMZM5G823135 <br>GRMZM5G827266 <br>GRMZM5G831142 <br>GRMZM5G835323 <br>GRMZM5G870606 <br>GRMZM5G882378|
+Experimentally verified regulatory motifs of these clusters are indicated:  
 
+| Cluster name | Confirmed motif | #sequences | Original gene IDs | Current gene IDs | 
+|:------------:|:---------------:|:-------------------:|:--------:|:------------------------------------:|
+|ABI4|GCGCRSGCGGSC|16|GRMZM2G025062 <br>GRMZM2G053503 <br>GRMZM2G069082 <br>GRMZM2G069126 <br>GRMZM2G069146 <br>GRMZM2G076896 <br>GRMZM2G081892 <br>GRMZM2G124011 <br>GRMZM2G129674 <br>GRMZM2G142179 <br>GRMZM2G169654 <br>GRMZM2G172936 <br>GRMZM2G173771 <br>GRMZM2G174347 <br>GRMZM2G175525 <br>GRMZM2G421033|Zm00001eb330490 <br>Zm00001eb340140 <br>Zm00001eb318890 <br>Zm00001eb318900 <br>Zm00001eb318910 <br>Zm00001eb202570 <br>Zm00001eb335190 <br>Zm00001eb335200 <br>Zm00001eb103110 <br>Zm00001eb006160 <br>Zm00001eb119540 <br>Zm00001eb156040 <br>Zm00001eb074730 <br>Zm00001eb193670 <br>Zm00001eb352580 <br>Zm00001eb422470 <br>Zm00001eb432090|
+|E2F|TTCCCGCCA|18|AC197146.3_FG001 <br>GRMZM2G017081 <br>GRMZM2G021069 <br>GRMZM2G037700 <br>GRMZM2G057571<br>GRMZM2G062333<br>GRMZM2G065205 <br>GRMZM2G066101 <br>GRMZM2G075978 <br>GRMZM2G100639 <br>GRMZM2G112074<br>GRMZM2G117238<br>GRMZM2G130351 <br>GRMZM2G139894 <br>GRMZM2G154267 <br>GRMZM2G162445<br>GRMZM2G327032<br>GRMZM2G450055|Zm00001eb405460 <br>Zm00001eb227730<br>Zm00001eb350340<br>Zm00001eb228900<br>Zm00001eb284360<br>Zm00001eb028400<br>Zm00001eb162700<br>Zm00001eb257900<br>Zm00001eb290510 <br>Zm00001eb137000 <br>Zm00001eb248940 <br>Zm00001eb421110 <br>Zm00001eb169600	<br>Zm00001eb169610<br>Zm00001eb037700 <br>Zm00001eb351990 <br>Zm00001eb342080 <br>Zm00001eb192270	<br>Zm00001eb192280<br>Zm00001eb243240<br>Zm00001eb243250|
+|WRI1|CGGCGGCGS|56|AC210013.4_FG019 <br>GRMZM2G008430 <br>GRMZM2G009968 <br>GRMZM2G010435 <br>GRMZM2G010599 <br>GRMZM2G014444 <br>GRMZM2G015097 <br>GRMZM2G017966 <br>GRMZM2G022019 <br>GRMZM2G027232 <br>GRMZM2G028110 <br>GRMZM2G035017 <br>GRMZM2G041238 <br>GRMZM2G045818 <br>GRMZM2G047727 <br>GRMZM2G048703 <br>GRMZM2G064807 <br>GRMZM2G068745 <br>GRMZM2G074300 <br>GRMZM2G076435 <br>GRMZM2G078779 <br>GRMZM2G078985 <br>GRMZM2G080608 <br>GRMZM2G092663 <br>GRMZM2G096165 <br>GRMZM2G098957 <br>GRMZM2G107336 <br>GRMZM2G108348 <br>GRMZM2G111987 <br>GRMZM2G115265 <br>GRMZM2G119865 <br>GRMZM2G122871 <br>GRMZM2G126603 <br>GRMZM2G126928 <br>GRMZM2G132095 <br>GRMZM2G140799 <br>GRMZM2G148744 <br>GRMZM2G150434 <br>GRMZM2G151252 <br>GRMZM2G152599 <br>GRMZM2G170262 <br>GRMZM2G181336 <br>GRMZM2G311914 <br>GRMZM2G312521 <br>GRMZM2G322413 <br>GRMZM2G325606 <br>GRMZM2G343543 <br>GRMZM2G353785 <br>GRMZM2G409407 <br>GRMZM2G439201 <br>GRMZM5G823135 <br>GRMZM5G827266 <br>GRMZM5G831142 <br>GRMZM5G835323 <br>GRMZM5G870606 <br>GRMZM5G882378|Zm00001eb212470 <br>Zm00001eb347390 <br>Zm00001eb351870 <br>Zm00001eb066830 <br>Zm00001eb420570 <br>Zm00001eb238930 <br>Zm00001eb031300 <br>Zm00001eb267190 <br>Zm00001eb222060 <br>Zm00001eb222210 <br>Zm00001eb283120 <br>Zm00001eb063980 <br>Zm00001eb335620 <br>Zm00001eb342930 <br>Zm00001eb095960 <br>Zm00001eb011490 <br>Zm00001eb174060 <br>Zm00001eb405750 <br>Zm00001eb172130 <br>Zm00001eb166570 <br>Zm00001eb316270 <br>Zm00001eb285610 <br>Zm00001eb061760 <br>Zm00001eb212180 <br>Zm00001eb134780 <br>Zm00001eb037330 <br>Zm00001eb138230 <br>Zm00001eb235710 <br>Zm00001eb271520 <br>Zm00001eb277320 <br>Zm00001eb160070 <br>Zm00001eb359780 <br>Zm00001eb235710 <br>Zm00001eb399010 <br>Zm00001eb036530 <br>Zm00001eb354150 <br>Zm00001eb361700 <br>Zm00001eb317180 <br>Zm00001eb173470 <br>Zm00001eb192860 <br>Zm00001eb205850 <br>Zm00001eb192680 <br>Zm00001eb330480 <br>Zm00001eb372580 <br>Zm00001eb276860 <br>Zm00001eb320920 <br>Zm00001eb282960 <br>Zm00001eb329960 <br>Zm00001eb227700	 <br>Zm00001eb227710 <br>Zm00001eb352030 <br>Zm00001eb158110 <br>Zm00001eb323110 <br>Zm00001eb225190	 <br>Zm00001eb225200 <br>Zm00001eb121240|
 
 
 1. Open a connection to the RSAT::Plants server. It can be reached at <http://plants.rsat.eu>. On the left-side menu, select 'Sequence tools -> retrieve sequence'.
 
-2. Choose 'Single organism -> Zea mays' for the examples of this protocol (see __Note  1__), which corresponds to 'Zea mays.B73RefGen v4.46' in Ensembl Plants release 46.
+2. Choose 'Single organism -> Zea mays' for the examples of this protocol (see __Note  1__), which corresponds to 'Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55' in [Ensembl Plants](https://plants.ensembl.org) release 55 [@Yates2021].
 
 3. Choose 'Genes -> all'; this will retrieve all upstream sequences of the maize genome.
 
-4. Set appropriate upstream bounds. To replicate the work of @Yu2015 these should be set to 'From' -1000 'To' +200, with position 0 corresponding to transcriptional start sites (TSS). Beware that TSS positions in plant genomes often correspond to start codons, probably due to incomplete annotations. 
+4. Set appropriate upstream bounds. To replicate the work of @Yu2015 these should be set to 'From' -1000 'To' +200, with position 0 corresponding to transcriptional start sites (TSS); see __Note __^[According to @Ksouri2021 the range -500,+200 performs better]. Beware that TSS positions in plant genomes often correspond to start codons, probably due to incomplete annotations. 
 
-5. We recommend to tick the option 'Mask repeats', as plant genomes are frequently repeat-rich. This option should not be used if you suspect the transcription factors of interest bind to repeated sequences. 
+5. We recommend to tick the option 'Mask repeats', as plant genomes are frequently repeat-rich. This option should NOT be used if you suspect the transcription factors of interest bind to repeated sequences. 
 
 6. Press 'GO' and wait until the retrieve-seq result page is displayed (see __Note __^[Should the connection to the server interrupt it might be safer to go back and choose 'email' as delivery option.  The mail message provides a link to the data, which is actually stored at the server.]). The results include the executed command and a URL to the 'sequences' file, which must be saved. We will refer to this URL as '**all.fasta.URL**'. This FASTA-format file can also be stored as a local file on your computer, but note it can be rather large. 
 
@@ -560,9 +563,9 @@ Before the proper analysis of the gene cluster, we will retrieve the promoter se
 
 We will now retrieve the upstream sequences of a cluster of co-expressed genes, and use *peak-motifs* to discover exceptional motifs in their promoters. The tool *peak-motifs* was initially conceived to discover motifs in ChIP-seq peaks, but it can also be used to analyze other sequence types, as illustrated here.
 
-1. Choose cluster E2F from __Table 2__, copy the corresponding gene IDs (last column). As these identifiers are from an older assembly (v3), we need to paste them in <http://plants.ensembl.org/Zea_mays/Tools/IDMapper?db=core> or  <http://www.maizeinflorescence.org/v4/convert/index.php> to convert them to the current annotation. The translated IDs should be saved in a new text file, that you will store on your computer. Insert newline characters between genes^[It is crucial to have one gene ID per row for submitting queries to retrieve-seq, because only the first word of each row is considered as a query. Note that any transcript isoform numbers .1, .2 should be removed]. 
+1. Choose cluster E2F from __Table 2__, copy the current gene IDs (last column). The IDs should be saved in a new text file, that you will store on your computer. Insert newline characters between genes^[It is crucial to have one gene ID per row for submitting queries to retrieve-seq, because only the first word of each row is considered as a query. Note that any transcript isoform numbers .1, .2 should be removed]. 
 
-2. In the left menu of the RSAT server, click on 'retrieve sequence' to get a fresh form. Make sure that the option 'Genes -> selection' is activated and that the right organism, in this case ‘Zea mays.B73RefGen v4.46’, is selected. Tick 'Mask repeats', and set the same size limits as for the whole collection of promoters: from -1000 to +200. Paste the list of IDs of your gene cluster (one gene ID per row). 
+2. In the left menu of the RSAT server, click on 'retrieve sequence' to get a fresh form. Make sure that the option 'Genes -> selection' is activated and that the right organism, in this case ‘Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55’, is selected. Tick 'Mask repeats', and set the same size limits as for the whole collection of promoters: from -1000 to +200. Paste the list of IDs of your gene cluster (one gene ID per row). 
 
 3. Press 'GO' and wait a few seconds until the result page is displayed. Inspection of these sequences might reveal N-masked sequence stretches, which correspond to annotated repeats. Save both 'query genes' and 'sequences' files to local files on your computer, we will refer to them as '**cluster.genes**' and '**cluster.fasta**' later on this protocol.
 
@@ -597,7 +600,7 @@ In this section, we propose a procedure to obtain an empirical estimation of the
 
 1. On the left-side menu of RSAT::Plants select 'Build control sets -> random gene selection'.
 
-2. Choose 'Organism -> Zea mays.B73RefGen v4.46' for the examples of this protocol. 
+2. Choose 'Organism -> Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55' for the examples of this protocol. 
 
 3. Set 'Number of genes' to the size of one of the sample clusters on **Table 2**. For instance, the size of the negative control sets would be 18 for cluster E2F, 16 for cluster ABI4, and 56 for cluster WRI1. For convenience, in this tutorial only one random group is generated (the default), but this utility can generate several random groups in one go (see __Note __^[Clearly, more than one random cluster should be evaluated, as suggested in __Figure 1__, where the results of up to 50 random groups are displayed next to the clusters of @Yu2015.]).
 
@@ -631,7 +634,7 @@ A second goal is to investigate whether these regulatory motifs are conserved on
 
 9. Upload file '**cluster.motifs.tf**' and select 'transfac' format.
 
-10. In the 'Background model' section select Markov order 2 and choose 'Organism-specific -> Zea mays.B73RefGen v4.46'. Press 'GO'.
+10. In the 'Background model' section select Markov order 2 and choose 'Organism-specific -> Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55'. Press 'GO'.
 
 11. Save the 'Scan result' file as '**cluster.scan.ft**' and press the 'feature map' button to draw a map of the matched motif instances.
 
