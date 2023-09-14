@@ -147,7 +147,7 @@ A great variety of DNA-binding proteins have been observed in nature, which can 
 
 ![Example HTH transcription factors from the work of @Luscombe2000](pics/DNAbinding-classes.jpg)
 
-The  [Structural Classification of Proteins (SCOP)](http://scop.mrc-lmb.cam.ac.uk) systematically groups protein folds in superfamilies, including DNA-binding proteins. The next table shows superfamilies with more than 20 non-redundant complexes in the [Protein Data Bank](http://www.rcsb.org) as of Feb 2023, as annotated in the database [3d-footprint](https://3dfootprint.eead.csic.es):
+The  [Structural Classification of Proteins (SCOP)](http://scop.mrc-lmb.cam.ac.uk) systematically groups protein folds in superfamilies, including DNA-binding proteins. The next table shows superfamilies with more than 20 non-redundant complexes in the [Protein Data Bank](http://www.rcsb.org) as of Jun2023, as annotated in the database [3d-footprint](https://3dfootprint.eead.csic.es):
 
 SCOP superfamily | Number of complexes
 ---------------- | -------------------
@@ -209,7 +209,7 @@ Here I briefly describe a structural alignment approach for the comparison of DN
 
 DNA motifs inferred from protein-complexes can be analyzed in terms of their information content:
 
-![Information content of structure-derived DNA motifs of proteins belonging to several SCOP superfamilies as of Feb 2023, after @ContrerasMoreira2010](pics/superfam_specificity.png)
+![Information content of structure-derived DNA motifs of proteins belonging to several SCOP superfamilies as of Jun2023, after @ContrerasMoreira2010](pics/superfam_specificity.png)
 
 # Discovering cis elements in genomes by counting words ($k$-mers)
 
@@ -480,7 +480,7 @@ plot.kmers(kmer.stat.table, k, volcano.ymax = 60)
 
 ## Exercises
 
-The plant-dedicated mirror of the Regulatory Sequence Analysis Tools (RSAT, <http://plants.rsat.eu>) offers specialized options for researchers dealing with plant transcriptional regulation. The web site contains whole-sequenced species regularly updated from Ensembl Plants and other sources (85 as of Dec 2020), and supports an array of tasks frequently required for the analysis of regulatory sequences, such as retrieving upstream sequences, motif discovery, motif comparison, pattern matching. RSAT::Plants also integrates the footprintDB collection of DNA motifs. This exercise consists on following a step-by-step protocol on how to discover DNA motifs in regulatory regions of clusters of co-expressed genes in plants. It also explains how to empirically control the significance of the result, and how to annotate any discovered motis. 
+The plant-dedicated mirror of the Regulatory Sequence Analysis Tools (RSAT, <http://plants.rsat.eu>) offers specialized options for researchers dealing with plant transcriptional regulation. The web site contains whole-sequenced species regularly updated from Ensembl Plants and other sources, and supports an array of tasks frequently required for the analysis of regulatory sequences, such as retrieving upstream sequences, motif discovery, motif comparison, pattern matching. RSAT::Plants also integrates the footprintDB collection of DNA motifs. This exercise consists on following a step-by-step protocol on how to discover DNA motifs in regulatory regions of clusters of co-expressed genes in plants. It also explains how to empirically control the significance of the result, and how to annotate any discovered motis. 
 
 This protocol has been published at [@ContrerasMoreira2016a] and updated at [@Ksouri2021]. Other related protocols can be found at [@CastroMondragon2016; @ContrerasMoreira2016b].
 
