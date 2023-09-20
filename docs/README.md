@@ -6,7 +6,22 @@ This material is maintained by Najla Ksouri, Chesco Montardit, Ernesto Igartua a
 
 Here we review some bioinformatics resources and databases which can be useful in plant breeding and genomics. 
 We will use both standalone and Web-based tools and will also review reproducible analysis practices and software benchmarks.
-Test data used in the sessions can be obtained from <https://github.com/eead-csic-compbio/bioinformatics>.
+Test data used in sessions 1-4 can be obtained from <https://github.com/eead-csic-compbio/bioinformatics>.
+
+## Docker image
+
+A [Docker image](https://hub.docker.com/r/csicunam/bioinformatics_iamz) 
+is available with most of the software used in the sessions, excluding R,
+which we expect to be installed elsewhere.
+After installing Docker, it can be run as follows:
+
+    docker pull csicunam/bioinformatics_iamz
+
+    mkdir $HOME/vep_data # persistent folder for VEP files
+
+    docker run -t -i -v $HOME/vep_data:/data -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY csicunam/bioinformatics_iamz:latest
+
+
 
 ## Contents
 
@@ -18,6 +33,7 @@ Test data used in the sessions can be obtained from <https://github.com/eead-csi
 |4|Benchmarks|2h|[session 4](./session4.html)|
 |5|Genotyping|3h|[session 5](./session5.html)|
 |6|Genome-Wide Association Analysis|2h|[session 6](./session6.html)| 
+
 
 
 We post regularly about these and related bioinformatics topics at the [#!/perl/bioinfo](https://bioinfoperl.blogspot.com) blog, mostly in Spanish.
