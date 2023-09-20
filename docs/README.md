@@ -6,6 +6,7 @@ This material is maintained by Najla Ksouri, Chesco Montardit, Ernesto Igartua a
 
 Here we review some bioinformatics resources and databases which can be useful in plant breeding and genomics. 
 We will use both standalone and Web-based tools and will also review reproducible analysis practices and software benchmarks.
+Test data used in the sessions can be obtained from <https://github.com/eead-csic-compbio/bioinformatics>.
 
 ## Contents
 
