@@ -1,7 +1,13 @@
 
 ## build instructions:
 # 
-# THISVERSION=`date "+%Y%m%d"` && docker build --tag csicunam/bioinformatics_iamz:$THISVERSION --tag csicunam/bioinformatics_iamz:latest --force-rm --compress .
+# THISVERSION=`date "+%Y%m%d"` 
+# docker build --tag csicunam/bioinformatics_iamz:$THISVERSION --tag csicunam/bioinformatics_iamz:latest --force-rm --compress .
+#
+# docker login 
+# docker push csicunam/bioinformatics_iamz:${THISVERSION}
+# docker push csicunam/bioinformatics_iamz:latest
+
 
 ## Create a clone of ensembl-vep image, locale set to en_US.UTF-8 ,
 ## see https://github.com/Ensembl/ensembl-vep/blob/release/110/docker/Dockerfile,
