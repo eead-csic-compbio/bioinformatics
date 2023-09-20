@@ -21,6 +21,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ## Install required packages
 USER root
 RUN apt-get update && apt install --no-install-recommends -y \
+	make\
 	wget\
 	git\
 	bwa\
@@ -32,11 +33,16 @@ RUN apt-get update && apt install --no-install-recommends -y \
 	freebayes\
 	bcftools\
 	tabix\
-	make
+	beagle
+
+
+# Clone repo with course materials, including test_data
+WORKDIR /home/vep
+RUN git clone https://github.com/eead-csic-compbio/bioinformatics.git
 
 ## Copy course datafiles
-RUN mkdir -p /home/vep/test_files/
-COPY data /home/vep/test_files/
+RUN mkdir -p /home/vep/variant_data/
+COPY data /home/vep/variant_data/
 
 # add version name to image
 ARG version
