@@ -300,7 +300,7 @@ Minimal evolutionary and folding units are called domains [@Porter2012]. As prot
 
 Two key resources for annotating proteins domains in input sequences are:
 
-  + [Pfam](http://pfam.xfam.org), which defines sequence families (domains) by calculating and refining multiple alignments which are ultimately converted to hidden Markov models. It is part of a larger collection called [InterPro](https://www.ebi.ac.uk/interpro)
+  + [Pfam](http://pfam.xfam.org), which defines sequence families (domains) by calculating and refining multiple alignments which are ultimately converted to hidden Markov models. It is integrated in a larger collection called [InterPro](https://www.ebi.ac.uk/interpro).
   + [HHPred](https://toolkit.tuebingen.mpg.de/tools/hhpred), which explicitely uses secondary structure, sequence profiles and tertiary structure classifications to call protein domains and annotate protein sequences. 
 
 Another resource comparable to Pfam is [PANTHER](http://www.pantherdb.org), which is related to the Gene Ontology.
@@ -309,7 +309,8 @@ The next figure depicts the tertiary structure of a protein with two domains, ad
 
 ![](./pics/3sto2s.png)
 
-You can read more about these topics [here](http://eead-csic-compbio.github.io/bioinformatica_estructural) (in Spanish).
+You can read more about these topics in [Algoritmos en Bioinformática Estructural](http://eead-csic-compbio.github.io/bioinformatica_estructural) (in Spanish),
+which includes a chapter of AlphaFold and related approaches.
 
 ## Gene Ontology
 
@@ -331,7 +332,7 @@ See [here](https://bioinfoperl.blogspot.com/2011/08/decodificando-la-gene-ontolo
 Orthologous genes are derived by speciation, in contrast to paralogues, which evolve through duplication. Comparative genomic studies on a variety of clades suggest that orthologues among species typically are the most similar genes in terms of sequence, structure, domain architecture and function [@Gabaldon2013]. There are however many exceptions and thus orthology should be used as a proxy for similarity.
 In benchmarks with curated GO terms, it seems that orthology improves the annotation of sequences particularly on the Molecular Function side of the Gene Ontology [@HuertaCepas2017].
 
-[Ensembl Plants](http://plants.ensembl.org) and [PLAZA](https://bioinformatics.psb.ugent.be/plaza) are resources providing plant-specific comparative genomics tools for plants, such as orthology calls and sintenic/collinear genes.
+[Ensembl Plants](https://plants.ensembl.org) and [PLAZA](https://bioinformatics.psb.ugent.be/plaza) are resources providing plant-specific comparative genomics tools for plants, such as orthology calls and sintenic/collinear genes.
 
 # Exercises
 
@@ -341,7 +342,7 @@ The goal of this exercise is to learn how to produce different kinds of sequence
 
 |software|source|documentation|
 |----|----|----|
-BLAST | [ftp.ncbi.nlm.nih.gov/blast/executables/blast+](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+) | [URL](https://www.ncbi.nlm.nih.gov/books/NBK279690/)  |
+BLAST | [ftp.ncbi.nlm.nih.gov/blast/executables/blast+](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+) | [URL](https://www.ncbi.nlm.nih.gov/books/NBK279690/)  |
 Clustal Omega | [www.clustal.org/omega](http://www.clustal.org/omega) | [URL](http://www.clustal.org/omega/#Documentation) | 
 HMMER | [hmmer.org](http://hmmer.org) | [URL](http://hmmer.org/documentation.html) |
 
@@ -412,11 +413,14 @@ This task actually comprises four steps:
 
 + Scan the HMM against your sequence collection with *hmmerscan* and write a short report on the results. This should be deliverable **Exe6**.
 
-### Annotating function by structural similarity
+### Annotating function by predicted structural similarity
 
-Search for homologous sequences and define protein domains of AT1G30330.2 with help from [HHPred](https://toolkit.tuebingen.mpg.de/tools/hhpred).
+Search for homologous sequences and define protein domains of AT1G30330.2 with  [HHPred](https://toolkit.tuebingen.mpg.de/tools/hhpred). 
 
-**Exe 7)** Produce a table with domains defined by the boundaries of matched entries from the Protein Data Bank and from Pfam.
+Note that you can also search for proteins with AlphaFold structural predictions with the 
+[EBI BLAST](https://www.ebi.ac.uk/Tools/sss/ncbiblast) against AlphaFoldDB.
+
+**Exe 7)** Produce a table with i) domains defined by the boundaries of matched entries from the Protein Data Bank and Pfam and ii) similar sequences in AlphaFoldDB.
 
 ### Annotating function on orthology grounds
 
