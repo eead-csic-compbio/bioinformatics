@@ -243,7 +243,7 @@ Third-party software used in your analyses should be properly cited, as explaine
 
 When multiple commands are needed, it’s better to compile them into a single script specifying the order in which the instructions need to be executed and indicating the software required for each step. A common way to automate  the analysis is to use makefiles. 
 
-[make](www.gnu.org/software/make) is a standard unix tool that processes makefiles containing shell instructions to tell make what to do.
+[make](https://www.gnu.org/software/make) is a standard unix tool that processes makefiles containing shell instructions to tell make what to do.
 
 **Example 3: Using Makefiles**
 
@@ -256,7 +256,7 @@ wget https://raw.githubusercontent.com/eead-csic-compbio/bioinformatics/main/tes
 ```
 
 
-3. Before running this code, you need first to install samtools and check it´s version:
+3. Before running this code, you might need to install samtools and check it´s version:
 
 ```{bash, eval=F}
 sudo apt update
@@ -332,7 +332,7 @@ all: dir get-data get-ids get-fasta
 
 ```
 
-As we can see  instead of executing the instructions one by one in your terminal, searching for the path of each file, saveing the results etc, a **makefile** can run your entire workflow in one-button operation and give you a well organized output. So better to let the computer work for you!.
+As we can see  instead of executing the instructions one by one in your terminal, searching for the path of each file, saving the results etc, a **makefile** can run your entire workflow in one-button operation and give you a well organized output; better to let the computer work for you!
 
 Working with makefiles will allow you to modify any step and regenerate the results with minimal effort. In case of error, you can easy track and fix the bug as the makefile won’t run if something is missed.
 
@@ -351,7 +351,7 @@ Actually, the code is what the machine will read and execute and the documentati
 
 This simultaneous construction of a code and its detailed description is called literate programming. This term was introduced by [@Knuth84] with the purpose that make computer programs written in human-readable way so they can be easly understood.
 
-There are several literate programming tools, such as [Jupiter notebooks](https://jupyter.org) (many languages) or [R Markdown](https://rmarkdown.rstudio.com/) and [knitr](https://yihui.org/knitr/) (R). 
+There are several literate programming tools, such as [Jupyter notebooks](https://jupyter.org) (many languages) or [R Markdown](https://rmarkdown.rstudio.com/) and [knitr](https://yihui.org/knitr/) (R). 
 Both integrate sections of code and sections of text in a single document.
 
 In this session, we will be using the Rmarkdown to generate a HTML report.
@@ -401,7 +401,7 @@ There are two main types of version control systems:
 
   + The centralized model: there is a single central copy of the repository on the server and the users need to connect and make the changes on this central copy, where the history will be saved.
 
-  + The distributed model: each user has a copy of entire repository on its own computer and these repositroies can easily be synchronized.
+  + The distributed model: each user has a copy of entire repository on its own computer and these repositories can easily be synchronized.
 
 Git is a free distributed model, widely used in the programming world. It was developed in 2005 by Linus Torvalds, the creator of the Linux operating system kernel [@10.5555/2695634]. The next figure was adapted from [beanstalkapp](http://guides.beanstalkapp.com/version-control/intro-to-version-control.html):
 
@@ -483,19 +483,19 @@ The figure below illustrates the concept of cloning.
 Per default, the git clone will create a local directory with the same name as the orginal git repository. If you want a different folder name, simply specify it as the last parameter
 
 ```{bash, eval=F}
-git clone Repository URL 
-git clone Repository URL <new-folder-name>
+git clone RepositoryURL 
+git clone RepositoryURL <new-folder-name>
 ```
 
 **Note:** git init and git clone are one-time operations needed for the initial setup of the repository
 
 #### Adding and commiting the changes
 
-At this point, we need to know that Git has 3 main componemts:
+At this point, we need to know that Git has 3 main components:
 
 Working directory -----> Staging area -----> git repository. 
 
-If we add or modify certain files in the working directory, Git won’t notice it unless we ask the program to track these changes using **git add**. Doing so, the changes will be moved from the working directory to the staging area.
+If we add or modify certain files in the working directory, Git won’t notice it unless we ask it to track these changes using **git add**. Doing so, the changes will be moved from the working directory to the staging area.
 Next, to store the modifications in the git repository, we simply use **git commit**.
 
 
