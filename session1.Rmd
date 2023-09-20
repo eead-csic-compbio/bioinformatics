@@ -349,7 +349,7 @@ HMMER | [hmmer.org](http://hmmer.org) | [URL](http://hmmer.org/documentation.htm
 ### Formatting a sequence collection for BLAST
 
 The first task is to format our test sequence set, which was obtained from
-[UniProt](http://www.uniprot.org/uniprot/?query=reviewed:true):
+[UniProt](https://www.uniprot.org/uniprot/?query=reviewed:true):
 
 ```{r, engine='bash', eval=FALSE}
 cd test_data/
