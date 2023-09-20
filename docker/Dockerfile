@@ -21,6 +21,7 @@ RUN apt-get update && apt install --no-install-recommends -y \
 	igv\
 	freebayes\
 	bcftools\
+	tabix\
 	make
 
 ## Copy course data
