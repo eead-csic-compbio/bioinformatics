@@ -1,5 +1,11 @@
-## Create a clone of VEP image, locale set to en_US.UTF-8
-## see https://github.com/Ensembl/ensembl-vep/blob/release/110/docker/Dockerfile
+
+## build instructions:
+# 
+# THISVERSION=`date "+%Y%m%d"`
+# docker build --tag csicunam/bioinformatics_iamz:$THISVERSION --tag csicunam/bioinformatics_iamz:latest --force-rm --compress .
+
+## Create a clone of ensembl-vep image, locale set to en_US.UTF-8 ,
+## see https://github.com/Ensembl/ensembl-vep/blob/release/110/docker/Dockerfile,
 FROM ensemblorg/ensembl-vep:latest 
 
 LABEL maintainer="bcontreras@eead.csic.es"
@@ -10,7 +16,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ## Install required packages
 USER root
 RUN apt-get update && apt install --no-install-recommends -y \
-	curl\
 	wget\
 	git\
 	bwa\
@@ -24,9 +29,9 @@ RUN apt-get update && apt install --no-install-recommends -y \
 	tabix\
 	make
 
-## Copy course data
-
-
+## Copy course datafiles
+RUN mkdir -p /home/vep/test_files/
+COPY data /home/vep/test_files/
 
 # add version name to image
 ARG version
@@ -35,5 +40,5 @@ RUN echo $version
 
 # prepare user env
 USER vep
-WORKDIR /data
+WORKDIR /home/vep/
 
