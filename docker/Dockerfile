@@ -14,6 +14,7 @@
 ## Create a clone of ensembl-vep image, locale set to en_US.UTF-8 ,
 ## see https://github.com/Ensembl/ensembl-vep/blob/release/110/docker/Dockerfile
 FROM ensemblorg/ensembl-vep:latest 
+#FROM dceoy/igv-webapp:latest
 
 LABEL maintainer="bcontreras@eead.csic.es"
 
@@ -31,11 +32,12 @@ RUN apt-get update && apt install --no-install-recommends -y \
         bedtools\
 	picard-tools\
 	fastqc\
-	igv\
 	freebayes\
 	bcftools\
 	tabix\
-	beagle
+	beagle\
+	default-jre\
+	igv
 
 
 # Clone repo with course materials, including test_data
