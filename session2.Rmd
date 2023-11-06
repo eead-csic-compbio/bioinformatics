@@ -47,7 +47,7 @@ kable(annot.stats,format.args = list(big.mark=","))
 
 Therefore, when dealing with genome variation, polymorphisms have a greater chance to occur in non-coding regions. Among these, probably the most interesting are **regulatory sequences** and **repeated elements**.
 
-The goal of this session is to learn how regulatory sequences can be discovered in promoter sequences using statistical tests and aligned to build a **DNA motifs**.
+The goal of this session is to learn how regulatory sequences can be discovered in promoter sequences using statistical tests and aligned to build **DNA motifs**.
 
 # Genomic repeated sequences
 
@@ -555,7 +555,7 @@ Experimentally verified regulatory motifs of these clusters are indicated:
 
 5. We recommend to tick the option 'Mask repeats', as plant genomes are frequently repeat-rich. This option should NOT be used if you suspect the transcription factors of interest bind to repeated sequences. 
 
-6. Press 'GO' and wait until the retrieve-seq result page is displayed (see __Note __^[Should the connection to the server interrupt it might be safer to go back and choose 'email' as delivery option.  The mail message provides a link to the data, which is actually stored at the server.]). The results include the executed command and a URL to the 'sequences' file, which must be saved. We will refer to this URL as '**all.fasta.URL**'. This FASTA-format file can also be stored as a local file on your computer, but note it can be rather large. 
+6. Press 'GO' and wait until the retrieve-seq result page is displayed (see __Note __^[Should the connection to the server interrupt it might be safer to go back and choose 'email' as delivery option.  The mail message provides a link to the data, which is actually stored at the server.]). The results include the executed command and a URL to the 'sequences' file, which must be saved. We will refer to this URL as '**all.fasta.URL**'. This FASTA-format file can also be stored as a local file on your computer, but note it can be rather large and might fail to upload later on if its size is larger than the server's limit. 
 
 6.	Press 'GO' and wait until the retrieve-seq result page is displayed (see Note 4). 
 
