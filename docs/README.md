@@ -18,7 +18,9 @@ After installing Docker, it can be run as follows:
 
     docker pull csicunam/bioinformatics_iamz
 
-    mkdir $HOME/vep_data # persistent folder for VEP files
+    # persistent folder for results files
+    mkdir $HOME/vep_data 
+    chmod a+w $HOME/vep_data
 
     docker run -t -i -v $HOME/vep_data:/data -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY csicunam/bioinformatics_iamz:latest
 
