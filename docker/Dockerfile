@@ -34,7 +34,8 @@ RUN apt-get update && apt install --no-install-recommends -y \
 	freebayes\
 	bcftools\
 	tabix\
-	beagle
+	beagle\
+	firefox
 
 
 # Clone repo with course materials, including test_data
