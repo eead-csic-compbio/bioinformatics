@@ -1,5 +1,5 @@
 ---
-title: "Session 6: Genome-wide Association Analysis"
+title: "Session 7: Genome-wide Association Analysis"
 author:
 - affiliation: Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain, https://eead.csic.es/compbio
   name: Francesc Montardit, Ernesto Igartua

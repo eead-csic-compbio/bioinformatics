@@ -1,5 +1,5 @@
 ---
-title: "Session 5: Genotyping"
+title: "Session 6: Genotyping"
 author:
 - affiliation: Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain, https://eead.csic.es/compbio
   name: Bruno Contreras Moreira
