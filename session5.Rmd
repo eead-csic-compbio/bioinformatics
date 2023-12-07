@@ -1,0 +1,543 @@
+---
+title: "Session 5: Mapping, variant calling & effect prediction"
+author:
+- affiliation: Ensembl EMBL-EBI, Cambridge, UK & Estación Experimental de Aula Dei-CSIC, Zaragoza, Spain
+  name: Ernesto Lowy, Bruno Contreras Moreira
+output:
+  html_document:
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+  slidy_presentation:
+    incremental: yes
+  word_document: default
+  html_notebook: 
+    toc: yes
+geometry: margin=1cm
+fontsize: 11pt
+bibliography: bib_myarticles_md.bib
+link-citations: yes
+---
+
+
+```{r knitr setup, include=FALSE,  eval=TRUE, echo=FALSE, warning=FALSE}
+library(knitr)
+knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE, 
+                      comment = "", results="markup")
+```
+
+# Setup {#setup}
+
+In order to run the examples in this section you might need to obtain some software and data:
+
+|software|source|documentation|
+|----|----|----|
+perl | [www.perl.org](https://www.perl.org) | [www.perl.org/docs](https://www.perl.org/docs.html), [perl one-liners](https://github.com/eead-csic-compbio/scripting_linux_shell/blob/master/session4.md) |
+bcftools | [samtools.github.io/bcftools/](https://samtools.github.io/bcftools) | [BCFtools HowTo](https://samtools.github.io/bcftools/howtos/index.html) [@pmid33590861] |
+64-bit Java | [www.java.com](https://www.java.com/en/download/manual.jsp) | [FAQ](https://www.java.com/en/download/help/java_win64bit.html) |
+beagle | [JAR file](https://faculty.washington.edu/browning/beagle/beagle.22Jul22.46e.jar) | [docs](https://faculty.washington.edu/browning/beagle/beagle.html) [@BROWNING2018338]|
+
+<!--R | [https://cran.r-project.org](https://cran.r-project.org) | |
+rstudio, soon to be renamed 'Posit' | [www.rstudio.com](https://www.rstudio.com/products/rstudio/download) | | 
+rTASSEL | [https://maize-genetics.github.io/rTASSEL](https://maize-genetics.github.io/rTASSEL/articles/rtassel_walkthrough.html) | installed from Rstudio,  [troubleshooting](https://www.r-bloggers.com/2021/11/error-no-currentversion-entry-in-software-javasoft-registry) [@Monier2022] |-->
+
+## Linux
+
+Users of Debian/Ubuntu Linux can easily install these software dependencies with apt:
+
+```{r apt, engine='bash', eval=FALSE}
+sudo apt install bcftools beagle
+ 
+# test java setup  
+sudo R CMD javareconf
+```
+<!--rTASSEL
+r-base rstudio libblas-dev liblapack-dev libjna-jni default-jdk libpcre2-dev liblzma-dev libbz2-dev
+-->
+
+## Windows
+
+Windows users can instead use the [WSL](https://github.com/eead-csic-compbio/scripting_linux_shell/blob/master/session0.md#ubuntu-embedded-in-windows-10), which can be used to install Ubuntu, or [MobaXterm](https://mobaxterm.mobatek.net). 
+In the latter case, you can install **bcftools** as follows:
+
+```{r compilation, engine='bash', eval=FALSE}
+apt-get install perl_base make git gcc-core zlib-devel liblzma-devel libbz2-devel libcurl-devel
+git clone --recurse-submodules https://github.com/samtools/htslib.git
+git clone https://github.com/samtools/bcftools.git
+cd bcftools/
+make
+# this might throw errors, but the main binary will be produced anyway
+ls -ltr bcftools.exe
+```
+
+**64-bit Java** should be installed from [www.java.com](https://www.java.com/en/download/manual.jsp)
+
+The **beagle** [JAR file](https://faculty.washington.edu/browning/beagle/beagle.22Jul22.46e.jar) should be downloaded and placed in a folder accessible from MobaXterm.
+
+<!--
+rTASSEL is best installed from a Rstudio session, by typing in the console:
+
+```{r rtassel, eval=FALSE}
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("maize-genetics/rTASSEL")
+```
+Should the install fail, inspection of the errors is usually helpful to identify any missing dependencies.
+-->
+
+
+## Sample data and code
+
+For this course we will be using two compressed VCF files that will be provided in the **Moodle platform**.
+
+However, external users can still follow the examples by cloning this course to get copies of sample data and code, which are in folders [test_data](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_data) and [test_code](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code):
+```{r clonecourse, engine='bash', eval=FALSE}
+git clone https://github.com/eead-csic-compbio/bioinformatics.git
+```
+
+<!-- ![](./pics/TPJ-97-56-g003.jpg) --> 
+
+
+
+<!--
+
+```{r annot_stats_table}
+annot.stats <- read.csv(file="test_data/uniprot_stats.tsv", sep="\t", comment.char=";", header=F)
+annot.stats = annot.stats[,1:2]
+names(annot.stats) <- c("Species", "reviewed proteins")
+
+## Print the table
+kable(annot.stats,format.args = list(big.mark=","))
+```
+-->
+
+
+# Practicals
+
+## The VCF format 
+
+The de facto standard data format for genotyping studies is the Variant Call Format (VCF). 
+In this section we will see what the VCF format looks like. 
+Let's inspect the example below, which is modified from the official 
+[VCFv4.3 format specification](https://samtools.github.io/hts-specs/VCFv4.3.pdf):
+
+```{r vcf, engine='bash', eval=FALSE}
+##fileformat=VCFv4.3
+##fileDate=20090805
+##source=myImputationProgramV3.1
+##reference=file:///seq/references/1000GenomesPilot-NCBI36.fasta
+##contig=<ID=20,length=62435964,assembly=B36,md5=f126cdf8a..,species="Homo sapiens",taxonomy=x>
+##INFO=<ID=NS,Number=1,Type=Integer,Description="Number of Samples With Data">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
+##FILTER=<ID=q10,Description="Quality below 10">
+##FILTER=<ID=s50,Description="Less than 50% of samples have data">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read Depth">
+#CHROM POS ID REF ALT QUAL FILTER INFO FORMAT NA00001 NA00002 NA00003
+20 17330 . T A 3 q10 NS=3;DP=11;AF=0.017 GT:GQ:DP 0/0:49:3 0/1:3:5 0/0:41:3
+20 1110696 rs6040355 A G,T 67 PASS NS=2;DP=10;AF=0.333,0.667 GT:GQ:DP 1/2:21:6 2/1:2:2 ./.:.:.
+20 1230237 . T . 47 PASS NS=3;DP=13 GT:GQ:DP 0|0:54:7 0|0:48:4 0/0:61:2
+```
+
+First, take your time to inspect the metadata in the header of the file, 
+which are the lines that start with ##. These lines inform you about
+
+ + the format (ie VCFv4.3)
+ + the software that created the file
+ + the reference genome sequence where variants polymorphisms are mapped (ie human chr 20).  
+
+In addition you should check the INFO, FILTER and FORMAT lines, as they define the fields that you will see in the actual data lines below. Note that these can change depending on the software / protocols used to produced the VCF file. 
+
+Then you can see the header line, with some fixed columns, starting with #CHROM, and then the actual names of the samples in the file (ie NA0001).
+
+Data lines show actual data for all loci genotyped. In the example there are only three loci, in particular
+positions 17330, 1110696 and 1230237 of the human chr20. The (human) samples are diploid.
+
+The first one is a **biallelic** Single Nucleotide Polymorphism (SNP) where the reference genome is T (thymine) and the alternative allele is A (adenine, see their structure [here](http://eead-csic-compbio.github.io/bioinformatica_estructural/#nts)). 
+Note that in this case the first sample is TT (0/0), the second is TA (0/1) and the third again TT (0/0).
+Note also that for each sample in the example there are three fields separated by ":", in the order GT:GQ:DP.
+Thus, you now know that the read depth (DP) of these calls is 3, 5 and 3 respectively.
+
+The second locus is a named SNP with **two alternative alleles** and the last sample is **missing data**.
+
+The third locus shows two **phased genotypes** (0|0), which differ from unphased in that the underlying haplotypes are known.
+
+## The BCF format
+
+This is how the BCF format is described at the official [VCFv4.2 format specification](https://samtools.github.io/hts-specs/VCFv4.3.pdf):
+
+VCF is very expressive, accommodates multiple samples, and is widely used in the community. Its biggest drawback is that it is big and slow. Files are text and therefore require a lot of space on disk. A normal batch of ̃10 exomes is a few GB, but large-scale VCFs with thousands of exome samples quickly become hundreds of GBs. 
+
+BCF2 is a binary, compressed equivalent of VCF that can be indexed with [tabix](http://www.htslib.org/doc/tabix.html) and can be efficiently decoded from disk or streams. For efficiency reasons BCF2 only supports a subset of VCF, in that all info and genotype fields must have their full types specified.
+
+
+## Preparing, publishing and sharing your own VCF files
+
+The following statements are taken from [@10.12688/f1000research.109080.2]:
+
+Genotyping data is often published and shared without sufficient metadata to ensure interoperability and reuse. Some information that should be recorded cannot be easily retrieved from the analysis results, such as the identification of biological material studied, or the reference genome assembly and version used.
+
+Depending on who is handling the data and what skills are associated with the role, the difficulty of providing well-formatted metadata will vary. 
+
+ + Bioinformaticians who have directly performed the genotyping analyses and thus the creation of the VCF files will consider it a comparatively simple task to enter metadata directly into the file. 
+ + Gathering experimental data from conversations with wet lab colleagues or in a laboratory information management system (LIMS) search will be the more laborious. 
+ + Experimentalists who have little or no experience with the required metadata formats are most likely to be overwhelmed without a simple GUI or input template. 
+ + Principal investigators who want to submit the data at the end of an experiment may have similar difficulties. 
+ 
+From these observations, there is an urgent need for supporting tools or APIs for the structural and content validation of VCFs. We recommend performing both metadata and data validation. For the validation of VCF files, we recommend EBI’s [VCF validator](https://github.com/EBIvariation/vcf-validator).
+
+When the time comes to publish your own genotyping data, we encourage to follow the guidelines at [@10.12688/f1000research.109080.2] and to submit the data to the [European Variation Archive](https://www.ebi.ac.uk/eva/) to ensure long-term availability [@10.1093/nar/gkab960].
+
+
+## Mixing allele calls from different experiments
+
+It is common to mix genotyping data from different experiments and laboratories.
+For instance you might want to enrich your own data with other genotypes already published from collaborators or from you own previous experiments. 
+
+In this section we will visit frequent common problems that arise in this situation.
+
+Note that having some genotypes, ie a couple barley cultivars, analyzed in separate experiments will be of great help, as we can use them as **controls and guides** to make sure the data is correct. For instance, at EEAD-CSIC we will typically add cv Morex to our new genotyping experiments.
+
+### Different reference genome sequence
+
+If you have two properly curated VCF files, inspecting the metadata will tell you whether the reference sequence used to map variants is the same or not. Note that reference sequences are usually in FASTA format,
+which looks like this:
+
+```{r morex2fna, engine='bash', eval=FALSE}
+>chr1H
+CGTGCACGACCATCGAGACGTCGCGGAAACTCGTCGTTTTTGTCGTTCGGGCCACTTTCA
+TGGGCTATAGCACACGGTATTGGGGTCCCGATTCAATTTTGGATTCTC...
+```
+
+Let's check the headers of two VCF files
+that use two versions of the barley reference genome (cultivar Morex) that correspond to assemblies 
+[GCA_902498975.1](https://www.ebi.ac.uk/ena/browser/view/GCA_902498975.1) and 
+[GCA_904849725.1](https://www.ebi.ac.uk/ena/browser/view/GCA_904849725.1):
+
+```{r morex2, engine='bash', eval=FALSE}
+##fileformat=VCFv4.3
+##fileDate=20181104
+##reference_ac=GCA_902498975.1
+##reference_url=“ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/498/975/GCA_902498975.1_Morex_v2.0/GCA_902498975.1_Morex_v2.0_genomic.fna.gz”
+```
+and
+
+```{r morex3, engine='bash', eval=FALSE}
+##fileformat=VCFv4.3
+##fileDate=20220112
+##reference_ac=GCA_904849725.1
+##reference_url=“https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/904/849/725/GCF_904849725.1_MorexV3_pseudomolecules_assembly/GCF_904849725.1_MorexV3_pseudomolecules_assembly_genomic.fna.gz”
+```
+
+If the metadata in the "##contig" line contains a md5 sum that can also be used to check the reference, but note that a different FASTA header is enough to change it.
+
+Another quick check is to check the chromosome/contig names of the VCF files, which you can do as follows:
+
+```{r chrcheck, engine='bash', eval=FALSE}
+# use cat if file not compressed
+zcat test_data/vcf/samples50.vcf.gz | grep -v "^#" | cut -f 1 | sort -u
+```
+
+If you are not sure then you must check explicitly whether the references are the same before any joint analysis can be done. There are different ways to do this; for instance you can use the command line:
+
+```{r chrcheckfull, engine='bash', eval=FALSE}
+# get two VCF files, ie those at test_data/vcf/
+zcat test_data/vcf/samples50.vcf.gz | wc
+zcat test_data/vcf/samples100.vcf.gz | wc
+
+# extract CHR,POS,REF columns from first VCF
+zcat test_data/vcf/samples50.vcf.gz | perl -lane 'next if(/^#/); print "$F[0]\t$F[1]"' > pos50.txt
+
+# compute intersection with grep
+zgrep -f pos50.txt test_data/vcf/samples50.vcf.gz | cut -f 1,2,4 | head 
+zgrep -f pos50.txt test_data/vcf/samples100.vcf.gz | cut -f 1,2,4 | head
+```
+
+If the references are indeed different you have two choices:
+
+ + Remap the reads used to build one of the VCF files on the same reference used for the other. This is probably the safest, as there might be large rearrangements among different genome versions, and some contigs might even change strand. However, this is time consuming and requires a little bioinformatics.
+ 
+ + Lift-over positions from reference1 to reference2 and then edit the VCF files accordingly. Most likely this will result is dropping a fraction of the original mappings. This task also requires bioinformatics, you can follow my notes in folder [test_code/liftover](https://github.com/eead-csic-compbio/bioinformatics/tree/main/test_code/liftover)
+
+
+### Different platforms
+
+Mixing genotype calls from different platforms might cause problems as SNPs and alleles might not be named equally or places in the same chromosome strand, even the reference genome sequence is the same. 
+
+To illustrate this we'll have a look at genotypes called with Illumina GoldenGate and Infinium Assays,
+which are quite common in barley breeding. When you get the results from your genotyping provider
+you should receive a **manifest** file, which for the so called barley Illumina 50k chips looks like this:
+
+```{r manifest, engine='bash', eval=FALSE}
+head test_data/manifest.csv
+```
+
+The key columns in the manifest are **CustomerStrand** and **IlmnStrand**, which according to the  documentation [@Illumina2021], are defined as follows:
+
+ + IlmnStrand: The strand used to design each probe is designated as TOP/BOT for SNPs as indicated in the ‘IlmnStrand’ column of the manifest. The alleles in the ‘SNP’ column are on the IlmnStrand.
+
+ + CustomerStrand: The strand submitted to the Illumina designer by Illumina or a customer is designated as TOP/BOT as indicated in the ‘SourceStrand’ column of the manifest.
+ 
+These two pieces of information really mean that the actual allele used to design a probe might be actually different to the one submitted, which is usually what the researcher want. This system has created a lot of confusion [@NELSON2012361; @Verma2014; @Zhao2017] as SNPs genotyped in other platforms don't follow this convention. 
+
+It is frequently assumed that the first allele in a SNP (ie A in [A/T]) corresponds to the allele found in the reference genome forward sequence. If that's the case and that's the type of sequence submitted to Illumina to produce a genotyping kit, then you can convert Illumina calls as follows:
+
+$$
+\begin{cases}
+call \text{ if } CustomerStrand =  \text{TOP} \\
+complement(call) \text{ if } CustomerStrand = \text{BOT}
+\end{cases}
+$$
+
+Nevertheless, you might encounter cases where the reference allele is not the one in the genome sequence but perhaps the most common in a large population. For this reason, care should be taken when doing these conversions to make sure they're correct. The [recipe about computing identity](#identity) should help.
+
+
+## Handling VCF files with the Linux terminal (bcftools, beagle, one-liners) {#terminal}
+
+In this section we will see typical operations that are done on VCF files to prepare for further analyses.
+
+<!--The following tasks can be done on the terminal or alternatively from [Rstudio/Posit](#rstudio), you can choose your own, or combine them.-->
+
+The following examples probably require some [setup](#setup).
+
+### Compressing and indexing VCF files 
+
+A compressed VCF file, usually with extension .vcf.gz, takes less disk space and can be efficiently handled as well. However, it needs to be indexed before. Note that the compression format is called [bgzip](http://www.htslib.org/doc/bgzip.html).
+
+```{r vcfcompress, engine='bash', eval=FALSE}
+bcftools view -I -o sample.vcf.gz -O z sample.vcf
+```
+
+You could check the format and index it as follows:
+
+```{r vcfindex, engine='bash', eval=FALSE}
+file sample.vcf.gz
+
+bcftools index sample.vcf.gz
+# should produce sample.vcf.gz.csi
+```
+
+If a VCF is uncompressed there's no need to index it.
+
+### Renaming chromosome names and removing unwanted data fields from VCF files
+
+Should you need to edit the chromosome names or to remove unwanted SNP data you can do that
+with a command such as the next one, which removes fields GQ, AD, RO, QR and QA:
+
+```{r annotate, engine='bash', eval=FALSE}
+bcftools annotate --rename-chrs chrnames.tsv \
+        -x INFO,FORMAT/GQ,FORMAT/AD,FORMAT/RO,FORMAT/QR,FORMAT/QA -o GBS.vcf \
+        sample.vcf
+```
+
+Note this requires a TSV file named chrnames:
+
+```{r chrnames, engine='bash', eval=FALSE}
+LR890096.1      chr1H
+LR890097.1      chr2H
+LR890098.1      chr3H
+LR890099.1      chr4H
+LR890100.1      chr5H
+LR890101.1      chr6H
+LR890102.1      chr7H
+```
+
+### Extracting samples from VCF files
+
+Often you might need to extract only selected samples from a larger VCF file.
+To do we should first find out which genotypes are included in such a file:
+
+```{r query, engine='bash', eval=FALSE}
+bcftools query -l sample.vcf.gz
+```
+
+You can use that information to prepare a *subset.txt* file such as this one:
+
+```{r samplefile, engine='bash', eval=FALSE}
+sample1
+sample3
+sample25
+```
+
+Finally, you can now substract the relevant VCF content like this:
+
+```{r view, engine='bash', eval=FALSE}
+bcftools view -S subset.txt -O z -o subset.sample.vcf.gz sample.vcf.gz
+bcftools index subset.sample.vcf.gz
+```
+
+### Merging separate VCF files 
+
+```{r merge, engine='bash', eval=FALSE}
+bcftools merge -o samples12.vcf.gz -O z samples1.vcf.gz samples2.vcf.gz
+```
+
+### Computing sequence identity among samples {#identity}
+
+A good quality control before you merge different VCF files is to check whether the called genotypes of repeated control samples, ie cultivar Morex in barley, match across experiments.
+
+The following example code does this for two samples in the same VCF file, which we know are the same from the same cultivar. Note that in this case they correspond to columns 10 and 17 of the file, you should adapt this to your own data:
+
+```{r perlidentity, engine='bash', eval=FALSE}
+# cut is 1-based, first column is 1
+zcat sample.vcf.gz | cut -f 10,17 | perl -lane \
+  'next if(/\.\/\./); if(/(\S\/\S).*?\t(\S\/\S)/){ if($1==$2){ $eq++ } else { $neq++} } END{ printf("%1.3f n=%d\n",100*$eq/($eq+$neq),$eq+$neq)}'
+```
+
+On a real dataset with DP=5 at hand I obtained:
+
+  99.565 n=41570
+
+Note that the numbers I got with DP=3 where the following: 
+
+  99.056 n=51082
+  
+This shows that read depth does have an effect on the accuracy of called genotypes.
+
+### Filtering out by depth 
+
+As we saw in the previous example, read depth matters.
+Here we will see how to filter a VCF file by read depth.
+In this example we take multiallelic SNPs with DP>=5, assuming that DP is the second field ($d[1]):
+
+```{r multiDP, engine='bash', eval=FALSE}
+# perl is 0-based, first elem is 0, second is 1, last if $#F
+zcat sample.vcf.gz | perl -lane \
+  'if(/^#/){ print } elsif(length($F[4]) > 1){ next } else { foreach $c (9 .. $#F){ @d = split(/:/,$F[$c]); if($d[1]<5){$d[0]="./."}; $F[$c]=join(":",@d)  }; print join("\t",@F) }'  > sample.DP5.vcf
+```
+
+### Filtering out by missing data 
+
+To select SNPs with a max fraction of missing data (./.) the following one-liner would do:
+
+```{r missing, engine='bash', eval=FALSE}
+zcat sample.vcf.gz | perl -lane 'if(/^#/){ print } else { $M=0; while(/\.\/\.:/g){$M++}; $M/=($#F-8); print if($M <= 0.2) }' > sample.MISS0.2.vcf
+```
+
+### Filtering by frequency of minor allele (MAF)
+
+```{r MAF, engine='bash', eval=FALSE}
+# assumes individuals are essentially homozygous
+# R is the reference allele
+# A is the alternative allele
+# MAF is set to 0.01
+zcat sample.vcf.gz | perl -lne \
+  'if(/^#/){ print } else { $R=$A=0; while(/0\/0:/g){$R++}; while(/1\/1:/g){$A++}; $t=$A+$R; print if($A && $R && $A/$t >= 0.01 && $R/$t >= 0.01) } > sample.MAF0.01.vcf
+```
+
+### Taking only biallelic data
+
+After cleaning out the data often the next analysis requires biallelic SNPs from high-quality samples.
+This can be done with:
+
+```{r biallelic, engine='bash', eval=FALSE}
+bcftools view -m2 -M2 -v snps -S good.subset.txt -O z -o good.samples.bi.vcf.gz samples.vcf
+```
+
+### Imputing missing data 
+
+After the previous steps you might want to impute the missing data, a step in which missing genotype calls
+are inferred from the existing calls in order to increase the total number of marker SNPs. We can do this
+with the software **Beagle v5** [@BROWNING2018338], which is efficient and has been shown to work well in wheat [@pmid25886991] and yields an accuracy of [0.977 -0.991] in our tests with a panel of 500 barleys genotyped by sequencing (GBS) with MAF=0.01.
+
+```{r beagle, engine='bash', eval=FALSE}
+# Linux binary
+beagle gt=samples.vcf.gz out=samples.imputed
+
+# downloaded JAR
+java -jar beagle.22Jul22.46e.jar gt=samples.vcf.gz out=samples.imputed
+
+# if using several CPU threads
+java -jar beagle.22Jul22.46e.jar nthreads=8 gt=samples.vcf.gz out=samples.imputed
+
+# if you need more RAM
+java -Xmx14564m -jar beagle.22Jul22.46e.jar gt=samples.vcf.gz out=samples.imputed
+```
+
+Note that *beagle* will add **phased** genotypes, ie 0|0 instead of the standard unphased 0/0, 
+and by default will leave only the GT field for each called genotype. 
+This means read depth (DP) is lost after this step.
+
+<!--
+# preparacion de VCF limpio para GWAS
+bcftools view -O z -o samples1.vcf.gz samples1.vcf
+bcftools index samples1.vcf.gz
+bcftools view -O z -o samples2.vcf.gz samples2.vcf
+bcftools index samples2.vcf.gz
+
+# union
+bcftools merge -o samples12.vcf.gz -O z samples1.vcf.gz samples2.vcf.gz
+
+# max 20% missing data
+zcat samples12.vcf.gz | perl -lane 'if(/^#/){ print } else { $M=0; while(/\.\/\.:/g){$M++}; $M/=($#F-8); print if($M <= 0.8) }' > samples12.MISS0.2.vcf
+
+# MAF0.01
+perl -lne 'if(/^#/){ print } else { $R=$A=0; while(/0\/0:/g){$R++}; while(/1\/1:/g){$A++}; $t=$A+$R; print if($A && $R && $A/$t >= 0.01 && $R/$t >= 0.01) }' samples12.MISS0.2.vcf > samples12.MISS0.2.MAF0.01.vcf
+
+# biallelic only 
+bcftools view -m2 -M2 -v snps -O z -o samples12.MISS0.2.MAF0.01.bi.vcf.gz samples12.MISS0.2.MAF0.01.vcf
+zcat samples12.MISS0.2.MAF0.01.bi.vcf.gz | wc
+  11455 6682468 57962103
+-->
+
+<!--
+https://twitter.com/MerKhaiBurch/status/1564235596415094785
+## Handling VCF files in RStudio/Posit (rTASSEL) {#rstudio}
+
+In this section we will revisit the previous operations on VCF files from Rstudio/Posit, which might be more user-friendly for some of you. 
+
+We will use the [rTASSEL](https://maize-genetics.github.io/rTASSEL/articles/rtassel_walkthrough.html) 
+R package, which will need to be installed as explained in [setup](#setup). Note that *rTASSEL* can also be called from standalone R scripts or even in the R console.
+
+```{r rTASSELexamples, eval=FALSE} 
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("maize-genetics/rTASSEL")
+library(rTASSEL)
+library(magrittr)
+
+# optional, set max RAM, ie 6GB
+# to see default RMA: java -XX:+PrintFlagsFinal -version | grep MaxHeap
+#options(java.parameters = c("-Xmx6g"))
+
+# start logging operations
+rTASSEL::startLogger(fullPath=getwd(), fileName='logTASSEL.txt')
+
+# edit to match your data and local filesystem
+path2VCFfile = '/path/to/samples.vcf.gz'
+path2VCFfile = '/home/contrera/GENDIBAR/cursoIAMZTunez/samples1.vcf.gz'
+
+# actually load the genotype data
+VCFdata <- rTASSEL::readGenotypeTableFromPath(
+  path = path2VCFfile 
+)
+VCFdata
+
+
+# try some filters https://maize-genetics.github.io/rTASSEL/articles/genotype_filtration.html
+VCFdata %>% 
+    filterGenotypeTableSites(
+        siteMinCount = 100
+    )
+
+# crashes frequently while testing
+VCFdata %>% 
+    filterGenotypeTableSites(
+        siteMaxAlleleFreq = 0.99
+    )
+
+```
+-->
+
+
+
+# Bibliography
+
