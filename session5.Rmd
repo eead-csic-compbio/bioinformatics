@@ -261,13 +261,13 @@ The Sequence Alignment Format (SAM) is a text-based format (check the Wikipedia 
 used for representing the alignment of the short reads in the FASTQ files to the reference sequence.
 This format is not compressed and it is preferable to convert it to its binary equivalent (BAM) or to its ultra-compressed equivalent called CRAM to facilitate its handling and storage.
 
-
+![](pics/cram.png)
 
 The alignment files in the `SAM` format (click [here](https://samtools.github.io/hts-specs/SAMv1.pdf) for the format specification) start with an optional header section followed by the alignment lines.
 
- All header lines start with '@' and are used to represent different metadata elements such as the reference version and the chromosome sequence IDs used in the alignment, the technology used to generate the sequence data, if the alignment file is sorted or not, etc ... 
+All header lines start with '@' and are used to represent different metadata elements such as the reference version and the chromosome sequence IDs used in the alignment, the technology used to generate the sequence data, if the alignment file is sorted or not, etc ... 
  
- The alignment lines are characterized by having 11 mandatory fields:
+The alignment lines are characterized by having 11 mandatory fields:
 
 | Col         | Field       | Type     | Brief description                     |
 | ----------- | ----------- | -------- | ------------------------------------- |
@@ -283,51 +283,50 @@ The alignment files in the `SAM` format (click [here](https://samtools.github.io
 | 10          | SEQ         |  String  |  segment sequence                     |
 | 11          | QUAL        |  String  |  ASCII of Phred-scaled base QUALity+33|
 
+The next figure shows a few examples of CIGAR strings:
+
+![](pics/cigar.png)
+
 ### Samtools 
 
 [Samtools](http://www.htslib.org/doc/samtools.html) is a command line tool used to interact and manipulate the SAM-related alignment files. 
 
 You can practise  the commands that are more relevant for this session by going to the directory where `bwa` was run:
 
-        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/session/alignment
+        $ cd /data
 
 And entering the following commands:
 
 *  print the alignment to stdout
 
-         m_jan2020@mjan2020VirtualBox:~$ samtools view SAMEA2569438.chr10.bam | less
+         $ samtools view SAMEA2569438.chr10.bam | more
         
 * print the header section
 
-         m_jan2020@mjan2020VirtualBox:~$ samtools view -H SAMEA2569438.chr10.bam
+         $ samtools view -H SAMEA2569438.chr10.bam
 
 * And if you want to get the alignments in a particular genomic region:
 
-         m_jan2020@mjan2020VirtualBox:~$ samtools view SAMEA2569438.chr10.bam 10:10000000-10001000
+         $ samtools view SAMEA2569438.chr10.bam 10:10000000-10001000
         [main_samview] random alignment retrieval only works for indexed BAM or CRAM files.
 
-This does not work because first you need to sort and build an index for the `bam` file.  
-To do this, we are going to move to a different folder to keep things in order:
+This does not work because first you need to sort and build an index for the `bam` file:
 
-         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/session/alignment/postprocessing
-
-         m_jan2020@mjan2020VirtualBox:~$ samtools sort ../SAMEA2569438.chr10.bam -o SAMEA2569438.chr10.sorted.bam -O BAM
-
-Note the `../` in the command, this means that the `bam` file is one directory up.
+         $ samtools sort SAMEA2569438.chr10.bam -o SAMEA2569438.chr10.sorted.bam -O BAM
 
 Now, build an index for the new sorted `bam` file:
 
-         m_jan2020@mjan2020VirtualBox:~$ samtools index SAMEA2569438.chr10.sorted.bam
+         $ samtools index SAMEA2569438.chr10.sorted.bam
 
 Finally, repeat the `samtools view` command to print a particular region:
 
-         m_jan2020@mjan2020VirtualBox:~$ samtools view SAMEA2569438.chr10.sorted.bam 10:10000000-10001000
+         $ samtools view SAMEA2569438.chr10.sorted.bam 10:10000000-10001000
 
  * Some basic stats on the alignment  
 
 You can use the `flagstat` command for this:
 
-        m_jan2020@mjan2020VirtualBox:~$ samtools flagstat SAMEA2569438.chr10.sorted.bam
+        $ samtools flagstat SAMEA2569438.chr10.sorted.bam
 
 And you get:
 
@@ -345,62 +344,73 @@ And you get:
        0 + 0 with mate mapped to a different chr
        0 + 0 with mate mapped to a different chr (mapQ>=5)
 
-The explanation of this report can be found in the [samtools stats](http://www.htslib.org/doc/samtools-stats.html#:~:text=DESCRIPTION,visualized%20graphically%20using%20plot%2Dbamstats.) manual page.
+The explanation of this report can be found in the 
+[samtools stats](https://www.htslib.org/doc/samtools-stats.html#:~:text=DESCRIPTION,visualized%20graphically%20using%20plot%2Dbamstats.) manual page.
 
 * Print the base coverage per position  
 
 For this, we can use `samtools mpileup`. The output of this command is explained [here](http://www.htslib.org/doc/samtools-mpileup.html).  
 You can run `samtools mpileup` by doing:
 
-        m_jan2020@mjan2020VirtualBox:~$ samtools mpileup -f /home/m_jan2020/session/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10.sorted.bam |less
+        $ samtools mpileup -f reference.fna SAMEA2569438.chr10.sorted.bam | more
 
-Now let's try a command combination that is more complex to print all positions having a coverage >=10:
+### Exercise 3 {-}
 
-        m_jan2020@mjan2020VirtualBox:~$ samtools mpileup -f /home/m_jan2020/session/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10.sorted.bam | awk '{if ($4>=20) print}' | less
+* 3.1 Using samtools mpileup estimate the percentage of chr10 with depth > 100.
 
 ### Alignment post-processing
+
 The alignment file in the BAM format needs a series of post-processing steps that are required for variant discovery. The different steps that are shown here will produce an analysis-ready BAM file that can be used in the following section of this session.
 
-##### **Adding metadata to the alignment file**
-BWA generates a BAM file without metadata information about the experimental design that has been used during the sequencing, this is why we need to manually add this metadata so it can be used during the variant calling analysis described in the variant calling section of this session. To do this, we are going to use [Picard AddOrReplaceReadGroups](https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-) in the following way:
+##### Adding metadata to the alignment file
 
-        m_jan2020@mjan2020VirtualBox:~$ picard AddOrReplaceReadGroups I=SAMEA2569438.chr10.sorted.bam RGSM=SAMEA2569438 RGLB=SAMEA2569438 RGPL=ILLUMINA O=SAMEA2569438.chr10.sorted.reheaded.bam RGPU=SAMEA2569438
+BWA generates a BAM file without metadata information about the experimental design that has been used during the sequencing, this is why we need to manually add this metadata so it can be used during the variant calling analysis described in the variant calling section of this session. To do this, we are going to use 
+[AddOrReplaceReadGroups](https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-) from picard-tools in the following way:
+
+        $ picard-tools AddOrReplaceReadGroups I=SAMEA2569438.chr10.sorted.bam RGSM=SAMEA2569438 RGLB=SAMEA2569438 RGPL=ILLUMINA O=SAMEA2569438.chr10.sorted.reheaded.bam RGPU=SAMEA2569438
 
 This command will add information about the sample id that has been sequenced, which sequencing platform has been used and also information about the sequencing library id. You can verify that the SAM header contains this metadata information by doing:
 
-        m_jan2020@mjan2020VirtualBox:~$ samtools view -H SAMEA2569438.chr10.sorted.reheaded.bam
+        $ samtools view -H SAMEA2569438.chr10.sorted.reheaded.bam
 
 And you will see the new metadata in the line starting with `@RG`:
 
-        @HD     VN:1.6  SO:unsorted
+        @HD     VN:1.5  SO:coordinate
         @SQ     SN:10   LN:23207287
         @RG     ID:1    LB:SAMEA2569438 PL:ILLUMINA     SM:SAMEA2569438 PU:SAMEA2569438
-        @PG     ID:bwa  PN:bwa  VN:0.7.17-r1188 CL:bwa mem Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10_1.fastq.gz SAMEA2569438.chr10_2.fastq.gz
+        @PG     ID:bwa  PN:bwa  VN:0.7.17-r1188 CL:bwa mem reference.fna /home/vep/variant_data/SAMEA2569438.chr10_1.fastq.gz /home/vep/variant_data/SAMEA2569438.chr10_2.fastq.gz
 
 ##### **MarkDuplicates** 
-The alignment file we have generated using `BWA` may contain duplicate reads. These reads are originated in the PCR amplification step during the library preparation and might produce an over-representation of identical reads from the same DNA fragment. These duplicate reads must be identified and marked so they can be correctly handled by the variant calling tool.  
-There are multiple tools available to handle these duplicates, in this session we will use [Picard MarkDuplicates](https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates),  which is one of the most reliable.
 
-         m_jan2020@mjan2020VirtualBox:~$ picard MarkDuplicates -Xms1g I=SAMEA2569438.chr10.sorted.reheaded.bam O=SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam M=SAMEA2569438.chr10.metrics.txt
+The alignment file we have generated using `BWA` may contain duplicate reads. These reads are originated in the PCR amplification step during the library preparation and might produce an over-representation of identical reads from the same DNA fragment. These duplicate reads must be identified and marked so they can be correctly handled by the variant calling tool.  
+
+There are multiple tools available to handle these duplicates, in this session we will use 
+[Picard MarkDuplicates](https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates),  which is one of the most reliable.
+
+         $ picard-tools MarkDuplicates I=SAMEA2569438.chr10.sorted.reheaded.bam O=SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam M=SAMEA2569438.chr10.metrics.txt
 
 We use the `M` option so that `MarkDuplicates` generates a text file with metrics on the number of reads duplicates. This file is named `SAMEA2569438.chr10.metrics.txt` in this case. 
 
-Let's open this metrics file
+Let's check this metrics file:
 
-         m_jan2020@mjan2020VirtualBox:~$ less SAMEA2569438.chr10.metrics.txt
+         $ more SAMEA2569438.chr10.metrics.txt
+
 The first part of the file is the most relevant for us:
 
         ## METRICS CLASS        picard.sam.DuplicationMetrics
-        LIBRARY UNPAIRED_READS_EXAMINED READ_PAIRS_EXAMINED     SECONDARY_OR_SUPPLEMENTARY_RDS  UNMAPPED_READS  UNPAIRED_READ_DUPLICATES        READ_PAIR_DUPLICATES    READ_PAIR_OPTICAL_DUPLICATES    PERCENT_DUPLICATION     ESTIMATED_LIBRARY_SIZE
-        SAMEA2569438    1755    170498  196     1755    133     5827    0       0.034389        2437223
+LIBRARY UNPAIRED_READS_EXAMINED READ_PAIRS_EXAMINED     SECONDARY_OR_SUPPLEMENTARY_RDS  UNMAPPED_READS  UNPAIRED_READ_DUPLICATES
+READ_PAIR_DUPLICATES    READ_PAIR_OPTICAL_DUPLICATES    PERCENT_DUPLICATION     ESTIMATED_LIBRARY_SIZE
+SAMEA2569438    1755    170498  196     1755    133     5827    0       0.034389        2437223
         ...
 
 Finally, we print the reads that are duplicates using `samtools view` in combination with the bitwise FLAG value in the second column that selects the PCR duplicates:
 
-         m_jan2020@mjan2020VirtualBox:~$ samtools view -f 1024 SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam |less
+         $ samtools view -f 1024 SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam | more
 
-### **Viewing the aligned reads using IGV**
-The Integrative Genomics Viewer ([IGV](http://software.broadinstitute.org/software/igv/)) is a useful interactive tool to explore visually the genomic data resulting from your analysis. We are going to use it in this section of the session to display the alignments we have generated.  
+### Viewing the aligned reads using IGV app
+
+The online Integrative Genomics Viewer ([IGV](https://igv.org/app)) is a useful interactive tool to explore visually the genomic data resulting from your analysis. We are going to use it in this section of the session to display the alignments we have generated.
+
 In this example, we will fetch the alignments for a specific region in chromosome 10.
 
 ### Selecting the alignments for a specific genomic sub-region
@@ -474,6 +484,25 @@ When you are done working, you can save the session by doing:
 ![save_session1](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/save_session1.png)
 
 ![save_session2](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/save_session2.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Variant calling 
