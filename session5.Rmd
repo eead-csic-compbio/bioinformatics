@@ -415,7 +415,7 @@ The first part of the file is the most relevant for us:
 
 ### Exercise 4 {-}
 
-The online version of the Integrative Genomics Viewer ([IGV](https://igv.org/app)) is a useful interactive tool to explore visually the genomic data resulting from your analysis. We are going to use it in this section of the session to display the alignments we have generated.
+The online version of the Integrative Genomics Viewer ([IGV](https://igv.org/app)) is a useful interactive tool to explore visually the genomic data resulting from your analysis [@Robinson2011]. We are going to use it in this section of the session to display the alignments we have generated.
 
 We won't be using the Docker container now, instead we will use the native Web browser to access the persistent path, which should be similar to 
 
