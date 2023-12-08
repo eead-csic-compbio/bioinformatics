@@ -34,8 +34,7 @@ knitr::opts_chunk$set(eval=TRUE, cache=FALSE, message=FALSE, warning=FALSE,
                       comment = "", results="markup")
 ```
 
-<!-- adapted from
-https://github.com/biodata-fun/session_material/blob/main/master_in_plant_genomics_2020 -->
+This session was adapted from [@masterPlantGenomics2020].
 
 # Setup {#setup}
 
@@ -157,6 +156,9 @@ You should obtains something similar to:
 ![](pics/fastqc.png)
 Note that FastQC also produces text reports in a ZIP file in case your session does not support graphics.
 
+For your reference, here's how a report with a poor quality FASTQC file would look like: 
+![](pics/badfastqc.png)
+
 ### Exercise 1 {-}
 
 * 1.1 Note that there are 2 FASTQ files with the same name but different numeric suffix, why?
@@ -200,7 +202,7 @@ Building the index takes a while, but the good thing is that this index can be r
 
 The BWA mapper has different execution options, this can be verified by entering the following in your terminal:
 
-    m_jan2020@mjan2020VirtualBox:~$ bwa
+    $ bwa
 
 You will see something very similar to:
 
@@ -231,59 +233,35 @@ You will see something very similar to:
       `aln/samse/sampe'. If you are not sure which to use, try `bwa mem'
       first. Please `man ./bwa.1' for the manual.
 
-It is widely accepted that the alignment option used for reads that are 70 bp to 1Mb in length is `BWA mem`, as it is more accurate and faster than the other alignment options included with `BWA`.
+It is widely accepted that the alignment option used for reads that are 70 bp to 1Mb in length is `BWA mem`, as it is more accurate and faster than the other alignment options [@li2013aligning].
 
  To run `BWA`, first you need to move to the directory where the output will be generated:
 
-        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/session/alignment
+        $ cd /data
  
  Now, enter the following to get an alignment in the BAM format:
 
-        m_jan2020@mjan2020VirtualBox:~$ bwa mem /home/m_jan2020/session/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/session/data/SAMEA2569438.chr10_1.fastq.gz /home/m_jan2020/session/data/SAMEA2569438.chr10_2.fastq.gz |samtools view -b -o SAMEA2569438.chr10.bam
+        $ bwa mem reference.fna /home/vep/variant_data/SAMEA2569438.chr10_1.fastq.gz /home/vep/variant_data/SAMEA2569438.chr10_2.fastq.gz | samtools view -b -o SAMEA2569438.chr10.bam
 
-You can verify that `BWA` is running by using the `top` Unix command. For this, first check what your username is on your machine:
+You can verify that `BWA` is running by using the `top` Unix command. 
 
-        m_jan2020@mjan2020VirtualBox:~$ whoami
-        m_jan2020
-Now, you can use the `top` command to obtain a summary of the processes that user `m_jan2020` is running in the system:
+If you want to obtain an alignment file in the `SAM` format simply remove option `-b`.
 
-        top -u m_jan2020
-You should see something similar to what I obtain in my system:
-        
-        top - 17:10:34 up  2:43,  1 user,  load average: 1.57, 0.69, 0.70
-        Tasks: 180 total,   1 running, 179 sleeping,   0 stopped,   0 zombie
-        %Cpu(s): 96.3 us,  3.7 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-        MiB Mem :    981.3 total,     68.3 free,    549.9 used,    363.1 buff/cache
-        MiB Swap:    923.3 total,    370.3 free,    553.0 used.    272.0 avail Mem 
+Finally, if you want to generate an alignment in the `CRAM` format, do the following:
 
-        PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND                                                                  
-        58337 m_jan2020    20   0  265416 165348   2832 S  92.0  16.5   1:20.36 bwa                                                                      
-        4401 m_jan2020    20   0   10872   2868   1792 S   0.0   0.3   0:00.65 bash                                                                     
-        58338 m_jan2020    20   0   24204   9796   8320 S   0.0   1.0   0:04.89 samtools 
+        $ bwa mem reference.fna /home/vep/variant_data/SAMEA2569438.chr10_1.fastq.gz /home/vep/variant_data/SAMEA2569438.chr10_2.fastq.gz |samtools view -C -T reference.fna > SAMEA2569438.chr10.cram
 
-If you want to obtain an alignment file in the `SAM` format enter the following:
+### Exercise 2 {-}
 
-        m_jan2020@mjan2020VirtualBox:~$ bwa mem /home/m_jan2020/session/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/session/data/SAMEA2569438.chr10_1.fastq.gz /home/m_jan2020/session/data/SAMEA2569438.chr10_2.fastq.gz -o SAMEA2569438.chr10.sam
-
-Finally, if you want to generate an alignment in the CRAM format, do the following:
-
-        m_jan2020@mjan2020VirtualBox:~$ bwa mem /home/m_jan2020/session/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/session/data/SAMEA2569438.chr10_1.fastq.gz /home/m_jan2020/session/data/SAMEA2569438.chr10_2.fastq.gz |samtools view -C -T /home/m_jan2020/session/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa > SAMEA2569438.cram
+* 2.1 Compare the different file sizes for each of the alignment files generated in the previous section (formats SAM, BAM and CRAM).
 
 ### The SAM alignment format
-The Sequence Alignment Format (SAM) is a text-based format (check the Wikipedia [entry](https://en.wikipedia.org/wiki/SAM_(file_format)) for more information), used for representing the alignment of the short reads in the FASTQ files to the reference sequence.
+
+The Sequence Alignment Format (SAM) is a text-based format (check the Wikipedia [entry](https://en.wikipedia.org/wiki/SAM_(file_format)) for more information), 
+used for representing the alignment of the short reads in the FASTQ files to the reference sequence.
 This format is not compressed and it is preferable to convert it to its binary equivalent (BAM) or to its ultra-compressed equivalent called CRAM to facilitate its handling and storage.
 
-Compare the diferent file sizes for each of the alignment files generated in the previous section by listing the directory contents:
 
-        m_jan2020@mjan2020VirtualBox:~$ ls -lh
-
-And you get:
-
-        total 135M
-        drwxrwxr-x 3 m_jan2020 m_jan2020 4.0K Nov 26 17:52 postprocessing
-        -rw-rw-r-- 1 m_jan2020 m_jan2020  32M Dec  3 14:46 SAMEA2569438.chr10.bam
-        -rw-rw-r-- 1 m_jan2020 m_jan2020  91M Dec  3 14:48 SAMEA2569438.chr10.sam
-        -rw-rw-r-- 1 m_jan2020 m_jan2020  13M Dec  3 14:50 SAMEA2569438.cram
 
 The alignment files in the `SAM` format (click [here](https://samtools.github.io/hts-specs/SAMv1.pdf) for the format specification) start with an optional header section followed by the alignment lines.
 
