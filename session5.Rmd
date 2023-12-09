@@ -681,11 +681,14 @@ which should be similar to
 * 5.4 Load the filtered VCF file with the variants with the Tracks->Local File option.
 * 5.5 Take a look to INDEL variant at 10:9,058,200-9,058,229. What are the reference and alternative alleles? It this position heterozygous in your mapped sample?
 * 5.6 Check the SNPs at 10:9,059,325-9,059,426. Are they all similar in terms of read dpeth (DP)?
-* 5.7 Examining the aligned reads supporting the SNPs at 10:10,000,166-10,000,226 by loading the BAM and index files. Save the resulting image.
-
-# Effect prediction
+* 5.7 Examining the aligned reads supporting the SNPs at 10:10,000,166-10,000,226 by loading the BAM and index files. Do any of these fall into a gene model? Save the resulting image.
 
 
+# Prediction of variant effect
+
+Please check the presentation at 
+https://training.ensembl.org/events/2023/2023-12-11-CIHEAM_plants_browser
+to learn how to use the Ensembl Variant Effect Predictor with your own VCF files.
 
 # Bibliography
 
