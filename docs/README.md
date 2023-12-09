@@ -34,7 +34,7 @@ After installing Docker, it can be run as follows:
 |2|Analysis of non-coding sequences|4h|[session 2](./session2.html)|
 |3|Reproducible analysis practices|2h|[session 3](./session3.html)|
 |4|Benchmarks|2h|[session 4](./session4.html)|
-|5|Mapping, variant calling & effect prediction||session 5|
+|5|Mapping, variant calling & effect prediction|6h|[session 5](./session5.html)|
 |6|Genotyping|3h|[session 6](./session6.html)|
 |7|Genome-Wide Association Analysis|2h|[session 7](./session7.html)| 
 
