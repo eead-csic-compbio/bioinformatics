@@ -1,0 +1,293 @@
+---
+title: "Data filtering"
+author: "Ricardo H. Ramirez Gonzalz"
+date: "14/12/2023"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+# Installing Dependencies in R
+
+For this tutorial you need a few R libraries. Bioconductor has packages for bioinfmatics. The following command will install the libraries used in the  tutorial. 
+
+```{r warning=FALSE, error=FALSE, message=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.18")
+BiocManager::install(c("rtracklayer", "ggbio", "knitr", "ggplot2", "tidyr", "dplyr","VariantAnnotation"))
+
+```
+
+The documentation of the packages used is in: 
+
+* https://bioconductor.org/packages/release/bioc/vignettes/VariantAnnotation/inst/doc/VariantAnnotation.pdf
+* https://dplyr.tidyverse.org
+* https://www.tidyverse.org
+
+# Reading the VCF file
+
+The VCF file is a file format that contains SNPs in a database. We will be working with a selection of SNPs from the following paper:
+
+```
+Elizabeth S. A. Sollars, et al (2016) Genome sequence and genetic diversity of European ash trees. Nature 541: 212–216 doi:10.1038/nature20786
+```
+
+
+## Loading the data
+
+For this analysis we will need several R libraries to do the analysis, filtering and plot. 
+
+```{r warning=FALSE, error=FALSE, message=FALSE}
+library(rtracklayer)
+library(knitr)
+library(ggplot2)
+library(ggbio)
+library(tidyr)
+library(dplyr)
+library(VariantAnnotation)
+vcf <- readVcf(file = "extractedContig1.6.23.vcf.gz")
+```
+
+
+
+# VCF header
+
+You can use the following command to see all the data that is stored in the VCF
+
+```{r, echo = TRUE}
+head(vcf)
+```
+
+# Looking at the qualities of the
+
+To get the a ```GRanges``` object with the common data the function ```rowRanges``` can be used. 
+This let us query questions like the distribution of the quality of the SNPs.
+
+```{r, echo=TRUE}
+variations <- rowRanges(vcf)
+head(variations, 3)
+```
+
+# Summary of qualities
+
+```{r, echo=TRUE}
+summary(variations$QUAL)
+```
+
+## Visalising the distribution
+
+To get an idea of the overall quality of the data, a histogram is useful. 
+The SNPs with lower quality tend to be noisy. 
+For this project, we validated some random SNPs using KASP across different qualitues, from 50 to 500 and we concluded that 300 was a good spot. 
+This histogram helped us to decided the thresholds to test, as most of the tutorials online deem QUAL>50 as good quality. 
+
+```{r}
+ggplot(variations, aes(QUAL)) + geom_histogram(binwidth = 50) + theme_bw() +
+   coord_cartesian(xlim=c(0,20000)) + geom_vline(xintercept=300, color="red")
+```
+
+
+# Depth for individual samples
+
+We can look at the depth of coverage of various samples. This can be useful to find if a particular sample has low quality. 
+
+```{r}
+DP <-geno(vcf)$DP 
+summary_dp <- DP[is.na(DP)] <- 0
+long_dp <- gather(data.frame(DP),value = "DP", key="Sample")
+long_dp %>%
+  group_by(Sample) %>%
+  summarise(
+    n = n(),
+    mean_DP = mean(DP, na.rm = TRUE),
+    std_DP  = sd(DP, na.rm = TRUE)
+  ) -> summary_dp
+
+```
+
+```{r, echo=FALSE}
+kable(summary_dp)
+```
+
+* Can you make a summary per contig?
+* Can you make a summary per contig and per sample?
+
+# Distribution across sample
+
+You can focus on the distribution of a few samples.
+
+```{r }
+long_dp %>% filter( Sample %in% c("Fex1", "Fex2")) %>% 
+ggplot() +  
+geom_density(aes(x=DP, colour=Sample, fill=Sample), alpha=0.5) + 
+coord_cartesian(xlim = c(0,100))
+```
+
+# Displaying all the samples
+
+For all the samples, you can show just a boxplot,at the cost of having less resultion of the shape of the distribution
+
+
+```{r }
+long_dp %>% 
+ggplot() +  
+geom_boxplot(aes(y=DP, x=Sample), alpha=0.5) + 
+coord_cartesian(ylim = c(0,25)) + 
+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+# Questions for you 
+
+- How many ```seqnames``` are present?
+- Plot the count of genotypes on each sequence.
+- Can you calculate the allele frequency ($\frac{R0}{DP}$) for each sample? Plot 2 or 3 samples.  
+- Plot the distribution of several samples together (Team1: Sample Fex1-Fex5, Team 2: Fex6-Fex10, etc)
+- Are there differences in in DP across different scaffolds? Try to figure out how to extract the data for a single reference. 
+  - Maybe directly from the ```VCF``` object, or exporting the DP matrix and filter by the ```rowname```. 
+- Do you think the samples are homozygous, heterozygous or a mix of both (you can calculate the distribution of allele frequencies or look at the GT column). 
+- To compare all the sample, overlapping all the distributions looks messy. Plot the ```DP``` for all the samples. Try ```geom_boxplot``` and ```facet_grid```. Which one you find clearer? Is there any sample that has a significant lower coverage?
+
+# How many ```seqnames``` are present?
+
+```{r}
+seqnames(vcf)
+```
+
+# Plot the count of genotypes on each sequence.
+
+We need to produce a dataframe with the contig names and the ```GT``` column
+
+```{r}
+GT <-geno(vcf)$GT
+GT <- data.frame(GT)
+GT$seqnames <- data.frame(seqnames(variations))[,1]
+GT %>% gather( -seqnames ,key = "Sample", value = "GT") -> long_gt
+
+long_gt %>%
+  group_by(Sample, GT, seqnames) %>%
+  summarise(
+    n = n(),
+    GT = unique(GT, na.rm = TRUE)
+  )
+```
+
+#  Plot the count of genotypes on each sequence.
+
+Now we can plot from the ```GT``` data frame and plot the counts
+
+```{r}
+ long_gt %>% 
+filter( Sample %in% c("Fex1", "Fex2", "Fex3", "Fex4", "Fex5")) %>% 
+ggplot( aes(GT, fill=GT)) + geom_bar( ) + facet_grid(seqnames~Sample)
+```
+
+# Can you calculate the allele frequency ($\frac{RO}{DP}$) for each sample? Plot 2 or 3 samples.  
+
+```{r}
+DP <-geno(vcf)$DP 
+RO <-geno(vcf)$RO 
+ro_freq <- data.frame(RO/DP)
+
+ggplot(ro_freq, aes(Fex1)) + geom_histogram()
+
+```
+
+# Plot the distribution of several samples together (Team1: Sample Fex1-Fex5, Team 2: Fex6-Fex10, etc)
+
+```{r}
+long_ro_freq <- gather(ro_freq ,value = "RO_freq", key="Sample")
+long_ro_freq %>% filter( Sample %in% c("Fex1", "Fex3","Fex4", "Fex2","Fex5","Fex6")) %>% 
+ggplot() +  
+geom_histogram(aes(x=RO_freq), alpha=0.5) + facet_wrap(Sample ~ .)
+```
+
+# Are there differences in in DP across different scaffolds? Try to figure out how to extract the data for a single reference. 
+
+Hint: directly from the ```VCF``` object, or exporting the DP matrix and filter by the ```rowname```. 
+
+```{r}
+DP <-geno(vcf)$DP
+DP <- data.frame(DP)
+DP$seqnames <- data.frame(seqnames(variations))[,1]
+DP %>% gather(  -seqnames ,value = "DP", key="Sample") -> long_dp
+```
+
+The coverage is very similar across sequences
+
+```{r}
+long_dp %>%
+  group_by(seqnames) %>%
+  summarise(
+    n = n(),
+    DP = mean(DP, na.rm = TRUE)
+  )
+```
+
+Most of the variation comes from the sample
+
+```{r}
+long_dp %>%
+  group_by(Sample) %>%
+  summarise(
+    n = n(),
+    DP = mean(DP, na.rm = TRUE)
+  )
+```
+
+
+# To think about...
+
+- Do you think the samples are homozygous, heterozygous or a mix of both (you can calculate the distribution of allele frequencies or look at the GT column). 
+
+The samples look homozygous, with small regions with heterozygous calls.
+
+- To compare all the sample, overlapping all the distributions looks messy. Plot the ```DP``` for all the samples. Try ```geom_boxplot``` and ```facet_grid```. Which one you find clearer? Is there any sample that has a significant lower coverage?
+This is a personal choice. The plots above reflect it. 
+
+# Filtering. 
+
+Based on the discussion before, using ```bcftools``` filger out for files with quality over 300. 
+Read the documentation in: https://samtools.github.io/bcftools/bcftools.html#expressions to find more expression. 
+
+First simplify the VCF file to only include the GT,AO and RO files. 
+
+```sh
+bcftools annotate -x "INFO,^FORMAT/GT,FORMAT/AO,Format/RO" extractedContig1.6.23.vcf.gz | bgzip -c > extractedContig1.6.23.anno.vcf.gz
+```
+beagle requires that even missing values correspond to the ploidy, so we need to change ```.``` in the genotype to ```./.```
+
+```sh
+gunzip -c extractedContig1.6.23.anno.vcf.gz | sed -e 's/    \.:/    .\/.:/g' | bgzip -c >  extractedContig1.6.23.anno.fixed.vcf.gz
+```
+
+Now we can run the filtering of the formatted file
+```sh
+bcftools filter -e 'QUAL<300' extractedContig1.6.23.anno.fixed.vcf.gz  -O z -o extractedContig1.6.23.anno.fixed.QUAL300.vcf.gz
+```
+- Can you design a filter to remove only with heterozygous calls on  line ```Fex10```? 
+Hint: look for ```FORMAT/DP``` in the documentation above. 
+
+- How does the number of heterozygous calls are affected on each line after filtering?
+Hint: You  need to look at the GT tutorial above. 
+
+
+# Phasing. 
+
+We will use beagle to do the phasing and the imputing: 
+http://faculty.washington.edu/browning/beagle/beagle.html
+
+The documentation is here:
+http://faculty.washington.edu/browning/beagle/beagle_5.1_08Nov19.pdf
+
+```sh
+java -jar beagle.21Sep19.ec3.jar gt=extractedContig1.6.23.anno.fixed.QUAL300.vcf.gz  out=out.gt
+```
+
+Now, you can load ```out.gt.vcf.gz``` to see the results
+
+- Do you see a change in the number of heterozygous samples?
+
