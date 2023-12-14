@@ -1,6 +1,6 @@
 # Bioinformatics resources and best-practices for plant breeders
 
-This material is maintained by Najla Ksouri, Chesco Montardit, Ernesto Igartua, Bruno Contreras Moreira 
+This material is maintained by Najla Ksouri, Chesco Montardit, Ernesto Igartua, Ricardo Ramírez González, Bruno Contreras Moreira 
 and the Ensembl outreach team
 
 ##  Summary
