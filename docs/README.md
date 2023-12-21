@@ -14,7 +14,7 @@ Test data used in sessions 1-4 can be obtained from <https://github.com/eead-csi
 A [Docker image](https://hub.docker.com/r/csicunam/bioinformatics_iamz) 
 is available with most of the software used in the sessions, excluding R,
 which we expect to be installed elsewhere.
-After installing Docker, it can be run as follows, not that you might require sudo:
+After installing Docker, it can be run as follows, note that you might require **sudo**:
 
     docker pull csicunam/bioinformatics_iamz
 
