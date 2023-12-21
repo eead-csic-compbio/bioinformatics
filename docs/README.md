@@ -14,7 +14,7 @@ Test data used in sessions 1-4 can be obtained from <https://github.com/eead-csi
 A [Docker image](https://hub.docker.com/r/csicunam/bioinformatics_iamz) 
 is available with most of the software used in the sessions, excluding R,
 which we expect to be installed elsewhere.
-After installing Docker, it can be run as follows:
+After installing Docker, it can be run as follows, not that you might require sudo:
 
     docker pull csicunam/bioinformatics_iamz
 
@@ -22,7 +22,7 @@ After installing Docker, it can be run as follows:
     mkdir $HOME/vep_data 
     chmod a+w $HOME/vep_data
 
-    docker run -t -i -v $HOME/vep_data:/data -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY csicunam/bioinformatics_iamz:latest
+    sudo docker run -t -i -v $HOME/vep_data:/data -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY csicunam/bioinformatics_iamz:latest
 
 
 
