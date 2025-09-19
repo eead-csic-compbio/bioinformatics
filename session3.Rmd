@@ -53,7 +53,9 @@ pillar
 -->
 
 # Introduction
-TBD
+
+TBD including short and long reads, assembly with/wo ref, spatial transcriptomics, expression dbs, etc
+
 
 # Transcript-based pangenome analysis
 

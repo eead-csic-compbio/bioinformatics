@@ -332,7 +332,7 @@ See [here](https://bioinfoperl.blogspot.com/2011/08/decodificando-la-gene-ontolo
 Orthologous genes are derived by speciation, in contrast to paralogues, which evolve through duplication. Comparative genomic studies on a variety of clades suggest that orthologues among species typically are the most similar genes in terms of sequence, structure, domain architecture and function [@Gabaldon2013]. There are however many exceptions and thus orthology should be used as a proxy for similarity.
 In benchmarks with curated GO terms, it seems that orthology improves the annotation of sequences particularly on the Molecular Function side of the Gene Ontology [@HuertaCepas2017].
 
-[Ensembl Plants](https://plants.ensembl.org) and [PLAZA](https://bioinformatics.psb.ugent.be/plaza) are resources providing plant-specific comparative genomics tools for plants, such as orthology calls and sintenic/collinear genes.
+[Ensembl Plants](https://plants.ensembl.org) and [PLAZA](https://bioinformatics.psb.ugent.be/plaza) are resources providing plant-specific comparative genomics tools for plants, such as orthology calls and syntenic/collinear genes.
 
 # Exercises
 
@@ -457,9 +457,19 @@ Let's practice then:
 
 **Exe 9)** Summarize your results in a table.
 
+### Predicting the 3D structure
+
+Choose from the options [here](https://eead-csic-compbio.github.io/bioinformatica_estructural/#c%C3%B3mo-obtener-y-usar-modelos-de-alphafold-y-algoritmos-similares) and model the structure of one of the sequences obtained in **Exe5**.
+
+**Exe 10)** Save a screen capture of your model and a table with associated quality scores.
+
 ### Your report
 
-Your report should be a single document, preferably in PDF format, with solutions Exe1 to Exe9.
+Set up your own GitHub repository 
+([session R](https://eead-csic-compbio.github.io/bioinformatics/sessionR.html#225_Use_version_control_systems)),
+create a folder named 'coding/' and create a report there detailing the solutions for exercises Exe1-Exe10
+in [markdown](https://en.wikipedia.org/wiki/Markdown) or
+[Rmarkdown](https://eead-csic-compbio.github.io/bioinformatics/sessionR.html#224_Turn_your_scripts_into_reproducible_reports) format.
 
 # Bibliography
 
