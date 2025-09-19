@@ -7,7 +7,7 @@ and the Ensembl outreach team
 
 Here we review some bioinformatics resources and databases which can be useful in plant breeding and genomics. 
 We will use both standalone and Web-based tools and will also review reproducible analysis practices and software benchmarks.
-Test data used in sessions 1-4 can be obtained from <https://github.com/eead-csic-compbio/bioinformatics>.
+Test data used in sessions 1-5 can be obtained from <https://github.com/eead-csic-compbio/bioinformatics>.
 
 ## Docker image
 
