@@ -298,19 +298,29 @@ The following example shows that kind of 3-state encoding for a sequence:
 
 Minimal evolutionary and folding units are called domains [@Porter2012]. As protein domains are both folding and functional units, guessing which domains are contained in a sequence provides clues on possible functions. Of course the concept of function is a bit subjective, and that's why resources such as the Gene Ontology are valuable.
 
-Two key resources for annotating proteins domains in input sequences are:
+Some key resources for annotating proteins domains in input sequences are:
 
-  + [Pfam](http://pfam.xfam.org), which defines sequence families (domains) by calculating and refining multiple alignments which are ultimately converted to hidden Markov models. It is integrated in a larger collection called [InterPro](https://www.ebi.ac.uk/interpro).
-  + [HHPred](https://toolkit.tuebingen.mpg.de/tools/hhpred), which explicitely uses secondary structure, sequence profiles and tertiary structure classifications to call protein domains and annotate protein sequences. 
+  + [InterPro](https://www.ebi.ac.uk/interpro), which classifies sequences into families while assigning domains and important sites.
+  It uses signatures provided by several different databases (referred to as member databases such as 
+  [PANTHER](http://www.pantherdb.org), [SMART](https://smart.embl.de), [CDD](https://www.ncbi.nlm.nih.gov/Structure/cdd/cdd.shtml) or [PROSITE](https://prosite.expasy.org)). It also includes [Pfam](https://www.ebi.ac.uk/interpro/entry/pfam), 
+  which defines sequence families (domains) by calculating and refining multiple alignments which are ultimately converted to hidden Markov models (signatures).
+  
+  + [TED](https://ted.cathdb.info): The Encyclopedia of Domains. It combines state-of-the-art deep learning-based domain parsing and structure comparison algorithms to segment and classify domains across the [AlphaFold database](https://alphafold.ebi.ac.uk) [@Lau2024]. 
+  
+  + [HHPred](https://toolkit.tuebingen.mpg.de/tools/hhpred), which explicitly uses secondary structure, sequence profiles and tertiary structure classifications to call protein domains and annotate protein sequences. 
 
-Another resource comparable to Pfam is [PANTHER](http://www.pantherdb.org), which is related to the Gene Ontology.
-
-The next figure depicts the tertiary structure of a protein with two domains, adapted from [@Wuerges2006]. Note that strands are shown as arrows and helices as cilinders:
+The next figure depicts the tertiary structure of a protein with two domains, adapted from [@Wuerges2006]. Note that strands are shown as arrows and helices as cylinders:
 
 ![](./pics/3sto2s.png)
 
-You can read more about these topics in [Algoritmos en Bioinformática Estructural](http://eead-csic-compbio.github.io/bioinformatica_estructural) (in Spanish),
-which includes a chapter of AlphaFold and related approaches.
+## Prediction of tertiary and quaternary structure
+
+The development of deep learning methods for protein structure prediction, 
+such as AlphaFold [@AF3] and RoseTTAFold [@Baek2021], has revolutionized bioinformatics. 
+These can predict the 3D structure of a protein and its complexes with remarkable accuracy,
+and have been tested in multiple [applications](https://eead-csic-compbio.github.io/bioinformatica_estructural/#AFapps).
+You can read more about these topics in [Algoritmos en Bioinformática Estructural](https://eead-csic-compbio.github.io/bioinformatica_estructural/#alphafoldAA) (in Spanish).
+
 
 ## Gene Ontology
 
@@ -470,6 +480,8 @@ Set up your own GitHub repository
 create a folder named 'coding/' and create a report there detailing the solutions for exercises Exe1-Exe10
 in [markdown](https://en.wikipedia.org/wiki/Markdown) or
 [Rmarkdown](https://eead-csic-compbio.github.io/bioinformatics/sessionR.html#224_Turn_your_scripts_into_reproducible_reports) format.
+It's important to cite any relevant literature you might have used in your report, 
+as well as any AI resources used in your work.
 
 # Bibliography
 
