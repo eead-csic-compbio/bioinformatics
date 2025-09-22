@@ -213,7 +213,7 @@ Here I briefly describe a structural alignment approach for the comparison of DN
 
 DNA motifs inferred from protein-complexes can be analyzed in terms of their information content:
 
-![Information content of structure-derived DNA motifs of proteins belonging to several SCOP superfamilies as of Dec2024, after @ContrerasMoreira2010](pics/superfam_specificity.png)
+![Information content of structure-derived DNA motifs of proteins belonging to several SCOP superfamilies as of Aug2025, after @ContrerasMoreira2010](pics/superfam_specificity.png)
 
 ### Modelling DNA-binding proteins
 
