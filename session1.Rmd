@@ -467,21 +467,16 @@ Let's practice then:
 
 **Exe 9)** Summarize your results in a table.
 
-### Predicting the 3D structure
+### Predicting 3D structure
 
-Choose from the options [here](https://eead-csic-compbio.github.io/bioinformatica_estructural/#c%C3%B3mo-obtener-y-usar-modelos-de-alphafold-y-algoritmos-similares) and model the structure of one of the sequences obtained in **Exe5**.
+Choose from the options [here](https://eead-csic-compbio.github.io/bioinformatica_estructural/#c%C3%B3mo-obtener-y-usar-modelos-de-alphafold-y-algoritmos-similares) and model the structure of one of the sequences obtained in **Exe5**. 
 
 **Exe 10)** Save a screen capture of your model and a table with associated quality scores.
 
 ### Your report
 
-Set up your own GitHub repository 
-([session R](https://eead-csic-compbio.github.io/bioinformatics/sessionR.html#225_Use_version_control_systems)),
-create a folder named 'coding/' and create a report there detailing the solutions for exercises Exe1-Exe10
-in [markdown](https://en.wikipedia.org/wiki/Markdown) or
-[Rmarkdown](https://eead-csic-compbio.github.io/bioinformatics/sessionR.html#224_Turn_your_scripts_into_reproducible_reports) format.
-It's important to cite any relevant literature you might have used in your report, 
-as well as any AI resources used in your work.
+Set up your own GitHub repository, create a folder named 'coding/' and start a report explaining i) how you solved the exercises Exe1-Exe10
+and ii) the problems you faced. See more recommendations [here](./README.md).
 
 # Bibliography
 
