@@ -53,7 +53,7 @@ The idea is that students **log their work as they go**, as opposed to uploading
 so that the thought process and progress is visible, as well as challenges. 
 The resulting repo can be evaluated by teachers but also serves as a portfolio of skills and knowledge for potential employers.
 
-[session R](https://eead-csic-compbio.github.io/bioinformatics/sessionR.html#225_Use_version_control_systems)) 
+[session R](https://eead-csic-compbio.github.io/bioinformatics/sessionR.html#225_Use_version_control_systems) 
 provides examples on setting up a GitHub repository and using Git for version control, and also on
 the slightly advanced
 [Rmarkdown](https://eead-csic-compbio.github.io/bioinformatics/sessionR.html#224_Turn_your_scripts_into_reproducible_reports) format.
