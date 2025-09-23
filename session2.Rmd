@@ -683,8 +683,9 @@ Your work is to run the protocol with cluster E2F and write a brief report with:
 
 + an overall interpretation of results.
 
-Please save your report in a folder named 'noncoding/' of the same GitHub repo created during
-[session 1](https://eead-csic-compbio.github.io/bioinformatics/session1.html).
-
+Please make a folder named 'noncoding/' in the same GitHub repo of
+[session 1](https://eead-csic-compbio.github.io/bioinformatics/session1.html), 
+and write a report explaining i) how you solved the exercises, explaining the results,
+and ii) the problems you faced. See more recommendations [here](./README.md).
 
 # References and notes
