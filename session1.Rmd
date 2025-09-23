@@ -462,7 +462,7 @@ Let's practice then:
 6.	How many proteins of *Arabidopsis thaliana*, *Prunus perisca* and *Zea mays* are assigned to the leaf development GO term. 
 **Tip :** Zea mays. Taxonomy ID=4577
 
-7.	Check the total number of BP annotations and proteins supported by the **experimental** evidence codes in both *Arabidopsis thaliana* and *Prunus persica*. (see [the evidence codes](http://geneontology.org/docs/guide-go-evidence-codes/))
+7.	Check the total number of BP annotations and proteins supported by the **experimental** evidence codes in both *Arabidopsis thaliana* and *Prunus persica*. (see [the evidence codes](http://geneontology.org/docs/guide-go-evidence-codes))
 **Tip :** check the ‘Statistics’ box.
 
 **Exe 9)** Summarize your results in a table.
@@ -476,7 +476,7 @@ Choose from the options [here](https://eead-csic-compbio.github.io/bioinformatic
 ### Your report
 
 Set up your own GitHub repository, create a folder named 'coding/' and start a report explaining i) how you solved the exercises Exe1-Exe10
-and ii) the problems you faced. See more recommendations [here](./README.md).
+and ii) the problems you faced. See more recommendations [here](https://eead-csic-compbio.github.io/bioinformatics).
 
 # Bibliography
 

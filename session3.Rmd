@@ -54,6 +54,11 @@ pillar
 
 # Introduction
 
+In this session we will continue annotating sequences, but now with a focus on transcripts, which can be coding and non-coding.
+In fact, the same gene can encode both coding and non-coding transcripts [@Poliseno2024]:
+
+![](./pics/bifunRNA.png)
+
 TBD including short and long reads, assembly with/wo ref, spatial transcriptomics, expression dbs, etc
 
 
