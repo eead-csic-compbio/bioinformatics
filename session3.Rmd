@@ -59,14 +59,38 @@ In fact, the same gene can encode both coding and non-coding transcripts [@Polis
 
 ![](./pics/bifunRNA.png)
 
-TBD including short and long reads, assembly with/wo ref, spatial transcriptomics, expression dbs, etc
+TBD including short and long reads, assembly with/wo ref, trinity, stringtie, spatial transcriptomics, expression dbs, etc
 
 
 # Transcript-based pangenome analysis
 
+We will follow the GET_HOMOLOGUES-EST protocol at:
+
+<https://eead-csic-compbio.github.io/get_homologues/plant_pangenome/protocol.html>
+
+
+
 # Coexpression networks
 
 
-## Bibliography
+## Your report
+
+Your work is to run both protocols and write a brief report with:
+
++ a summary of the pantranscriptome analysis, including 
+  * A simulation of pan leaf pantranscriptome after comparing 14 barleys, similar to Fig. 6 in the GET_HOMOLOGUES-EST protocol
+  * A table of Pfam domains enriched in core and accessory transcripts
+  * An overall recapitulation of the analysis.
+
++ .. 
+
+
+Please make a folder named 'transcripts/' in the same GitHub repo of
+[session 1](https://eead-csic-compbio.github.io/bioinformatics/session1.html), 
+and write a report explaining i) how you solved the exercises, explaining the results,
+and ii) the problems you faced. See more recommendations [here](https://eead-csic-compbio.github.io/bioinformatics).
+
+
+## References
 
 
