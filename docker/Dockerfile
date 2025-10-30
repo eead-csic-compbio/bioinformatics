@@ -34,7 +34,9 @@ RUN apt-get update && apt install --no-install-recommends -y \
 	freebayes\
 	bcftools\
 	tabix\
-	beagle
+	beagle\
+	kallisto\
+        trimmomatic
 
 ## Clone repo with course materials, including test_data
 WORKDIR /home/vep
