@@ -64,10 +64,21 @@ TBD including short and long reads, assembly with/wo ref, trinity, stringtie, sp
 
 # Transcript-based pangenome analysis
 
-We will follow the GET_HOMOLOGUES-EST protocol at:
+We will follow the introduction and protocol at:
 
 <https://eead-csic-compbio.github.io/get_homologues/plant_pangenome/protocol.html>
 
+For the exercises you will need 
+
+Note that the software GET_HOMOLOGUES-EST is a part of the GET_HOMOLOGUES package, which you installed in session 2.
+
+cd /data
+    8  ls
+    9  rm -rf cds*
+   10  tar xvfz /home/vep/test_data/transcripts/cds.tgz 
+   11  ls
+   12  tar xvfz /home/vep/test_data/transcripts/cds*tgz
+   13  tar xvfz /home/vep/test_data/transcripts/cds_est_homologues.tgz
 
 
 # Coexpression networks
