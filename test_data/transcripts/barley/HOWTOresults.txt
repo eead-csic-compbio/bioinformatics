@@ -1,0 +1,4 @@
+cd data
+wget https://floresta.eead.csic.es/plant-pan-genomes/barley_transcripts/cds_est_homologues.tgz
+tar xfz cds_est_homologues.tgz
+rm cds_est_homologues.tgz
