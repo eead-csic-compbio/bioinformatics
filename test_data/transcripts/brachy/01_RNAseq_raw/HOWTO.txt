@@ -1,0 +1,2 @@
+wget https://github.com/eead-csic-compbio/bioinformatics/releases/download/2025/ABR3_D_03.fastq.gz
+wget https://github.com/eead-csic-compbio/bioinformatics/releases/download/2025/ABR3_W_03.fastq.gz
