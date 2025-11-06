@@ -60,7 +60,7 @@ RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkg
 ## Clone repo with course materials, including test_data
 WORKDIR /home/vep
 RUN git clone https://github.com/eead-csic-compbio/bioinformatics.git
-RUN cd bioinformatics/test_data/transcripts && ./HOWTO.txt
+RUN cd bioinformatics/test_data/transcripts/barley && ./HOWTO.txt
 RUN ln -s bioinformatics/test_data .
 
 ## Copy course datafiles, data is a repo folder
