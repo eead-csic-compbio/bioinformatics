@@ -1,0 +1,17 @@
+sample_id	genotype	condition	rep	combinated
+ABR3_D_01	ABR3	Drought	1	CD
+ABR3_D_02	ABR3	Drought	2	CD
+ABR3_D_03	ABR3	Drought	3	HD
+ABR3_D_04	ABR3	Drought	4	HD
+ABR3_W_01	ABR3	Water	1	CW
+ABR3_W_02	ABR3	Water	2	CW
+ABR3_W_03	ABR3	Water	3	HW
+ABR3_W_04	ABR3	Water	4	HW
+ABR4_D_01	ABR4	Drought	1	CD
+ABR4_D_02	ABR4	Drought	2	CD
+ABR4_D_03	ABR4	Drought	3	HD
+ABR4_D_04	ABR4	Drought	4	HD
+ABR4_W_01	ABR4	Water	1	CW
+ABR4_W_02	ABR4	Water	2	CW
+ABR4_W_03	ABR4	Water	3	HW
+ABR4_W_04	ABR4	Water	4	HW

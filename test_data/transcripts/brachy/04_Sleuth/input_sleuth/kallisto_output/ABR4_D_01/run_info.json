@@ -1,0 +1,13 @@
+{
+	"n_targets": 52972,
+	"n_bootstraps": 100,
+	"n_processed": 2116971,
+	"n_pseudoaligned": 1297327,
+	"n_unique": 780885,
+	"p_pseudoaligned": 61.3,
+	"p_unique": 36.9,
+	"kallisto_version": "0.48.0",
+	"index_version": 10,
+	"start_time": "Thu Oct 23 13:59:26 2025",
+	"call": "kallisto quant -i 00_Reference_transcriptome/Bdistachyon_314_v3.1.transcript.TagSeq500b.idx -o 02_quant/ABR4_D_01 -b 100 --single -l 100 -s 20 /dev/fd/63"
+}
