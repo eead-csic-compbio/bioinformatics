@@ -18,11 +18,13 @@ After installing Docker, it can be run as follows, note that you might require *
 
     docker pull csicunam/bioinformatics_iamz
 
-    # persistent folder for results files
-    mkdir $HOME/vep_data 
-    chmod a+w $HOME/vep_data
-
-    sudo docker run -t -i -v $HOME/vep_data:/data -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY csicunam/bioinformatics_iamz:latest
+    # Set persistent folder for results files to avoid data loss when docker is turned off
+    # For instance, for the VEP class you could create one named 'vep_class'
+    mkdir $HOME/vep_class 
+    chmod a+w $HOME/vep_class
+    
+    # launch docker binding the persistent folder to internal folder (/data)
+    sudo docker run -t -i -v $HOME/vep_class:/data -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY csicunam/bioinformatics_iamz:latest
 
 
 
