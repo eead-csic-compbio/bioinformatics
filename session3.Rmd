@@ -86,11 +86,11 @@ cd /data
 
 The files needed this for this session are:
 
-* [Analysis_Transcriptomes_RS_IAMZ2025.pptx](coexp/Analysis_Transcriptomes_RS_IAMZ2025.pptx)
-* [Practical_Sleuth.Rmd](coexp/Practical_Sleuth.Rmd)
-* [Practical_WGCNA_D_dataset.Rmd](coexp/Practical_WGCNA_D_dataset.Rmd)
-* [Practical_WGCNA_W_dataset.Rmd](coexp/Practical_WGCNA_W_dataset.Rmd)
-* [Readme_Docker_Transcriptomic_class.txt](coexp/Readme_Docker_Transcriptomic_class.txt)
+* [Analysis_Transcriptomes_RS_IAMZ2025.pptx](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Analysis_Transcriptomes_RS_IAMZ2025.pptx)
+* [Practical_Sleuth.Rmd](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Practical_Sleuth.Rmd)
+* [Practical_WGCNA_D_dataset.Rmd](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Practical_WGCNA_D_dataset.Rmd)
+* [Practical_WGCNA_W_dataset.Rmd](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Practical_WGCNA_W_dataset.Rmd)
+* [Readme_Docker_Transcriptomic_class.txt](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Readme_Docker_Transcriptomic_class.txt)
 
 Note that Rmd files are to be opened with Rstudio.
 
