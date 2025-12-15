@@ -1,0 +1,468 @@
+---
+title: "Analysis of transcriptomes. WGCNA tool for D dataset"
+author: "Rubén Sancho"
+date: "2025-12-16"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE)
+```
+
+```{r install_WGCNA_v.1.73}
+
+# https://cran.r-project.org/web/packages/WGCNA/index.html
+# https://cran.r-project.org/web/packages/WGCNA/WGCNA.pdf
+
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+
+#BiocManager::install("GO.db")
+
+#install.packages("WGCNA")
+
+```
+
+```{r WGCNA}
+
+library(WGCNA)
+
+#help(package = 'WGCNA')
+
+```
+
+
+```{r dataset}
+
+setwd(".")
+
+getwd()
+
+# Drought (D)
+
+D_dataset = read.csv("TPM_counts_Drought_D_dataset.csv")
+dim(D_dataset)
+names(D_dataset)
+
+# Transpose rows/columns in D dataset
+
+datExprD = as.data.frame(t(D_dataset[, -c(1)]));
+names(datExprD) = D_dataset$target_id;
+rownames(datExprD) = names(D_dataset)[-c(1)];
+
+```
+# Iterative filtering of samples and genes with too many missing entries
+
+```{r goodgenes_D}
+
+# Run all chunk
+
+# remove genes with too many missing samples in D
+
+gsgD = goodSamplesGenes(datExprD, verbose = 3);
+
+summary(gsgD)
+
+gsgD$allOK # if TRUE, all genes are ok
+
+if (!gsgD$allOK)
+{
+  # Optionally, print the gene and sample names that were removed:
+  if (sum(!gsgD$goodGenes)>0) 
+     printFlush(paste("Removing genes:", paste(names(datExprD)[!gsgD$goodGenes], collapse = ", ")));
+  if (sum(!gsgD$goodSamples)>0) 
+     printFlush(paste("Removing samples:", paste(rownames(datExprD)[!gsgD$goodSamples], collapse = ", ")));
+  datExprD = datExprD[gsgD$goodSamples, gsgD$goodGenes]
+  dim(datExprD)
+}
+```
+
+## Identifying outlier samples
+## You can identify outlier samples by using hierarchical clustering.
+
+```{r D_outliers}
+
+# Run all chunk
+
+# cluster and plot the samples (genes that will come later) to see if there are any obvious outliers
+
+# D dataset outliers detection
+
+sampleTreeD = hclust(dist(datExprD), method = "average")
+sizeGrWindow(12,9)
+#png("dendrogram_D.png", width = 1600, height = 1200, units = "px", pointsize = 32, bg = "white");
+par(cex = 0.6);
+par(mar = c(0,4,2,0))
+plot(sampleTreeD, main = "D Sample clustering to detect outliers", sub="", xlab="", cex.lab = 1.5, 
+     cex.axis = 1.5, cex.main = 2)
+outliersD=300000
+abline(h=outliersD, col = "red"); # to mark/cut  outliers
+#dev.off()
+
+```
+
+# Save filtered dataset
+
+```{r filter_dataset}
+
+## keep only desired samples in D dataset
+
+clustD = cutreeStatic(sampleTreeD, cutHeight=outliersD, minSize = 20)
+table(clustD)
+keepSamplesD = (clustD==1)
+datExprD = datExprD[keepSamplesD, ]
+nGenesD = ncol(datExprD)
+nSamplesD = nrow(datExprD)
+
+## keep filtering dataset
+
+save(datExprD, file = "datExpr_D.RData")
+
+```
+
+# Soft-thresholding powers selection for network construction
+
+```{r D_power}
+
+# Choose a set of soft-thresholding powers
+
+powers = c(c(1:13), seq(from = 14, to=20, by=2))
+
+# Analysis of scale free topology for soft-thresholding
+
+# Unsigned: Both strong positive and strong negative correlations 
+#           are considered connections
+# Signed: Only positive correlations contribute to network connectivity.
+#         Negative correlations reduce similarity toward zero, but correlations 
+#         near zero still retain some intermediate similarity.
+# Signed hybrid: Positive correlations are treated the same as 
+#                in signed networks, but negative correlations are 
+#               truncated to zero (completely ignored).
+
+sftD = pickSoftThreshold(datExprD,
+                         powerVector = powers,
+                         networkType = "unsigned", # default
+                         verbose = 5)
+```
+
+```{r Plot_D_power}
+
+# Plot the results:
+sizeGrWindow(9, 5)
+par(mfrow = c(1,2));
+cex1 = 0.9;
+
+# Scale-free topology fit index as a function of the soft-thresholding power D
+
+#png("power_D_pearson_unsigned.png", width = 1600, height = 1200, units = "px", 
+#    pointsize = 32, bg = "white");
+plot(sftD$fitIndices[,1], -sign(sftD$fitIndices[,3])*sftD$fitIndices[,2],
+xlab="Soft Threshold (power)",ylab="Scale Free Topology Model Fit,signed R^2",
+type="n",
+main = paste("Scale independence (D)"));
+text(sftD$fitIndices[,1], -sign(sftD$fitIndices[,3])*sftD$fitIndices[,2],
+labels=powers,cex=cex1,col="red");
+
+# this line corresponds to using an R^2 cut-off of h
+abline(h=0.85,col="red")
+#dev.off()
+
+# Scale-free topology connectivity
+#png("connectivity_D_pearson_unsigned.png", width = 1600, height = 1200,
+#    units = "px", pointsize = 32, bg = "white");
+
+plot(sftD$fitIndices[,1], sftD$fitIndices[,5],
+     xlab="Soft Threshold (power)",ylab="Mean Connectivity", type="n",
+     main = paste("Mean connectivity (D)"))
+text(sftD$fitIndices[,1], sftD$fitIndices[,5], labels=powers, cex=cex1, 
+     col="red")
+
+#dev.off()
+
+```
+## Optimal D power = 5
+
+# Unsigned net for D dataset
+
+```{r net_D}
+
+# load dataset
+
+load(file = "datExpr_D.RData");
+
+genes = colnames(datExprD)
+
+# Calling the Adjacency Function
+
+adjacency_D <- adjacency(datExprD, power = 5)
+
+# Topological Overlap Matrix
+
+TOM_D <- TOMsimilarity(adjacency_D)   ## This step takes a long time (5 min) ##
+
+# convert this matrix into a dissimilarity matrix 
+
+TOM_diss_D <- 1-TOM_D
+
+# Hierarchical Clustering Analysis
+
+# Creating the dendrogram 
+
+geneTree_D <- hclust(as.dist(TOM_diss_D), method = "average")
+
+# Plotting the dendrogram
+
+sizeGrWindow(12,9)
+plot(geneTree_D, xlab="", sub="", 
+     main = "DROUGHT: Gene clustering on TOM-based dissimilarity", 
+labels = FALSE, hang = 0.04)
+
+# Identification of modules D
+
+modules_D <- cutreeDynamic(dendro = geneTree_D, distM = TOM_diss_D, 
+                           deepSplit = 2, pamRespectsDendro = FALSE, 
+                           minClusterSize = 30)
+
+
+table(modules_D) #returns a table of the counts of factor levels in an object. 
+            # In this case how many genes are assigned to each created module.
+
+
+modulecolors_D <- labels2colors(modules_D) # assigns each module number a color
+
+table(modulecolors_D) # returns the counts for each color
+                      # (aka the number of genes within each module)
+
+
+# Plots the gene dendrogram with the module colors
+
+plotDendroAndColors(geneTree_D, modulecolors_D,"Module D",
+dendroLabels = FALSE, hang = 0.03,
+addGuide = TRUE, guideHang = 0.05,
+main = "Gene dendrogram and module colors for D network")
+
+
+# Module Eigengene Identification
+## A ME (Module Eigengene) is the standardized gene expression profile for 
+## a given module.
+
+## An eigengene is the gene whose expression is representative of the the 
+## majority of genes expressed within a module.
+
+MElist_D <- moduleEigengenes(datExprD, colors = modulecolors_D) 
+MEs_D <- MElist_D$eigengenes 
+
+head(MEs_D)
+```
+
+```{r merging}
+
+# Module Merging
+
+ME_diss_D = 1-cor(MElist_D$eigengenes, 
+                         use="complete") # Calculate eigengene dissimilarity
+
+METree_D = hclust(as.dist(ME_diss_D), 
+                  method = "average") # Clustering eigengenes 
+par(mar = c(0,4,2,0)) # setting margin sizes
+par(cex = 0.6); # scaling the graphic
+plot(METree_D)
+abline(h=.25, col = "red") # a height of .25 corresponds to correlation of .75
+
+
+merge_D <- mergeCloseModules(datExprD, modulecolors_D, cutHeight = .25)
+
+
+# The merged module colors, assigning one color to each module
+
+mergedcolors_D = merge_D$colors
+
+# Eigengenes of the new merged modules
+
+mergedMEs_D = merge_D$newMEs
+
+# Plot the merged dendrogram
+
+plotDendroAndColors(geneTree_D, cbind(modulecolors_D, mergedcolors_D), 
+c("Original Module D", "Merged Module D"),
+dendroLabels = FALSE, hang = 0.03,
+addGuide = TRUE, guideHang = 0.05,
+main = "Dendrogram and modules for original and merged modules in D dataset")
+
+# Rename to modulecolors
+
+modulecolors_D = mergedcolors_D
+
+# Construct numerical labels corresponding to the colors
+
+colororder_D = c("grey", standardColors(50));
+ 
+modulelabels_D = match(modulecolors_D, colororder_D)-1;
+ 
+MEs_D = mergedMEs_D;
+
+table(modulelabels_D) # Merged modules = 40; original modules = 60
+
+table(modulecolors_D)
+
+# Save module colors and labels for use in subsequent parts
+ 
+save(MEs_D, modulelabels_D, modulecolors_D, geneTree_D, file = "net_D.RData")
+
+
+```
+
+# Export genes-modules
+
+```{r export_modules_genes}
+
+# Export lists of genes within each module of D
+
+load("datExpr_D.RData")
+load("net_D.RData")
+
+# Extract gene names
+
+geneNames <- colnames(datExprD)
+
+# Create gene-module table
+
+geneModuleMembership_D <- data.frame(
+  Gene = geneNames,
+  ModuleColor = modulecolors_D
+)
+
+head(geneModuleMembership_D)
+
+# Prepare data frame and export to tsv file
+
+genes_by_module_D <- split(geneModuleMembership_D$Gene, geneModuleMembership_D$ModuleColor)
+
+
+genes_by_module_df_D <- data.frame(
+  ModuleColor = rep(names(genes_by_module_D), times = sapply(genes_by_module_D, length)),
+  Gene = unlist(genes_by_module_D, use.names = FALSE)
+)
+
+head(genes_by_module_df_D)
+
+# Export to tsv
+
+write.table(genes_by_module_df_D,
+            file = "Genes_per_module_D.tsv",
+            sep = "\t",        # sep tab
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = TRUE)
+
+```
+
+# Top hub gene per module
+
+```{r Top_hub_gene}
+
+# The single top hub gene per module:
+
+chooseTopHubInEachModule(
+   datExprD, 
+   modulecolors_D, 
+   omitColors = "grey", 
+   power = 5, 
+   type = "unsigned")
+
+```
+
+# Module-trait associations
+
+```{r trait_dataset}
+
+# Load expression data D
+
+load("datExpr_D.RData")
+
+# Load network data D
+
+load("net_D.RData")
+
+# Prepare trait D data set
+
+traitdata <- read.csv("TRAITS_D.csv", header = TRUE, stringsAsFactors = FALSE)
+
+head(traitdata)
+
+# Keep samples and traits
+
+allTraits <- traitdata[, c(4, 6:17) ] # keep samples and traits 
+head(allTraits)
+# variables/traits numeric
+
+allTraits[, 2:ncol(allTraits)] <- lapply(allTraits[, 2:ncol(allTraits)], 
+                                         function(x) as.numeric(as.character(x)))
+
+# check classes
+
+sapply(allTraits, class)
+
+head(allTraits)
+
+# Match the trait data to the expression data by the sample name
+
+Samples <- rownames(datExprD)
+
+traitRows <- match(Samples, allTraits$sample)
+
+datTraits <- allTraits[traitRows, -1]
+
+rownames(datTraits) <- allTraits[traitRows, 1]
+
+# Eigengene gene significance: correlation of the trait with the identified 
+# module eigengenes
+
+# Define numbers of genes and samples
+
+nGenes = ncol(datExprD)
+
+nSamples = nrow(datExprD)
+
+module.trait.correlation = cor(MEs_D, 
+                               datTraits, 
+                               use = "p") # Pearson correlation coefficient
+
+# p-value associated with the correlation
+
+module.trait.Pvalue = corPvalueStudent(module.trait.correlation, nSamples) 
+
+# Will display correlations and their p-values
+
+textMatrix = paste(signif(module.trait.correlation, 2), "\n(",
+signif(module.trait.Pvalue, 1), ")", sep = "");
+
+dim(textMatrix) = dim(module.trait.correlation)
+
+pdf("heatmap_traits_modules_D.pdf", width = 8, height = 12) # save in pdf
+
+par(mar = c(6, 8.5, 3, 1))
+
+# Display the correlation values within a heatmap plot
+
+labeledHeatmap(Matrix = module.trait.correlation,
+                        xLabels = names(datTraits),
+                        yLabels = names(MEs_D),
+                        ySymbols = names(MEs_D),
+                        colorLabels = FALSE,
+                        colors = blueWhiteRed(50),
+                        textMatrix = textMatrix,
+                        setStdMargins = FALSE,
+                        cex.text = 0.4,
+                        zlim = c(-1,1),
+                        main = paste("Module-trait relationships D"))
+
+dev.off() # save plot in pdf
+
+# The highest + correlation: MEgrey60 vs leafn (0.73 (p-value = 2e−06))
+# The highest - correlation: MEpalevioletred3 vs rmr (−0.76 (p-value = 6e−07))
+
+```

@@ -1,0 +1,214 @@
+---
+title: "Analysis of transcriptomes. Sleuth tool"
+author: "Rubén Sancho"
+date: "2025-12-16"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE)
+```
+
+```{r install_Sleuth_v.0.30.2}
+
+# https://github.com/pachterlab/sleuth
+
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install()
+#BiocManager::install("devtools")    # only if devtools not yet installed
+#BiocManager::install("pachterlab/sleuth")
+
+
+```
+
+```{r sleuth}
+
+library('sleuth')
+
+#vignette('intro', package = 'sleuth')
+
+#help(package = 'sleuth')
+
+```
+
+```{r dataset}
+
+setwd(".")
+
+getwd() 
+
+```
+# Data set preparation
+
+```{r input_prep}
+
+# The first step in a sleuth analysis is to specify where the kallisto results 
+# are stored.
+# A variable is created for this purpose with
+
+sample_id <- dir(file.path("input_sleuth", "kallisto_output"))
+sample_id
+
+# "ABR3_D_01" "ABR3_D_02" "ABR3_D_03" "ABR3_W_01" "ABR3_W_02" "ABR3_W_03"
+
+# A list of paths to the kallisto results indexed by the sample IDs is 
+# collated with:
+
+kal_dirs <- file.path("input_sleuth", "kallisto_output", sample_id)
+kal_dirs
+
+# "input_sleuth/kallisto_output/ABR3_D_01" ...
+
+# The next step is to load an auxiliary table that describes the experimental 
+# design and the relationship between the kallisto directories and the samples
+
+# sample_to_covariates (s2c)
+
+s2c <- read.table('metadata_sleuth.txt', header = TRUE, sep = '\t')
+
+## Package dplyr, function select. Select and rename variables/columns
+
+s2c <- dplyr::select(s2c, sample = sample_id, genotype = genotype, 
+                     condition = condition, rep = rep, combinated = combinated)
+
+head(s2c)
+
+# Now the directories must be appended in a new column to the table describing 
+# the experiment. This column must be labeled path, otherwise sleuth will report
+# an error. This is to ensure that samples can be associated with kallisto 
+# quantification.
+
+s2c <- dplyr::mutate(s2c, path = kal_dirs)
+
+head(s2c)
+
+# sample  genotype  condition rep combinated  path
+# ABR3_D_01	ABR3	Drought	1	CD	input_sleuth/kallisto_output/ABR3_D_01
+
+```
+
+# Constructor for a 'sleuth' object
+
+```{r sleuth_prep_condition}
+
+# The “sleuth object” can be constructed. This object will store not only the 
+# information about the experiment, but also details of the model to be used for
+# differential testing, and the results. It is prepared and used with four 
+# commands that (1) load the kallisto processed data into the object 
+# (2) estimate parameters for the sleuth response error measurement (full) model
+# (3) estimate parameters for the sleuth reduced model, and 
+# (4) perform differential analysis (testing) using the likelihood ratio test.
+# We also include the genes ids (t2g).
+
+## Then collect gene names with:
+
+#t2g <- read.csv("t2g_input.csv")
+
+## The sleuth object must be initialized with:
+
+so <- sleuth_prep(s2c, ~ condition, #target_mapping = t2g, 
+                  extra_bootstrap_summary = TRUE, 
+                  read_bootstrap_tpm = TRUE)
+
+## This is the formula for experimental design.
+
+## It indicates that the main factor to analyze is 
+## the experimental condition (Water (control) vs. Drought).
+## Sleuth will use this variable to construct linear expression models.
+
+
+```
+
+# Fit a measurement error model
+
+```{r models}
+
+# Then the 'full' model is fit with
+
+so <- sleuth_fit(so)
+
+# What this has accomplished is to “smooth” the raw kallisto abundance estimates
+# for each sample using a linear model with a parameter that represents the 
+# experimental condition (in this case Drought vs. Water).
+
+# To test for transcripts that are differential expressed between the 
+# conditions, sleuth performs a second fit to a “reduced” model that presumes 
+# abundances are equal in the two conditions.
+
+# To identify differential expressed transcripts sleuth will then identify 
+# transcripts with a significantly better fit with the “full” model.
+
+# The “reduced” model is fit with:
+
+so <- sleuth_fit(so, ~1, 'reduced')
+
+#----------------------------------------------------
+
+# Sleuth likelihood ratio test (LRT) is performed with:
+
+so <- sleuth_lrt(so, 'reduced', 'full')
+
+# The above command compares the 'reduced' model (~1) against 
+# the 'full' model (~condition) for each transcript, 
+# using LRT: Likelihood Ratio Test and checks whether adding the condition 
+# variable significantly improves the fit.
+
+# The models that have been fit can be examined with the models() function.
+
+models(so)
+
+```
+
+# Extract Wald or Likelihood Ratio test results from a sleuth object
+
+## Likelihood Ratio test (LRT)
+
+```{r LRT_test}
+
+# Results using Sleuth LRT test
+
+sleuth_table <- sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE)
+
+sleuth_significant <- dplyr::filter(sleuth_table, qval <= 0.05)
+
+head(sleuth_significant, 20)
+
+# qval (q-value): p-value adjusted for multiple tests using 
+# FDR (False Discovery Rate). Controls for the expected false-positive rate.
+
+# qval < 0.05 indicates that, on average, less than 5% of the genes identified 
+# as “significant” are expected to be false positives.
+
+```
+
+# Wald test
+
+```{r Wald_test}
+
+# Sleuth Wald test: This function computes the Wald test on one specific ‘beta’ 
+# coefficient on every transcript; this offers beta values which are biased 
+# folds changes values for pairwise comparisons
+
+so <- sleuth_wt(so,'conditionWater','full')
+
+#Results using Sleuth Wald test
+
+results_table <- sleuth_results(so, 'conditionWater', test_type = 'wt')
+
+sleuth_significant <- dplyr::filter(results_table, qval <= 0.05)
+
+head(sleuth_significant, 20)
+
+```
+
+# Interactive sleuth visualization with Shiny
+
+```{r view_Data}
+
+sleuth_live(so)
+
+```
