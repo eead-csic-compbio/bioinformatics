@@ -86,7 +86,7 @@ cd /data
 
 The files needed this for this session are:
 
-* [Analysis_Transcriptomes_RS_IAMZ2025.pptx](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Analysis_Transcriptomes_RS_IAMZ2025.pptx)
+* [Analysis_Transcriptomes_RS_IAMZ2025_v2.pdf](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Analysis_Transcriptomes_RS_IAMZ2025_v2.pdf)
 * [Practical_Sleuth.Rmd](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Practical_Sleuth.Rmd)
 * [Practical_WGCNA_D_dataset.Rmd](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Practical_WGCNA_D_dataset.Rmd)
 * [Practical_WGCNA_W_dataset.Rmd](https://github.com/eead-csic-compbio/bioinformatics/blob/main/coexp/Practical_WGCNA_W_dataset.Rmd)
