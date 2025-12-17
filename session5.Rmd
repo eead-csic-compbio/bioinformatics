@@ -687,7 +687,7 @@ which should be similar to
 # Prediction of variant effect
 
 Please check the presentation at 
-https://training.ensembl.org/events/2023/2023-12-11-CIHEAM_plants_browser
+https://training.ensembl.org/events/2025/2025-12-18-IAMZ-CIHEAM_plants_browser
 to learn how to use the Ensembl Variant Effect Predictor with your own VCF files.
 
 # Bibliography
