@@ -12,19 +12,25 @@ output:
 knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE)
 ```
 
-```{r install_WGCNA_v.1.73}
+# Run the chunk only once, removing the hash symbols (#) beforehand.
+# It is not necessary to run it again after installation, and it is recommended to add the hash symbols (#) back.
 
-# https://cran.r-project.org/web/packages/WGCNA/index.html
-# https://cran.r-project.org/web/packages/WGCNA/WGCNA.pdf
+```{r install_WGCNA_v.1.73}
 
 #if (!requireNamespace("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
 
 #BiocManager::install("GO.db")
 
+#BiocManager::install("impute")
+
+#BiocManager::install("preprocessCore")
+
 #install.packages("WGCNA")
 
 ```
+
+# Load WGCNA package
 
 ```{r WGCNA}
 
@@ -34,6 +40,7 @@ library(WGCNA)
 
 ```
 
+# Set working directory and load dataset
 
 ```{r dataset}
 
@@ -54,6 +61,8 @@ names(datExprW) = W_dataset$target_id;
 rownames(datExprW) = names(W_dataset)[-c(1)];
 
 ```
+
+# Filter genes
 
 ```{r goodgenes_W}
 
@@ -81,8 +90,8 @@ if (!gsgW$allOK)
 
 ```
 
-## Identifying outlier samples
-## You can identify outlier samples by using hierarchical clustering.
+# Identifying outlier samples.
+# You can identify outlier samples by using hierarchical clustering.
 
 ```{r w_outliers}
 
