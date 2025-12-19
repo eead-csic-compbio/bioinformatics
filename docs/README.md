@@ -1,7 +1,6 @@
 # Bioinformatics resources and best-practices for plant breeders
 
-This material is maintained by Najla Ksouri, Chesco Montardit, Rubén Sancho, Ernesto Igartua, Ricardo Ramírez González, Bruno Contreras Moreira 
-and the Ensembl outreach team
+This material is maintained by Najla Ksouri, Chesco Montardit, Rubén Sancho, Ernesto Igartua, Ricardo Ramírez González, Bruno Contreras Moreira, MGnify and the Ensembl outreach team
 
 ##  Summary
 
@@ -39,7 +38,9 @@ After installing Docker, it can be run as follows, note that you might require *
 |5|Mapping, variant calling & effect prediction|6h|[session 5](./session5.html) , [session 5a](./session5a.html)|
 |6|Genotyping|3h|[session 6](./session6.html)|
 |7|Genome-Wide Association Analysis|2h|[session 7](./session7.html)|
+|8|metagenomics and amplicon intro|4h|[session 8](https://plants-breeding.mgnify.org)
 |R|Reproducible analysis practices|2h|[session R](./sessionR.html)|
+
 
 ## Exercises and report
 
